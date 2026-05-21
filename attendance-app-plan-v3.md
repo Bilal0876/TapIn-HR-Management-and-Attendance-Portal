@@ -1,0 +1,1087 @@
+# Office Attendance App — Implementation Plan v2
+
+---
+
+## Confidence Statement
+
+This plan uses:
+- **Turborepo** as the monorepo manager — the industry standard for TypeScript monorepos, used by Vercel, Linear, and most serious product teams
+- **Feature-based folder structure** on both mobile and backend — each feature owns its routes, controller, service, and types together rather than spreading them across flat folders
+- **Controller → Service → Repository** pattern on the backend — the correct separation of concerns for an Express API at this scale
+- **Expo Router v3** file-based navigation — the current Expo standard, not the legacy React Navigation setup
+- All versions pinned to current stable releases as of mid-2025
+
+---
+
+## Tech Stack (Final, Locked)
+
+### Mobile — React Native / Expo
+| Package | Version | Why |
+|---|---|---|
+| `expo` | 51 | Managed workflow — handles native build config |
+| `expo-router` | 3.x | File-based routing, typed routes |
+| `@tanstack/react-query` | 5.x | Server state, background sync, cache invalidation |
+| `zustand` | 4.x | Auth token + session state only (minimal global state) |
+| `expo-secure-store` | 13.x | Encrypted JWT storage — never AsyncStorage for tokens |
+| `expo-local-authentication` | 14.x | FaceID / fingerprint for fast check-in |
+| `expo-notifications` | 0.28.x | Push notification receipt + handling |
+| `react-hook-form` | 7.x | Correction request form, login form |
+| `zod` | 3.x | Runtime validation, shared schema with backend |
+| `date-fns` | 3.x | All date math — timezone safe |
+| `date-fns-tz` | 3.x | Timezone conversion for display |
+| `react-native-reanimated` | 3.x | Break timer animation, smooth transitions |
+| `axios` | 1.x | HTTP client with interceptor support |
+
+### Backend — Node.js / Express
+| Package | Version | Why |
+|---|---|---|
+| `express` | 4.x | HTTP framework |
+| `typescript` | 5.x | Full type safety |
+| `prisma` | 5.x | ORM + migration runner |
+| `@prisma/client` | 5.x | Generated type-safe DB client |
+| `jsonwebtoken` | 9.x | JWT sign and verify |
+| `bcryptjs` | 2.x | Password hashing, cost 12 |
+| `zod` | 3.x | Request body/query validation |
+| `node-cron` | 3.x | Midnight sweep job |
+| `exceljs` | 4.x | .xlsx report generation |
+| `express-rate-limit` | 7.x | Brute force protection on auth |
+| `helmet` | 7.x | Security headers |
+| `cors` | 2.x | CORS policy |
+| `winston` | 3.x | Structured logging (not console.log) |
+| `http-errors` | 2.x | Consistent error objects |
+
+### Monorepo
+| Tool | Why |
+|---|---|
+| **Turborepo** | Task orchestration, build caching, runs lint/test/build across packages in correct dependency order |
+| **pnpm workspaces** | Package manager — fast, strict, correct hoisting |
+
+### Infrastructure
+| Service | Purpose |
+|---|---|
+| Railway | Hosts both the Node API and PostgreSQL — single platform, simple env management |
+| Expo EAS Build | Cloud builds for iOS (.ipa) and Android (.apk/.aab) |
+| Expo EAS Submit | Automated App Store + Play Store submission |
+| GitHub Actions | CI pipeline: typecheck → lint → test → (on main) deploy |
+
+---
+
+## Monorepo Structure
+
+```
+attendance-app/                     ← git root
+├── turbo.json                      ← Turborepo pipeline config
+├── pnpm-workspace.yaml             ← declares apps/* and packages/*
+├── package.json                    ← root devDependencies (turbo, typescript, eslint, prettier)
+├── tsconfig.base.json              ← shared TS config extended by all packages
+├── .eslintrc.base.js               ← shared ESLint config
+│
+├── apps/
+│   ├── mobile/                     ← Expo React Native app
+│   └── api/                        ← Express backend
+│
+└── packages/
+    ├── shared-types/               ← TypeScript interfaces + Zod schemas used by both apps
+    ├── eslint-config/              ← shared ESLint config package
+    └── tsconfig/                   ← shared tsconfig presets
+```
+
+**Why this structure:**
+- `turbo.json` defines task dependency graph: `build` depends on `^build` (dependencies build first), `test` depends on `^build`
+- `pnpm-workspace.yaml` tells pnpm that `apps/*` and `packages/*` are all workspace packages
+- `packages/shared-types` is imported by both `mobile` and `api` as `@attendance/shared-types` — Zod schemas defined once, used for validation on the server and type inference on the client
+- No code duplication between frontend and backend types — ever
+
+---
+
+## Backend Folder Structure (`apps/api/`)
+
+```
+apps/api/
+├── package.json
+├── tsconfig.json                   ← extends ../../tsconfig.base.json
+├── .env
+├── .env.example
+│
+├── prisma/
+│   ├── schema.prisma
+│   ├── seed.ts                     ← seed 1 company, 1 admin, 5 employees
+│   └── migrations/                 ← auto-generated by prisma migrate dev
+│
+└── src/
+    ├── index.ts                    ← process entry: creates app, starts server, registers cron
+    ├── app.ts                      ← Express app factory (no listen call — testable)
+    │
+    ├── config/
+    │   ├── index.ts                ← validates + exports all env vars (throws on missing)
+    │   └── constants.ts            ← MAX_BACKDATING_MINUTES, PUSH_URL, etc.
+    │
+    ├── lib/
+    │   ├── prisma.ts               ← PrismaClient singleton
+    │   ├── logger.ts               ← Winston logger instance
+    │   └── errors.ts               ← AppError class + createError helpers
+    │
+    ├── middleware/
+    │   ├── authenticate.ts         ← verifies JWT, attaches req.employee
+    │   ├── requireAdmin.ts         ← checks role === ADMIN or SUPER_ADMIN
+    │   ├── requireSuperAdmin.ts    ← checks role === SUPER_ADMIN only
+    │   ├── requirePasswordChanged.ts ← 403 if mustChangePassword is true
+    │   ├── validate.ts             ← Zod validation factory (body / query / params)
+    │   ├── errorHandler.ts         ← global Express error handler
+    │   ├── notFound.ts             ← 404 handler
+    │   └── rateLimiter.ts          ← auth-specific rate limit config
+    │
+    ├── features/
+    │   │
+    │   ├── auth/
+    │   │   ├── auth.routes.ts      ← Express Router: POST /login, /refresh, /logout
+    │   │   ├── auth.controller.ts  ← req/res handling, calls service
+    │   │   ├── auth.service.ts     ← verifyPassword, issueTokens, rotateRefresh
+    │   │   ├── auth.schema.ts      ← Zod: LoginSchema, RefreshSchema
+    │   │   └── auth.test.ts        ← integration tests
+    │   │
+    │   ├── attendance/
+    │   │   ├── attendance.routes.ts
+    │   │   ├── attendance.controller.ts
+    │   │   ├── attendance.service.ts   ← checkin, checkout, getToday, getHistory
+    │   │   ├── attendance.repository.ts ← all Prisma queries for attendance
+    │   │   ├── attendance.schema.ts
+    │   │   └── attendance.test.ts
+    │   │
+    │   ├── breaks/
+    │   │   ├── breaks.routes.ts
+    │   │   ├── breaks.controller.ts
+    │   │   ├── breaks.service.ts       ← startBreak, endBreak, getActive
+    │   │   ├── breaks.repository.ts
+    │   │   ├── breaks.schema.ts
+    │   │   └── breaks.test.ts
+    │   │
+    │   ├── corrections/
+    │   │   ├── corrections.routes.ts
+    │   │   ├── corrections.controller.ts
+    │   │   ├── corrections.service.ts  ← submit, approve (recalculates delta), reject
+    │   │   ├── corrections.repository.ts
+    │   │   ├── corrections.schema.ts
+    │   │   └── corrections.test.ts
+    │   │
+    │   ├── reports/
+    │   │   ├── reports.routes.ts
+    │   │   ├── reports.controller.ts
+    │   │   ├── reports.service.ts      ← buildMonthlySummary, streamXlsx
+    │   │   ├── reports.repository.ts
+    │   │   └── reports.test.ts
+    │   │
+    │   └── admin/
+    │       ├── admin.routes.ts
+    │       ├── admin.controller.ts
+    │       ├── admin.service.ts        ← getTeamToday, createEmployee (+ profile in tx),
+    │       │                              updateEmployee, resetPassword, updateRole,
+    │       │                              updateCompanyConfig
+    │       ├── admin.repository.ts
+    │       └── admin.test.ts
+    │
+    ├── services/
+    │   │   (cross-feature, reusable services)
+    │   ├── deltaEngine.ts          ← pure function: calculateDelta()
+    │   ├── deltaEngine.test.ts     ← 25+ unit tests, no DB needed
+    │   ├── pushNotify.ts           ← Expo push API wrapper
+    │   └── tokenService.ts         ← JWT sign/verify/refresh helpers
+    │
+    └── jobs/
+        └── midnightSweep.ts        ← node-cron: absent records + unclosed flags
+```
+
+**Why Controller → Service → Repository:**
+- **Controller**: only touches `req` and `res`. Calls service. Returns response. No business logic, no Prisma calls.
+- **Service**: business logic. Calls repository. Calls other services (e.g. deltaEngine, pushNotify). Never touches `req`/`res`.
+- **Repository**: only Prisma. No logic. Returns typed data. Easy to mock in tests.
+
+This pattern means you can unit-test services by mocking the repository, and integration-test controllers with a real test database — both levels are clean.
+
+---
+
+## Mobile Folder Structure (`apps/mobile/`)
+
+```
+apps/mobile/
+├── package.json
+├── tsconfig.json                   ← extends ../../tsconfig.base.json
+├── app.json                        ← Expo config
+├── eas.json                        ← EAS Build + Submit profiles
+├── .env
+├── .env.example
+│
+├── app/                            ← Expo Router: every file = a screen
+│   ├── _layout.tsx                 ← Root layout: QueryClient, auth guard
+│   ├── +not-found.tsx
+│   │
+│   ├── (auth)/
+│   │   ├── _layout.tsx             ← Redirects to (tabs) if already logged in
+│   │   └── login.tsx
+│   │
+│   ├── (employee)/
+│   │   ├── _layout.tsx             ← Tab bar: Home, History, Summary, Profile
+│   │   ├── index.tsx               ← Home screen (check-in/out hub)
+│   │   ├── history.tsx             ← Monthly calendar view
+│   │   ├── summary.tsx             ← Monthly balance screen
+│   │   ├── correction.tsx          ← Submit correction request
+│   │   └── profile.tsx             ← View own profile: code, designation, dept, joining date, change password
+│   │
+│   └── (admin)/
+│       ├── _layout.tsx             ← Tab bar: Today, Employees, Corrections, Reports
+│       ├── index.tsx               ← Team today dashboard
+│       ├── employees.tsx           ← Employee list + search
+│       ├── employee/
+│       │   ├── create.tsx          ← Create employee form (temp password shown on success)
+│       │   ├── [id].tsx            ← Employee detail: profile + 30-day summary
+│       │   └── [id]/edit.tsx       ← Edit profile fields + schedule overrides
+│       ├── corrections.tsx         ← Pending correction queue
+│       ├── reports.tsx             ← Month picker + download xlsx
+│       └── settings.tsx            ← Company config (SUPER_ADMIN only)
+│
+├── src/
+│   │
+│   ├── features/                   ← mirrors backend feature structure
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── api.ts              ← login(), logout(), refreshToken() API calls
+│   │   │   ├── hooks.ts            ← useLogin(), useLogout()
+│   │   │   ├── store.ts            ← Zustand auth store (token, employee)
+│   │   │   └── components/
+│   │   │       └── LoginForm.tsx
+│   │   │
+│   │   ├── attendance/
+│   │   │   ├── api.ts              ← checkin(), checkout(), getToday(), getHistory()
+│   │   │   ├── hooks.ts            ← useToday(), useCheckin(), useCheckout(), useHistory()
+│   │   │   └── components/
+│   │   │       ├── CheckInButton.tsx   ← the big button, 4 states
+│   │   │       ├── WorkingStatus.tsx   ← elapsed time display
+│   │   │       ├── DaySummaryCard.tsx  ← today's breakdown after checkout
+│   │   │       └── DeltaBadge.tsx      ← "+15 min" / "-8 min" pill
+│   │   │
+│   │   ├── breaks/
+│   │   │   ├── api.ts
+│   │   │   ├── hooks.ts            ← useActiveBreak(), useStartBreak(), useEndBreak()
+│   │   │   └── components/
+│   │   │       ├── BreakTimer.tsx      ← animated countdown/countup
+│   │   │       └── BreakProgressBar.tsx
+│   │   │
+│   │   ├── corrections/
+│   │   │   ├── api.ts
+│   │   │   ├── hooks.ts
+│   │   │   └── components/
+│   │   │       ├── CorrectionForm.tsx
+│   │   │       └── CorrectionStatusBadge.tsx
+│   │   │
+│   │   ├── reports/
+│   │   │   ├── api.ts
+│   │   │   ├── hooks.ts
+│   │   │   └── components/
+│   │   │       ├── MonthPicker.tsx
+│   │   │       └── MonthlyBalanceCard.tsx
+│   │   │
+│   │   └── admin/
+│   │       ├── api.ts
+│   │       ├── hooks.ts
+│   │       └── components/
+│   │           ├── EmployeeStatusRow.tsx
+│   │           ├── EmployeeProfileCard.tsx   ← designation, department, joining date, code
+│   │           ├── CorrectionReviewCard.tsx
+│   │           └── TempPasswordModal.tsx     ← shown once after create/reset, copy button
+│   │
+│   ├── lib/
+│   │   ├── axios.ts                ← Axios instance: baseURL, token injection, 401 → refresh
+│   │   ├── queryClient.ts          ← TanStack Query client config
+│   │   ├── secureStorage.ts        ← getToken, setToken, clearToken wrappers
+│   │   └── time.ts                 ← formatDelta(minutes), formatDuration(), toLocalDisplay()
+│   │
+│   ├── components/
+│   │   │   (shared UI primitives only — no feature logic)
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── Badge.tsx
+│   │   ├── MonthCalendar.tsx       ← reusable calendar grid, day-slot renderer prop
+│   │   ├── ScreenLoader.tsx
+│   │   └── ErrorBoundary.tsx
+│   │
+│   └── constants/
+│       ├── colors.ts               ← design tokens
+│       ├── spacing.ts
+│       └── queryKeys.ts            ← TanStack Query key factory
+```
+
+**Why feature-based on mobile too:**
+Flat `components/`, `hooks/`, `api/` folders collapse into chaos after ~15 files. Feature folders mean everything related to breaks lives in `features/breaks/` — you never hunt across three directories to understand one feature. New developers onboard by reading one folder at a time.
+
+**Why `app/` and `src/` are separate:**
+Expo Router requires the `app/` directory and treats every file in it as a screen. Business logic, API calls, hooks, and components do not belong there. Keeping `app/` as thin route files that import from `src/features/` means your screens are clean and your logic is testable.
+
+---
+
+## Shared Package (`packages/shared-types/`)
+
+```
+packages/shared-types/
+├── package.json                    ← name: "@attendance/shared-types"
+├── tsconfig.json
+└── src/
+    ├── index.ts                    ← barrel export
+    ├── schemas/
+    │   ├── auth.schemas.ts         ← LoginSchema, RefreshSchema, ChangePasswordSchema (Zod)
+    │   ├── attendance.schemas.ts   ← CheckinSchema, CheckoutSchema (Zod)
+    │   ├── breaks.schemas.ts
+    │   ├── corrections.schemas.ts
+    │   ├── reports.schemas.ts
+    │   └── admin.schemas.ts        ← CreateEmployeeSchema, UpdateEmployeeSchema, UpdateRoleSchema
+    └── types/
+        ├── employee.types.ts       ← Employee, EmployeeProfile, Role, CompanyConfig
+        ├── attendance.types.ts     ← AttendanceRecord, DailySummary, DeltaResult
+        ├── break.types.ts
+        ├── correction.types.ts
+        └── report.types.ts
+```
+
+Both `apps/api` and `apps/mobile` add `"@attendance/shared-types": "workspace:*"` to their `package.json`. The Zod schemas are the source of truth — the backend uses them for request validation, the frontend uses `.infer<>` to get TypeScript types from the same schema with zero duplication.
+
+---
+
+## Database Schema (Prisma — Final)
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Company ───────────────────────────────────────────────────────────────
+
+model Company {
+  id                    String     @id @default(cuid())
+  name                  String
+  timezone              String     @default("Asia/Karachi")
+  workMinutesPerDay     Int        @default(480)
+  breakMinutesAllocated Int        @default(60)
+  gracePeriodMinutes    Int        @default(10)
+  expectedCheckinHour   Int        @default(9)
+  expectedCheckinMinute Int        @default(0)
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  employees             Employee[]
+
+  @@map("companies")
+}
+
+// ─── Employee ──────────────────────────────────────────────────────────────
+
+model Employee {
+  id                 String               @id @default(cuid())
+  companyId          String
+  name               String
+  email              String               @unique
+  passwordHash       String
+  role               Role                 @default(EMPLOYEE)
+  isActive           Boolean              @default(true)
+  mustChangePassword Boolean              @default(true)  // forced on first login after admin creates account
+  pushToken          String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  company            Company              @relation(fields: [companyId], references: [id])
+  profile            EmployeeProfile?
+  attendanceRecords  AttendanceRecord[]
+  breakSessions      BreakSession[]
+  corrections        CorrectionRequest[]
+  monthlySummaries   MonthlySummary[]
+  refreshTokens      RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+
+  @@map("employees")
+}
+
+enum Role {
+  EMPLOYEE      // can only manage own attendance
+  ADMIN         // can manage employees, approve corrections, download reports
+  SUPER_ADMIN   // can create/demote admins, configure company settings; one per company
+}
+
+// ─── Employee Profile ──────────────────────────────────────────────────────
+// Separated from Employee so auth fields (passwordHash, role) stay in one
+// table and profile fields (designation, department) stay in another.
+// Employee → EmployeeProfile is a 1-to-1 relation.
+
+model EmployeeProfile {
+  id              String    @id @default(cuid())
+  employeeId      String    @unique
+  employeeCode    String    @unique // human-readable: EMP-001, EMP-002
+  designation     String?           // "Software Engineer", "HR Manager"
+  department      String?           // "Engineering", "Operations"
+  phone           String?
+  joiningDate     DateTime  @db.Date  // ← critical: cron never marks absent before this
+  avatarUrl       String?
+  // Per-employee schedule override — null means use company defaults
+  workMinutesPerDay     Int?      // overrides Company.workMinutesPerDay if set
+  breakMinutesAllocated Int?      // overrides Company.breakMinutesAllocated if set
+  expectedCheckinHour   Int?      // overrides Company.expectedCheckinHour if set
+  expectedCheckinMinute Int?      // overrides Company.expectedCheckinMinute if set
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  employee        Employee  @relation(fields: [employeeId], references: [id])
+
+  @@map("employee_profiles")
+}
+
+// ─── Password Reset ────────────────────────────────────────────────────────
+
+model PasswordResetToken {
+  id            String    @id @default(cuid())
+  employeeId    String
+  tokenHash     String    @unique  // hashed before storage
+  expiresAt     DateTime
+  usedAt        DateTime?          // null = not yet used; set on use, then record kept for audit
+  createdAt     DateTime  @default(now())
+  employee      Employee  @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId])
+  @@map("password_reset_tokens")
+}
+
+// ─── Attendance ────────────────────────────────────────────────────────────
+
+model AttendanceRecord {
+  id            String           @id @default(cuid())
+  employeeId    String
+  date          DateTime         @db.Date
+  checkinTime   DateTime
+  checkoutTime  DateTime?
+  status        AttendanceStatus @default(PENDING)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  employee      Employee         @relation(fields: [employeeId], references: [id])
+  breakSessions BreakSession[]
+  dailySummary  DailySummary?
+  corrections   CorrectionRequest[]
+
+  @@unique([employeeId, date])   // one record per employee per day
+  @@index([employeeId, date])    // fast history queries
+  @@map("attendance_records")
+}
+
+enum AttendanceStatus {
+  PENDING    // checked in, not yet out
+  COMPLETE   // fully closed with DailySummary
+  ABSENT     // populated by midnight cron
+  FLAGGED    // unclosed — awaiting correction
+}
+
+// ─── Breaks ────────────────────────────────────────────────────────────────
+
+model BreakSession {
+  id                 String           @id @default(cuid())
+  attendanceRecordId String
+  employeeId         String
+  startTime          DateTime
+  endTime            DateTime?
+  durationMinutes    Int?             // null until endTime is set
+  createdAt          DateTime         @default(now())
+  attendanceRecord   AttendanceRecord @relation(fields: [attendanceRecordId], references: [id])
+  employee           Employee         @relation(fields: [employeeId], references: [id])
+
+  @@index([attendanceRecordId])
+  @@map("break_sessions")
+}
+
+// ─── Daily Summary ─────────────────────────────────────────────────────────
+
+model DailySummary {
+  id                   String           @id @default(cuid())
+  attendanceRecordId   String           @unique
+  employeeId           String
+  date                 DateTime         @db.Date
+  checkinTime          DateTime
+  checkoutTime         DateTime
+  totalOnSiteMinutes   Int
+  totalBreakMinutes    Int
+  totalWorkMinutes     Int
+  expectedWorkMinutes  Int
+  expectedBreakMinutes Int
+  lateMinutes          Int              @default(0)
+  workDeltaMinutes     Int
+  breakDeltaMinutes    Int
+  netDeltaMinutes      Int              // the one honest number
+  createdAt            DateTime         @default(now())
+  attendanceRecord     AttendanceRecord @relation(fields: [attendanceRecordId], references: [id])
+
+  @@index([employeeId, date])
+  @@map("daily_summaries")
+}
+
+// ─── Corrections ───────────────────────────────────────────────────────────
+
+model CorrectionRequest {
+  id                 String           @id @default(cuid())
+  employeeId         String
+  attendanceRecordId String
+  requestedCheckin   DateTime?
+  requestedCheckout  DateTime?
+  reason             String
+  status             CorrectionStatus @default(PENDING)
+  reviewedBy         String?          // admin employeeId
+  reviewedAt         DateTime?
+  reviewNote         String?
+  originalCheckin    DateTime         // snapshot at request time — immutable
+  originalCheckout   DateTime?        // snapshot at request time — immutable
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  employee           Employee         @relation(fields: [employeeId], references: [id])
+  attendanceRecord   AttendanceRecord @relation(fields: [attendanceRecordId], references: [id])
+
+  @@index([employeeId, status])
+  @@map("correction_requests")
+}
+
+enum CorrectionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// ─── Monthly Summary ───────────────────────────────────────────────────────
+
+model MonthlySummary {
+  id                   String   @id @default(cuid())
+  employeeId           String
+  year                 Int
+  month                Int      // 1–12
+  daysPresent          Int
+  daysAbsent           Int
+  daysLate             Int
+  totalOvertimeMinutes Int      // sum of positive daily net deltas
+  totalUndertimeMinutes Int     // sum of negative daily net deltas (stored positive)
+  netDeltaMinutes      Int      // totalOvertime - totalUndertime
+  generatedAt          DateTime @default(now())
+  employee             Employee @relation(fields: [employeeId], references: [id])
+
+  @@unique([employeeId, year, month])
+  @@index([employeeId, year, month])
+  @@map("monthly_summaries")
+}
+
+// ─── Auth ──────────────────────────────────────────────────────────────────
+
+model RefreshToken {
+  id         String   @id @default(cuid())
+  employeeId String
+  tokenHash  String   @unique  // hashed before storage — never plain token in DB
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId])
+  @@map("refresh_tokens")
+}
+```
+
+**Schema improvements over v1:**
+- `originalCheckin` / `originalCheckout` fields on `CorrectionRequest` — snapshots the real values at request time so the audit trail is immutable even if the record is later corrected again
+- `tokenHash` on `RefreshToken` — the token is hashed before storage, so a database leak does not expose valid refresh tokens
+- Separate `totalOvertimeMinutes` and `totalUndertimeMinutes` on `MonthlySummary` — allows the Excel report to show both columns clearly without recalculation
+- All `@@map()` annotations — database table names are lowercase snake_case regardless of model name
+- Explicit `@@index()` on every foreign key used in WHERE clauses — no slow full-table scans on history queries
+- Three-tier role system: `EMPLOYEE` / `ADMIN` / `SUPER_ADMIN` — one super-admin per company, only they can promote/demote admins or change company config
+- `EmployeeProfile` separated from `Employee` — auth fields and profile fields in different tables; profile holds `joiningDate`, `designation`, `department`, `employeeCode`, and per-employee schedule overrides
+- `mustChangePassword` flag on `Employee` — set to `true` when admin creates account; first login forces password change before proceeding
+- `PasswordResetToken` model — admin-triggered reset flow, token hashed before storage, `usedAt` recorded for audit
+- `joiningDate` on `EmployeeProfile` — midnight cron checks this before creating ABSENT records; new employees are never marked absent for dates before they joined
+- Per-employee schedule overrides on `EmployeeProfile` — if an employee works 10–7 instead of company default 9–6, their `expectedCheckinHour` override is used by the delta engine; `null` = use company default
+
+---
+
+## The Delta Engine (Final)
+
+```typescript
+// apps/api/src/services/deltaEngine.ts
+
+import { differenceInMinutes } from 'date-fns'
+import { toZonedTime } from 'date-fns-tz'
+
+export interface BreakSessionInput {
+  startTime: Date
+  endTime: Date
+}
+
+export interface CompanyConfig {
+  timezone: string
+  workMinutesPerDay: number
+  breakMinutesAllocated: number
+  gracePeriodMinutes: number
+  expectedCheckinHour: number
+  expectedCheckinMinute: number
+}
+
+// Helper used by attendance.service.ts to resolve effective config:
+// per-employee overrides take precedence over company defaults.
+export function resolveConfig(
+  company: CompanyConfig,
+  profileOverrides: Partial<Pick<CompanyConfig,
+    'workMinutesPerDay' | 'breakMinutesAllocated' |
+    'expectedCheckinHour' | 'expectedCheckinMinute'
+  >>
+): CompanyConfig {
+  return {
+    ...company,
+    ...Object.fromEntries(
+      Object.entries(profileOverrides).filter(([, v]) => v != null)
+    ),
+  }
+}
+
+export interface DeltaResult {
+  totalOnSiteMinutes: number
+  totalBreakMinutes: number
+  totalWorkMinutes: number
+  expectedWorkMinutes: number
+  expectedBreakMinutes: number
+  lateMinutes: number
+  workDeltaMinutes: number   // + overtime, - undertime
+  breakDeltaMinutes: number  // + saved break, - overran break
+  netDeltaMinutes: number    // the one honest number
+}
+
+export function calculateDelta(
+  checkinTime: Date,
+  checkoutTime: Date,
+  breakSessions: BreakSessionInput[],
+  config: CompanyConfig
+): DeltaResult {
+  const {
+    timezone,
+    workMinutesPerDay,
+    breakMinutesAllocated,
+    gracePeriodMinutes,
+    expectedCheckinHour,
+    expectedCheckinMinute,
+  } = config
+
+  // Convert check-in to company local time for expected-time comparison only
+  // All duration math stays in UTC to avoid DST issues
+  const localCheckin = toZonedTime(checkinTime, timezone)
+  const expectedCheckin = new Date(localCheckin)
+  expectedCheckin.setHours(expectedCheckinHour, expectedCheckinMinute, 0, 0)
+
+  // Late = minutes past (expected + grace), floored at 0
+  // e.g. expected 9:00, grace 10 min, arrived 9:08 → 0 late (within grace)
+  // e.g. expected 9:00, grace 10 min, arrived 9:14 → 4 late
+  const minutesPastExpected = differenceInMinutes(localCheckin, expectedCheckin)
+  const lateMinutes = Math.max(0, minutesPastExpected - gracePeriodMinutes)
+
+  // Total time between tapping in and tapping out
+  const totalOnSiteMinutes = differenceInMinutes(checkoutTime, checkinTime)
+
+  // Sum of all completed break sessions
+  const totalBreakMinutes = breakSessions.reduce(
+    (sum, b) => sum + differenceInMinutes(b.endTime, b.startTime),
+    0
+  )
+
+  // Productive work = on-site minus time on break
+  const totalWorkMinutes = totalOnSiteMinutes - totalBreakMinutes
+
+  // Work delta: did they work more or less than the contracted hours?
+  // Positive = overtime, negative = left early
+  const workDeltaMinutes = totalWorkMinutes - workMinutesPerDay
+
+  // Break delta: did they use less or more of their allocated break?
+  // Positive = returned early (bonus), negative = overran (deduction)
+  const breakDeltaMinutes = breakMinutesAllocated - totalBreakMinutes
+
+  // Net = everything combined. This is the number that goes on the report.
+  // Note: lateMinutes is NOT subtracted here. If you arrived late and stayed
+  // late to compensate, workDeltaMinutes already reflects that. Double-counting
+  // late minutes would be unfair.
+  const netDeltaMinutes = workDeltaMinutes + breakDeltaMinutes
+
+  return {
+    totalOnSiteMinutes,
+    totalBreakMinutes,
+    totalWorkMinutes,
+    expectedWorkMinutes: workMinutesPerDay,
+    expectedBreakMinutes: breakMinutesAllocated,
+    lateMinutes,
+    workDeltaMinutes,
+    breakDeltaMinutes,
+    netDeltaMinutes,
+  }
+}
+```
+
+### Delta Engine Test Cases
+
+```typescript
+// apps/api/src/services/deltaEngine.test.ts
+
+const baseConfig: CompanyConfig = {
+  timezone: 'Asia/Karachi',
+  workMinutesPerDay: 480,
+  breakMinutesAllocated: 60,
+  gracePeriodMinutes: 10,
+  expectedCheckinHour: 9,
+  expectedCheckinMinute: 0,
+}
+
+const d = (h: number, m = 0) =>
+  new Date(`2025-05-13T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00+05:00`)
+
+describe('calculateDelta', () => {
+  test('perfect day — on time, full break, full hours', () => {
+    const result = calculateDelta(d(9), d(18), [{ startTime: d(13), endTime: d(14) }], baseConfig)
+    expect(result.lateMinutes).toBe(0)
+    expect(result.totalWorkMinutes).toBe(480)
+    expect(result.totalBreakMinutes).toBe(60)
+    expect(result.netDeltaMinutes).toBe(0)
+  })
+
+  test('within grace period — not counted as late', () => {
+    const result = calculateDelta(d(9, 8), d(18, 8), [{ startTime: d(13), endTime: d(14) }], baseConfig)
+    expect(result.lateMinutes).toBe(0)
+    expect(result.netDeltaMinutes).toBe(0)
+  })
+
+  test('just past grace period — late counted correctly', () => {
+    const result = calculateDelta(d(9, 14), d(18), [{ startTime: d(13), endTime: d(14) }], baseConfig)
+    expect(result.lateMinutes).toBe(4)    // 14 min past expected, minus 10 grace = 4
+    expect(result.totalWorkMinutes).toBe(466)
+    expect(result.netDeltaMinutes).toBe(-14)  // worked 14 min less
+  })
+
+  test('early break return — credited', () => {
+    const result = calculateDelta(d(9), d(18), [{ startTime: d(13), endTime: d(13, 45) }], baseConfig)
+    expect(result.totalBreakMinutes).toBe(45)
+    expect(result.breakDeltaMinutes).toBe(15)   // saved 15 min
+    expect(result.netDeltaMinutes).toBe(+15)
+  })
+
+  test('overran break — deducted', () => {
+    const result = calculateDelta(d(9), d(18), [{ startTime: d(13), endTime: d(14, 20) }], baseConfig)
+    expect(result.totalBreakMinutes).toBe(80)
+    expect(result.breakDeltaMinutes).toBe(-20)
+    expect(result.netDeltaMinutes).toBe(-20)
+  })
+
+  test('stayed late — overtime credited', () => {
+    const result = calculateDelta(d(9), d(18, 30), [{ startTime: d(13), endTime: d(14) }], baseConfig)
+    expect(result.workDeltaMinutes).toBe(30)
+    expect(result.netDeltaMinutes).toBe(+30)
+  })
+
+  test('no break taken — full break allocation credited', () => {
+    const result = calculateDelta(d(9), d(18), [], baseConfig)
+    expect(result.totalBreakMinutes).toBe(0)
+    expect(result.breakDeltaMinutes).toBe(60)   // full break saved
+    expect(result.netDeltaMinutes).toBe(+60)
+  })
+
+  test('multiple breaks — summed correctly', () => {
+    const result = calculateDelta(d(9), d(18), [
+      { startTime: d(11), endTime: d(11, 15) },
+      { startTime: d(14), endTime: d(14, 30) },
+    ], baseConfig)
+    expect(result.totalBreakMinutes).toBe(45)
+    expect(result.breakDeltaMinutes).toBe(15)
+  })
+
+  test('arrived late AND compensated with overtime — net correct', () => {
+    // 20 min late, stayed 20 min extra → net zero
+    const result = calculateDelta(d(9, 20), d(18, 20), [{ startTime: d(13), endTime: d(14) }], baseConfig)
+    expect(result.lateMinutes).toBe(10)          // 20 - 10 grace = 10
+    expect(result.totalWorkMinutes).toBe(480)    // same work done
+    expect(result.netDeltaMinutes).toBe(0)       // compensated
+  })
+})
+```
+
+---
+
+## API Endpoints (Final)
+
+### Auth
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/v1/auth/login` | None | Returns access + refresh token |
+| POST | `/api/v1/auth/refresh` | None | Rotates refresh token |
+| POST | `/api/v1/auth/logout` | Employee | Revokes refresh token |
+
+### Attendance
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/v1/attendance/checkin` | Employee | Opens attendance record |
+| POST | `/api/v1/attendance/checkout` | Employee | Closes record + runs delta engine |
+| GET | `/api/v1/attendance/today` | Employee | Current day record + active break |
+| GET | `/api/v1/attendance/history` | Employee | `?month=YYYY-MM` — all records for month |
+| GET | `/api/v1/attendance/:date` | Employee | Single day detail + summary |
+
+### Breaks
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/v1/breaks/start` | Employee | Opens break session |
+| POST | `/api/v1/breaks/end` | Employee | Closes session + sets durationMinutes |
+| GET | `/api/v1/breaks/active` | Employee | Currently open break or null |
+
+### Corrections
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/v1/corrections` | Employee | Submit correction request |
+| GET | `/api/v1/corrections/mine` | Employee | Own correction history |
+| GET | `/api/v1/corrections/pending` | Admin | All pending requests |
+| POST | `/api/v1/corrections/:id/approve` | Admin | Approve → recalc delta → update summaries |
+| POST | `/api/v1/corrections/:id/reject` | Admin | Reject with note |
+
+### Reports
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| GET | `/api/v1/reports/monthly` | Employee | Own monthly summary + daily breakdown |
+| GET | `/api/v1/reports/monthly/download` | Admin | `?month=YYYY-MM` → streams .xlsx |
+| GET | `/api/v1/reports/employee/:id` | Admin | Any employee's monthly summary |
+
+### Admin
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| GET | `/api/v1/admin/today` | Admin | All employees with current status |
+| GET | `/api/v1/admin/employees` | Admin | Employee list with profile + joining date |
+| POST | `/api/v1/admin/employees` | Admin | Create employee — generates temp password, sets `mustChangePassword: true` |
+| PUT | `/api/v1/admin/employees/:id` | Admin | Update designation, department, schedule override, `isActive` |
+| GET | `/api/v1/admin/employees/:id` | Admin | Full employee detail: profile + last 30 days summary |
+| POST | `/api/v1/admin/employees/:id/reset-password` | Admin | Admin-triggered password reset — sends temp password to employee |
+| PUT | `/api/v1/admin/employees/:id/role` | Super Admin only | Promote to ADMIN or demote to EMPLOYEE |
+| GET | `/api/v1/admin/company` | Admin | Company config |
+| PUT | `/api/v1/admin/company` | Super Admin only | Update grace period, work hours, timezone |
+
+### Auth (updated)
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/v1/auth/login` | None | Returns tokens + `mustChangePassword` flag |
+| POST | `/api/v1/auth/refresh` | None | Rotates refresh token |
+| POST | `/api/v1/auth/logout` | Employee | Revokes refresh token |
+| POST | `/api/v1/auth/change-password` | Employee | Used on forced first-login change + voluntary change |
+| PUT | `/api/v1/auth/push-token` | Employee | Register/update Expo push token |
+
+---
+
+## Implementation Phases
+
+---
+
+### Phase 1 — Skeleton + Auth + Check In/Out (Week 1–2)
+
+**Backend**
+- [ ] Init `apps/api` with Express + TypeScript, path aliases configured
+- [ ] Set up Prisma + initial migration (all tables including `EmployeeProfile`, `PasswordResetToken`)
+- [ ] Seed script: 1 company, 1 super-admin (`superadmin@company.com`), 1 admin, 3 employees — each with a full `EmployeeProfile` and `joiningDate`
+- [ ] `config/index.ts` — validate all env vars on startup, throw if missing
+- [ ] `lib/logger.ts` — Winston with `info`, `warn`, `error` levels
+- [ ] `lib/errors.ts` — `AppError` class with statusCode + isOperational
+- [ ] `middleware/errorHandler.ts` — catches AppError + unknown errors, logs unknown
+- [ ] `middleware/validate.ts` — Zod factory: `validate({ body: Schema })`
+- [ ] `middleware/requireAdmin.ts` — allows ADMIN and SUPER_ADMIN
+- [ ] `middleware/requireSuperAdmin.ts` — allows SUPER_ADMIN only
+- [ ] `middleware/requirePasswordChanged.ts` — returns 403 MUST_CHANGE_PASSWORD if `mustChangePassword: true`
+- [ ] `features/auth` — login (returns `mustChangePassword` in response), refresh, logout, `change-password`, `push-token` + full test suite
+- [ ] `features/attendance` — checkin, checkout, getToday
+  - [ ] Checkin: reject duplicate, reject backdating > 15 min
+  - [ ] Checkout: reject if no open record, reject if break is active
+  - [ ] Checkout: call `resolveConfig()` to merge company defaults with employee overrides, then `calculateDelta()`
+- [ ] `services/deltaEngine.ts` + `resolveConfig()` + all unit tests passing
+
+**Mobile**
+- [ ] Init Expo project, install all dependencies
+- [ ] Configure path aliases (`@/` → `src/`)
+- [ ] `src/lib/axios.ts` — instance with auth header injection + 401 → refresh interceptor + 403 MUST_CHANGE_PASSWORD → redirect to change-password screen
+- [ ] `src/lib/secureStorage.ts` — typed token get/set/clear
+- [ ] `src/features/auth` — login form, Zustand store, token persistence
+  - [ ] After login: if `mustChangePassword === true`, redirect to forced password change screen before anything else
+  - [ ] Change password screen: new password + confirm, then proceed to home
+- [ ] Auth guard in root `_layout.tsx` — redirect to login if no token
+- [ ] Home screen — all four states wired to real API:
+  - [ ] Not checked in
+  - [ ] Working (live elapsed timer with `setInterval`)
+  - [ ] On break
+  - [ ] Checked out (day summary card)
+
+---
+
+### Phase 2 — Breaks + History + Notifications (Week 3)
+
+**Backend**
+- [ ] `features/breaks` — start, end, getActive + test suite
+- [ ] `GET /api/v1/attendance/history` + `GET /api/v1/attendance/:date`
+- [ ] `services/pushNotify.ts` — Expo push API wrapper
+- [ ] Push notification: "Not checked in" — triggered 15 min after grace window closes
+- [ ] Push notification: "Break running 60 min" — triggered at break start + 60 min
+- [ ] `PUT /api/v1/auth/push-token` — update employee push token on login
+
+**Mobile**
+- [ ] Break screen — `BreakTimer` with Reanimated, countdown from 60 min, count up after
+- [ ] `BreakProgressBar` — visual fill from 0 → full at 60 min, red after 60
+- [ ] Tap "End Break" → POST + navigate back to home
+- [ ] History screen — monthly calendar grid
+  - [ ] Color per day: teal (on time), amber (late), red (absent), empty (future/weekend)
+  - [ ] Delta badge on each completed day tile
+  - [ ] Tap day → bottom sheet with full `DailySummary` breakdown
+- [ ] Register push token with backend on login
+
+---
+
+### Phase 3 — Corrections + Admin Panel (Week 4)
+
+**Backend**
+- [ ] `features/corrections` — submit, getmine, pending, approve, reject
+  - [ ] Approve: update `AttendanceRecord`, recalculate `DailySummary`, cascade to `MonthlySummary`
+  - [ ] Snapshots `originalCheckin` / `originalCheckout` on submission
+- [ ] `features/admin` — full employee management:
+  - [ ] `getTeamToday` — all employees with current attendance status
+  - [ ] `getEmployees` — list with profile fields (designation, department, joiningDate, employeeCode)
+  - [ ] `getEmployeeDetail` — profile + 30-day summary
+  - [ ] `createEmployee` — creates `Employee` + `EmployeeProfile` in one transaction; auto-generates `employeeCode` (EMP-001 sequence); sets `mustChangePassword: true`; returns temp password (shown once, never stored plain)
+  - [ ] `updateEmployee` — designation, department, phone, schedule overrides, `isActive`
+  - [ ] `resetPassword` — admin-triggered; generates temp password; sets `mustChangePassword: true`; stores hashed `PasswordResetToken`
+  - [ ] `updateRole` — SUPER_ADMIN only; promotes EMPLOYEE → ADMIN or demotes ADMIN → EMPLOYEE
+  - [ ] `updateCompanyConfig` — SUPER_ADMIN only; grace period, work hours, timezone
+- [ ] `requireAdmin` and `requireSuperAdmin` middleware
+
+**Mobile**
+- [ ] Role-based tab bar in `_layout.tsx` — employees see Home/History/Summary/Profile; admins see Today/Employees/Corrections/Reports
+- [ ] Correction submission screen — date picker, time pickers, reason field, submit
+- [ ] Correction status screen — list of own corrections with status badge (pending / approved / rejected)
+- [ ] Admin: team today screen — employee rows with colored status dots, last-action time
+- [ ] Admin: correction review — shows original vs requested times side by side, approve/reject with optional note
+- [ ] Admin: employee list screen — searchable, shows name + designation + department + joining date + status badge
+- [ ] Admin: create employee screen — name, email, designation, department, phone, joining date, optional schedule overrides; shows generated temp password on success (copy to clipboard, shown once)
+- [ ] Admin: employee detail screen — full profile + 30-day attendance summary + monthly balance
+- [ ] Admin: edit employee screen — update profile fields + schedule overrides + active/inactive toggle
+- [ ] Admin: reset password — confirmation dialog, shows new temp password on success
+- [ ] Super Admin: role management — promote/demote button visible only to SUPER_ADMIN on employee detail screen
+- [ ] Super Admin: company settings screen — grace period, expected check-in time, work hours, timezone
+- [ ] Employee: profile screen — view own profile (designation, department, joining date, employee code), change own password
+
+---
+
+### Phase 4 — Reports + Offline Queue + Biometric (Week 5)
+
+**Backend**
+- [ ] `features/reports` — getMonthlySummary, getEmployeeMonthly
+- [ ] `GET /api/v1/reports/monthly/download` — ExcelJS xlsx stream
+  - [ ] Row per employee: Code, Name, Designation, Department, Joining Date, Present, Absent (days after joining only), Late, Overtime (hh:mm), Undertime (hh:mm), Net Balance (hh:mm)
+  - [ ] Per-day delta columns (Day 1 … Day 31)
+  - [ ] Red cell fill on negative delta days
+  - [ ] Freeze top row, auto-filter on header
+- [ ] `jobs/midnightSweep.ts` — cron at 00:05 local time
+  - [ ] Mark employees with no record today as ABSENT — **only if `joiningDate` ≤ today**
+  - [ ] Flag open records (no checkout) as FLAGGED
+  - [ ] Send push notification to employees with FLAGGED records
+
+**Mobile**
+- [ ] Monthly summary screen — net balance headline, breakdown rows, daily list
+- [ ] Admin reports screen — month picker, employee list with net balances, Download button
+- [ ] Download → `expo-sharing` opens native share sheet with .xlsx file
+- [ ] Biometric check-in: `expo-local-authentication` prompt on CheckInButton tap, opt-in toggle in profile
+- [ ] Offline queue:
+  - [ ] On checkin failure due to network: store `{ action: 'checkin', timestamp: Date }` in AsyncStorage
+  - [ ] On app foreground: if queue is non-empty, attempt sync with stored timestamp
+  - [ ] Show "Pending sync" banner on home screen if queue is non-empty
+
+---
+
+### Phase 5 — Hardening + QA + Launch (Week 6)
+
+**Backend**
+- [ ] Integration tests for all routes (happy path + key error cases)
+- [ ] Verify all `@@index()` annotations — run EXPLAIN on history + report queries
+- [ ] Environment audit — no secrets in codebase, `.env.example` has all keys documented
+- [ ] Deploy to Railway — Node service + Postgres addon
+- [ ] Set up GitHub Actions CI: `pnpm typecheck` → `pnpm lint` → `pnpm test`
+
+**Mobile**
+- [ ] Test on physical iPhone (TestFlight) and physical Android
+- [ ] Full edge case checklist:
+  - [ ] Check-in at exactly expected time → not late
+  - [ ] Check-in at grace period boundary (9:10) → not late
+  - [ ] Check-in 1 minute past grace (9:11) → 1 minute late
+  - [ ] Checkout with zero breaks → full break allocation credited
+  - [ ] Checkout with break still open → rejected with clear message
+  - [ ] Correction approved → daily + monthly numbers update in real time
+  - [ ] Network off during check-in → offline queue → reconnect → sync → banner disappears
+  - [ ] Push token registered, notification received in background
+  - [ ] Admin creates employee → employee can log in immediately
+- [ ] Configure EAS Build profiles (development, preview, production)
+- [ ] Submit to App Store + Play Store via EAS Submit
+
+---
+
+## Error Handling Contract
+
+Every API error returns the same shape:
+```json
+{
+  "status": "error",
+  "code": "BREAK_ALREADY_ACTIVE",
+  "message": "You already have an active break. End it before starting a new one.",
+  "statusCode": 409
+}
+```
+
+Error codes (not HTTP statuses) drive the mobile UI. The mobile app maps `code` to a user-facing message in the local language. Codes are defined as a const enum in `packages/shared-types`.
+
+---
+
+## Edge Cases — Every One Handled
+
+| Scenario | What happens |
+|---|---|
+| App takes 2 min to open after arriving | Grace period (10 min default) covers it entirely |
+| Forgot to check out | Midnight cron flags record as FLAGGED; employee sees banner next morning and submits correction |
+| No internet at check-in | Offline queue stores intent; syncs on reconnect with original device timestamp |
+| Two check-ins same day | `@@unique([employeeId, date])` — second attempt returns 409 ALREADY_CHECKED_IN |
+| Checkout with break open | Returns 409 BREAK_STILL_ACTIVE — "End your break first" |
+| Multiple breaks in one day | All summed; delta calculated on total not per-break |
+| Arrived late but stayed late | `workDeltaMinutes` reflects the full picture; lateMinutes is informational only |
+| Admin edits a record directly | Not possible — admins approve corrections only; every change has an audit trail |
+| Correction approved twice | Second approval returns 409 CORRECTION_NOT_PENDING |
+| Negative monthly balance | Shown honestly; no automatic payroll deduction — that is a human decision |
+| Employee joined mid-month | `joiningDate` on profile — cron never creates ABSENT records before joining date; monthly report grays out those days |
+| New employee first login | `mustChangePassword: true` — app intercepts after login and forces password change before any other screen is accessible |
+| Admin resets employee password | Temp password shown once in app (copy to clipboard); employee must change on next login |
+| Admin tries to promote another admin | Returns 403 INSUFFICIENT_ROLE — only SUPER_ADMIN can change roles |
+| Employee on custom schedule (10–7) | `resolveConfig()` uses their `EmployeeProfile` overrides instead of company defaults; delta engine calculates correctly |
+| Company changes grace period | New value applies from next check-in forward; historical `DailySummary` records are not retroactively changed |
+
+---
+
+## Definition of Done
+
+A feature is complete when all of the following are true:
+
+1. Backend route has Zod validation, auth middleware, and structured error handling
+2. Backend route has at least one integration test (happy path) and one error test
+3. `deltaEngine` change has corresponding unit test added
+4. Mobile screen handles: loading skeleton, error state with retry, empty state
+5. TypeScript: `pnpm typecheck` passes with zero errors across all packages
+6. No `console.log` in committed code — use `logger.info` on backend, remove on mobile
+7. All API calls go through `src/lib/axios.ts` — no raw `fetch` calls
+8. PR description explains what changed and links to the relevant task
+
+---
+
+## What v1 Does Not Include
+
+- Location tracking — removed by design
+- Leave management (vacation, sick days) — v2
+- Payroll system integration — out of scope; report is the deliverable
+- Web admin dashboard — mobile-only for v1
+- Multiple company support / SaaS mode — v2
+- Offline-first full sync — only check-in queuing is offline-capable in v1
+
+---
+
+*Plan v3 — May 2026. Stack locked. Admin roles, employee profiles, joining date, and password management fully defined. Ready to build.*

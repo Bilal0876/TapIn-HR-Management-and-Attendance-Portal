@@ -1,0 +1,19 @@
+import { apiClient } from '../../lib/axios';
+import { LoginInput, ChangePasswordInput } from '@/types';
+
+export const authApi = {
+  login: async (data: LoginInput) => {
+    const res = await apiClient.post('/auth/login', data);
+    return res.data;
+  },
+  
+  changePassword: async (data: ChangePasswordInput) => {
+    const res = await apiClient.post('/auth/change-password', data);
+    return res.data;
+  },
+
+  logout: async (refreshToken: string) => {
+    const res = await apiClient.post('/auth/logout', { refreshToken });
+    return res.data;
+  }
+}
