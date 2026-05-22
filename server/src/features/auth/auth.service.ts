@@ -4,8 +4,44 @@ import { Role } from '@prisma/client';
 import { prisma } from '../../lib/prisma';
 import { createError } from '../../lib/errors';
 import { issueAccessToken, issueRefreshToken, verifyRefreshToken } from '../../services/tokenService';
+import { RegisterCompanyInput } from '../../schemas/auth.schemas';
 
 export class AuthService {
+  static async registerCompany(data: RegisterCompanyInput) {
+    const existingEmployee = await prisma.employee.findUnique({ where: { email: data.adminEmail } });
+    if (existingEmployee) {
+      throw createError.Conflict('An account with this email already exists', 'EMAIL_IN_USE');
+    }
+
+    const passwordHash = await bcrypt.hash(data.adminPassword, 12);
+
+    const { admin } = await prisma.$transaction(async (tx) => {
+      const company = await tx.company.create({
+        data: {
+          name: data.companyName,
+          timezone: data.timezone,
+          workMinutesPerDay: 480, // Default 8 hours
+        },
+      });
+
+      const admin = await tx.employee.create({
+        data: {
+          companyId: company.id,
+          name: data.adminName,
+          email: data.adminEmail,
+          passwordHash,
+          role: 'SUPER_ADMIN', // The first user is always a Super Admin
+          mustChangePassword: false,
+        },
+      });
+
+      return { company, admin };
+    });
+
+    // Auto-login the newly created Super Admin
+    return this.login(admin.email, data.adminPassword);
+  }
+
   static async login(email: string, passwordPlain: string) {
     const employee = await prisma.employee.findUnique({ where: { email } });
     if (!employee || !employee.isActive) {

@@ -22,3 +22,12 @@ export type LoginInput = z.infer<typeof LoginSchema>;
 export type RefreshInput = z.infer<typeof RefreshSchema>;
 export type ChangePasswordInput = z.infer<typeof ChangePasswordSchema>;
 export type PushTokenInput = z.infer<typeof PushTokenSchema>;
+
+export const RegisterCompanySchema = z.object({
+  companyName: z.string().min(1, 'Company Name is required'),
+  timezone: z.string().min(1, 'Timezone is required'),
+  adminName: z.string().min(1, 'Admin Name is required'),
+  adminEmail: z.string().email('Invalid email format'),
+  adminPassword: z.string().min(8, 'Password must be at least 8 characters'),
+});
+export type RegisterCompanyInput = z.infer<typeof RegisterCompanySchema>;

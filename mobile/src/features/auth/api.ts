@@ -6,6 +6,11 @@ export const authApi = {
     const res = await apiClient.post('/auth/login', data);
     return res.data;
   },
+
+  registerCompany: async (data: any) => {
+    const res = await apiClient.post('/auth/register-company', data);
+    return res.data;
+  },
   
   changePassword: async (data: ChangePasswordInput) => {
     const res = await apiClient.post('/auth/change-password', data);

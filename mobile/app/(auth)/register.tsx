@@ -6,22 +6,19 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  Dimensions,
   Animated,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
+  ScrollView,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { LoginInput } from '@/types';
 import { authApi } from '@/features/auth/api';
 import { useAuthStore } from '@/features/auth/store';
 import { secureStorage } from '@/lib/secureStorage';
 import { router } from 'expo-router';
-
-const { width, height } = Dimensions.get('window');
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
@@ -39,45 +36,6 @@ const C = {
   textDim: 'rgba(255,255,255,0.65)',
   errorRed: '#FF6B6B',
 };
-
-// ── Clock display ─────────────────────────────────────────────────────────────
-function LiveClock() {
-  const [time, setTime] = useState(new Date());
-  const pulse = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    const tick = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(tick);
-  }, []);
-
-  useEffect(() => {
-    Animated.sequence([
-      Animated.timing(pulse, { toValue: 1.04, duration: 400, useNativeDriver: true }),
-      Animated.timing(pulse, { toValue: 1, duration: 400, useNativeDriver: true }),
-    ]).start();
-  }, [time.getSeconds()]);
-
-  const hh = String(time.getHours()).padStart(2, '0');
-  const mm = String(time.getMinutes()).padStart(2, '0');
-  const ss = String(time.getSeconds()).padStart(2, '0');
-  const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
-  const dateStr = time.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-
-  return (
-    <View style={styles.clockWrap}>
-      <View style={styles.clockRow}>
-        <Animated.Text style={[styles.clockHM, { transform: [{ scale: pulse }] }]}>
-          {hh}:{mm}
-        </Animated.Text>
-        <View style={styles.clockRight}>
-          <Text style={styles.clockSS}>{ss}</Text>
-          <Text style={styles.clockAMPM}>{ampm}</Text>
-        </View>
-      </View>
-      <Text style={styles.clockDate}>{dateStr}</Text>
-    </View>
-  );
-}
 
 // ── Floating label input ───────────────────────────────────────────────────────
 interface InputProps {
@@ -160,7 +118,7 @@ function FloatInput({
 }
 
 // ── Main screen ───────────────────────────────────────────────────────────────
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const [apiError, setApiError] = useState<string | null>(null);
   const setAuth = useAuthStore((s) => s.setAuth);
 
@@ -174,23 +132,20 @@ export default function LoginScreen() {
     ]).start();
   }, []);
 
-  const { control, handleSubmit, formState: { isSubmitting } } = useForm<LoginInput>({
-    defaultValues: { email: '', password: '' },
+  const { control, handleSubmit, formState: { isSubmitting } } = useForm<any>({
+    defaultValues: { companyName: '', timezone: 'UTC', adminName: '', adminEmail: '', adminPassword: '' },
   });
 
-  const onSubmit = async (data: LoginInput) => {
+  const onSubmit = async (data: any) => {
     try {
       setApiError(null);
-      const res = await authApi.login(data);
+      const res = await authApi.registerCompany(data);
       await secureStorage.setTokens(res.accessToken, res.refreshToken);
       setAuth(res.employee);
-      if (res.employee.mustChangePassword) {
-        router.replace('/(auth)/change-password');
-      } else {
-        router.replace(res.employee.role === 'EMPLOYEE' ? '/(employee)/' : '/(admin)/');
-      }
+      // Directly boot the user into the admin dashboard!
+      router.replace('/(admin)/');
     } catch (e: any) {
-      setApiError(e.response?.data?.message || 'Incorrect email or password');
+      setApiError(e.response?.data?.message || 'Failed to register. Please try again.');
     }
   };
 
@@ -205,22 +160,19 @@ export default function LoginScreen() {
         end={{ x: 1, y: 1 }}
         style={styles.header}
       >
-        {/* decorative circles */}
         <View style={styles.circle1} />
         <View style={styles.circle2} />
 
         <Animated.View style={{ opacity: fadeIn, transform: [{ translateY: slideUp }] }}>
-          {/* brand mark */}
           <View style={styles.brandRow}>
-            <View style={styles.logoBox}>
-              <Ionicons name="time-outline" size={20} color={C.white} />
-            </View>
-            <Text style={styles.brandName}>AttendX</Text>
+            <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} activeOpacity={0.7}>
+               <Ionicons name="arrow-back" size={24} color={C.white} />
+            </TouchableOpacity>
+            <Text style={styles.brandName}>Onboarding</Text>
           </View>
 
-          <LiveClock />
-
-          <Text style={styles.tagline}>Your time, tracked fairly.</Text>
+          <Text style={styles.heroText}>Let's set up your{"\n"}organization.</Text>
+          <Text style={styles.tagline}>Get started in less than 2 minutes.</Text>
         </Animated.View>
       </LinearGradient>
 
@@ -230,83 +182,125 @@ export default function LoginScreen() {
         style={styles.cardOuter}
       >
         <Animated.View style={[styles.card, { opacity: fadeIn, transform: [{ translateY: slideUp }] }]}>
-          <Text style={styles.cardTitle}>Welcome back</Text>
-          <Text style={styles.cardSubtitle}>Sign in to continue</Text>
-
-          {apiError && (
-            <View style={styles.apiErrorBox}>
-              <Ionicons name="warning-outline" size={14} color={C.errorRed} />
-              <Text style={styles.apiErrorText}>{apiError}</Text>
-            </View>
-          )}
-
-          <Controller
-            control={control}
-            name="email"
-            rules={{ required: 'Email is required' }}
-            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-              <FloatInput
-                label="Email address"
-                icon="mail-outline"
-                value={value ?? ''}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                keyboardType="email-address"
-                error={error?.message}
-              />
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+            {apiError && (
+              <View style={styles.apiErrorBox}>
+                <Ionicons name="warning-outline" size={14} color={C.errorRed} />
+                <Text style={styles.apiErrorText}>{apiError}</Text>
+              </View>
             )}
-          />
 
-          <Controller
-            control={control}
-            name="password"
-            rules={{ required: 'Password is required' }}
-            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-              <FloatInput
-                label="Password"
-                icon="lock-closed-outline"
-                value={value ?? ''}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                secureTextEntry
-                error={error?.message}
-              />
-            )}
-          />
-
-          <TouchableOpacity
-            style={[styles.loginBtn, isSubmitting && styles.loginBtnDisabled]}
-            onPress={handleSubmit(onSubmit)}
-            disabled={isSubmitting}
-            activeOpacity={0.85}
-          >
-            <LinearGradient
-              colors={[C.accentBright, C.teal]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.loginBtnGradient}
-            >
-              {isSubmitting ? (
-                <ActivityIndicator color={C.white} />
-              ) : (
-                <>
-                  <Text style={styles.loginBtnText}>Sign In</Text>
-                  <Ionicons name="arrow-forward" size={18} color={C.white} style={{ marginLeft: 6 }} />
-                </>
+            <Text style={styles.sectionTitle}>Company Details</Text>
+            
+            <Controller
+              control={control}
+              name="companyName"
+              rules={{ required: 'Company name is required' }}
+              render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                <FloatInput
+                  label="Company Name"
+                  icon="business-outline"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  autoCapitalize="words"
+                  error={error?.message}
+                />
               )}
-            </LinearGradient>
-          </TouchableOpacity>
+            />
+            <Controller
+              control={control}
+              name="timezone"
+              rules={{ required: 'Timezone is required' }}
+              render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                <FloatInput
+                  label="Timezone (e.g., UTC, America/New_York)"
+                  icon="globe-outline"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  error={error?.message}
+                />
+              )}
+            />
 
-          <Text style={styles.footerNote}>
-            Contact your HR admin if you need account access.
-          </Text>
+            <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Admin Account</Text>
 
-          <View style={styles.registerRow}>
-            <Text style={styles.registerText}>Don't have an organization? </Text>
-            <TouchableOpacity onPress={() => router.push('/(auth)/register')} activeOpacity={0.7}>
-              <Text style={styles.registerLink}>Create one now</Text>
+            <Controller
+              control={control}
+              name="adminName"
+              rules={{ required: 'Your name is required' }}
+              render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                <FloatInput
+                  label="Full Name"
+                  icon="person-outline"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  autoCapitalize="words"
+                  error={error?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="adminEmail"
+              rules={{ 
+                required: 'Email is required',
+                pattern: { value: /\S+@\S+\.\S+/, message: 'Invalid email address' }
+              }}
+              render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                <FloatInput
+                  label="Work Email Address"
+                  icon="mail-outline"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  keyboardType="email-address"
+                  error={error?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="adminPassword"
+              rules={{ required: 'Password is required', minLength: { value: 8, message: 'Minimum 8 characters' } }}
+              render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                <FloatInput
+                  label="Secure Password"
+                  icon="lock-closed-outline"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  secureTextEntry
+                  error={error?.message}
+                />
+              )}
+            />
+
+            <TouchableOpacity
+              style={[styles.loginBtn, isSubmitting && styles.loginBtnDisabled]}
+              onPress={handleSubmit(onSubmit)}
+              disabled={isSubmitting}
+              activeOpacity={0.85}
+            >
+              <LinearGradient
+                colors={[C.accentBright, C.teal]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.loginBtnGradient}
+              >
+                {isSubmitting ? (
+                  <ActivityIndicator color={C.white} />
+                ) : (
+                  <>
+                    <Text style={styles.loginBtnText}>Create Organization</Text>
+                    <Ionicons name="checkmark-circle-outline" size={20} color={C.white} style={{ marginLeft: 6 }} />
+                  </>
+                )}
+              </LinearGradient>
             </TouchableOpacity>
-          </View>
+          </ScrollView>
         </Animated.View>
       </KeyboardAvoidingView>
     </View>
@@ -322,20 +316,13 @@ const styles = StyleSheet.create({
   circle1: { position: 'absolute', width: 220, height: 220, borderRadius: 110, backgroundColor: 'rgba(255,255,255,0.04)', top: -60, right: -60 },
   circle2: { position: 'absolute', width: 140, height: 140, borderRadius: 70, backgroundColor: 'rgba(255,255,255,0.04)', bottom: 10, left: -30 },
   brandRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 24 },
-  logoBox: { width: 36, height: 36, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.15)', alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  backBtn: { width: 36, height: 36, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.15)', alignItems: 'center', justifyContent: 'center', marginRight: 10 },
   brandName: { fontSize: 18, fontWeight: '700', color: C.white, letterSpacing: 0.5 },
-  clockWrap: { marginBottom: 12 },
-  clockRow: { flexDirection: 'row', alignItems: 'flex-end' },
-  clockHM: { fontSize: 54, fontWeight: '800', color: C.white, letterSpacing: -1, lineHeight: 58 },
-  clockRight: { marginLeft: 8, marginBottom: 6 },
-  clockSS: { fontSize: 22, fontWeight: '600', color: 'rgba(255,255,255,0.6)', lineHeight: 26 },
-  clockAMPM: { fontSize: 14, fontWeight: '600', color: C.accentBright, lineHeight: 18 },
-  clockDate: { fontSize: 13, color: 'rgba(255,255,255,0.55)', marginTop: 4, letterSpacing: 0.3 },
-  tagline: { fontSize: 13, color: 'rgba(255,255,255,0.4)', marginTop: 6, fontStyle: 'italic' },
+  heroText: { fontSize: 32, fontWeight: '800', color: C.white, letterSpacing: -0.5, lineHeight: 38 },
+  tagline: { fontSize: 15, color: '#8A9BB5', marginTop: 10, fontWeight: '500' },
   cardOuter: { flex: 1, marginTop: -CARD_RADIUS },
-  card: { flex: 1, backgroundColor: C.offWhite, borderTopLeftRadius: CARD_RADIUS, borderTopRightRadius: CARD_RADIUS, paddingHorizontal: 28, paddingTop: 32, paddingBottom: 24, shadowColor: '#000', shadowOffset: { width: 0, height: -4 }, shadowOpacity: 0.06, shadowRadius: 16, elevation: 8 },
-  cardTitle: { fontSize: 24, fontWeight: '800', color: C.navy, letterSpacing: -0.4 },
-  cardSubtitle: { fontSize: 14, color: '#8A9BB5', marginTop: 4, marginBottom: 28 },
+  card: { flex: 1, backgroundColor: C.offWhite, borderTopLeftRadius: CARD_RADIUS, borderTopRightRadius: CARD_RADIUS, paddingHorizontal: 28, paddingTop: 32, paddingBottom: 0, shadowColor: '#000', shadowOffset: { width: 0, height: -4 }, shadowOpacity: 0.06, shadowRadius: 16, elevation: 8 },
+  sectionTitle: { fontSize: 13, fontWeight: '700', color: '#8A9BB5', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16, marginLeft: 2 },
   apiErrorBox: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF0F0', borderRadius: 10, paddingVertical: 10, paddingHorizontal: 14, marginBottom: 20, gap: 8, borderLeftWidth: 3, borderLeftColor: C.errorRed },
   apiErrorText: { fontSize: 13, color: C.errorRed, flex: 1 },
   inputWrap: { marginBottom: 16 },
@@ -347,12 +334,8 @@ const styles = StyleSheet.create({
   eyeBtn: { padding: 6, marginTop: 8 },
   errorRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 5, marginLeft: 2 },
   errorText: { fontSize: 12, color: C.errorRed },
-  loginBtn: { marginTop: 8, borderRadius: 14, overflow: 'hidden' },
+  loginBtn: { marginTop: 12, borderRadius: 14, overflow: 'hidden' },
   loginBtnDisabled: { opacity: 0.6 },
   loginBtnGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16 },
   loginBtnText: { fontSize: 16, fontWeight: '700', color: C.white, letterSpacing: 0.3 },
-  footerNote: { fontSize: 13, color: '#A0AEC0', textAlign: 'center', marginTop: 24, lineHeight: 18 },
-  registerRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 20 },
-  registerText: { fontSize: 13, color: '#8A9BB5' },
-  registerLink: { fontSize: 13, fontWeight: '700', color: C.teal, textDecorationLine: 'underline' },
 });

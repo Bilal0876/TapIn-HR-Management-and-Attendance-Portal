@@ -32,5 +32,9 @@ export const attendanceApi = {
   getCompanyStats: async () => {
     const res = await apiClient.get('/attendance/stats/company');
     return res.data;
-  }
+  },
+  getMyCorrections: async () => {
+    const res = await apiClient.get('/corrections/my-requests');
+    return res.data;
+  },
 }

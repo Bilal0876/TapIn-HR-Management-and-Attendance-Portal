@@ -2,10 +2,11 @@ import { Router } from 'express';
 import { AuthController } from './auth.controller';
 import { validate } from '../../middleware/validate';
 import { authenticate } from '../../middleware/authenticate';
-import { LoginSchema, RefreshSchema, ChangePasswordSchema, PushTokenSchema } from '../../schemas/auth.schemas';
+import { LoginSchema, RefreshSchema, ChangePasswordSchema, PushTokenSchema, RegisterCompanySchema } from '../../schemas/auth.schemas';
 
 const router = Router();
 
+router.post('/register-company', validate({ body: RegisterCompanySchema }), AuthController.registerCompany);
 router.post('/login', validate({ body: LoginSchema }), AuthController.login);
 router.post('/refresh', validate({ body: RefreshSchema }), AuthController.refresh);
 router.post('/logout', authenticate, validate({ body: RefreshSchema }), AuthController.logout);

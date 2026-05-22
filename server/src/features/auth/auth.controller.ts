@@ -2,6 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import { AuthService } from './auth.service';
 
 export class AuthController {
+  static async registerCompany(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await AuthService.registerCompany(req.body);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
