@@ -1,10 +1,11 @@
 import { Platform } from 'react-native';
 import { useEffect } from 'react';
 import * as Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 import { apiClient } from '@/lib/axios';
 
-// Skip push notifications setup in Expo Go (SDK 53+)
-const isExpoGo = Constants.appOwnership === 'expo';
+const isExpoGo = (Constants as any).appOwnership === 'expo';
 
 export function usePushNotifications() {
   useEffect(() => {
@@ -25,40 +26,42 @@ export function usePushNotifications() {
 }
 
 async function registerForPushNotificationsAsync(): Promise<string | null> {
-  // Dynamically import only in development builds
   try {
-    const Notifications = await import('expo-notifications');
-    const Device = await import('expo-device');
+    if (!Device.isDevice) return null;
 
-    Notifications.default.setNotificationHandler({
+    // Graceful check for Expo Go where the native module is stripped
+    if (typeof Notifications.setNotificationHandler !== 'function') {
+      console.log('Push notifications methods unavailable in this environment.');
+      return null;
+    }
+
+    Notifications.setNotificationHandler({
       handleNotification: async () => ({
         shouldShowAlert: true,
         shouldPlaySound: true,
         shouldSetBadge: false,
-      }),
+      } as any),
     });
 
-    if (!Device.default.isDevice) return null;
-
-    const { status: existingStatus } = await Notifications.default.getPermissionsAsync();
+    const { status: existingStatus } = (await Notifications.getPermissionsAsync()) as any;
     let finalStatus = existingStatus;
 
     if (existingStatus !== 'granted') {
-      const { status } = await Notifications.default.requestPermissionsAsync();
+      const { status } = (await Notifications.requestPermissionsAsync()) as any;
       finalStatus = status;
     }
 
     if (finalStatus !== 'granted') return null;
 
     if (Platform.OS === 'android') {
-      await Notifications.default.setNotificationChannelAsync('default', {
+      await Notifications.setNotificationChannelAsync('default', {
         name: 'default',
-        importance: Notifications.default.AndroidImportance.MAX,
+        importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
       });
     }
 
-    const token = (await Notifications.default.getExpoPushTokenAsync()).data;
+    const token = (await Notifications.getExpoPushTokenAsync()).data;
     return token;
   } catch (e) {
     console.log('Push notifications not available:', e);

@@ -64,14 +64,14 @@ export class AttendanceService {
 
     const companyConfig = {
       timezone: record.employee.company.timezone,
-      workMinutesPerDay: record.employee.company.workMinutesPerDay,
-      breakMinutesAllocated: record.employee.company.breakMinutesAllocated,
-      gracePeriodMinutes: record.employee.company.gracePeriodMinutes,
-      expectedCheckinHour: record.employee.company.expectedCheckinHour,
-      expectedCheckinMinute: record.employee.company.expectedCheckinMinute,
+      workMinutesPerDay: record.employee.company.workMinutesPerDay ?? undefined,
+      breakMinutesAllocated: record.employee.company.breakMinutesAllocated ?? undefined,
+      gracePeriodMinutes: record.employee.company.gracePeriodMinutes ?? undefined,
+      expectedCheckinHour: record.employee.company.expectedCheckinHour ?? undefined,
+      expectedCheckinMinute: record.employee.company.expectedCheckinMinute ?? undefined,
     };
 
-    const finalConfig = resolveConfig(companyConfig, record.employee.profile || {});
+    const finalConfig = resolveConfig(companyConfig, (record.employee.profile as any) || {});
 
     const breaks = record.breakSessions.map((b) => ({
       startTime: b.startTime,

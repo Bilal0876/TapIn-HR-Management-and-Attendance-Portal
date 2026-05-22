@@ -26,7 +26,9 @@ build/
 .expo-shared/
 dist/
 
-# React Native
+# React Native & Managed Native Folders
+mobile/android/
+mobile/ios/
 android/app/debug.keystore
 android/.gradle/
 android/local.properties

@@ -3,13 +3,13 @@ import { config } from '../config';
 
 export const issueAccessToken = (employeeId: string, role: string) => {
   return jwt.sign({ sub: employeeId, role }, config.JWT_SECRET, {
-    expiresIn: config.JWT_EXPIRES_IN,
+    expiresIn: config.JWT_EXPIRES_IN as any,
   });
 };
 
 export const issueRefreshToken = (employeeId: string, uniqueHash: string) => {
   return jwt.sign({ sub: employeeId, hash: uniqueHash }, config.JWT_REFRESH_SECRET, {
-    expiresIn: config.JWT_REFRESH_EXPIRES_IN,
+    expiresIn: config.JWT_REFRESH_EXPIRES_IN as any,
   });
 };
 

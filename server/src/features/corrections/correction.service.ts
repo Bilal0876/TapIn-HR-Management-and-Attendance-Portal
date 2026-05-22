@@ -85,7 +85,9 @@ export const correctionService = {
 
     // Fire push notification after transaction — non-blocking
     const dateStr = format(request.attendanceRecord.date, 'MMM dd');
-    NotificationService.notifyCorrectionReviewed(request.employeeId, status, dateStr).catch(() => {});
+    if (status === 'APPROVED' || status === 'REJECTED') {
+      NotificationService.notifyCorrectionReviewed(request.employeeId, status, dateStr).catch(() => {});
+    }
 
     return result;
   }

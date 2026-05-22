@@ -18,7 +18,7 @@ export default function RootLayout() {
       // Authenticated users
       if (employee?.mustChangePassword) {
         // Force to change password if not already there
-        if (segments[1] !== 'change-password') {
+        if (!segments.includes('change-password')) {
           router.replace('/(auth)/change-password');
         }
       } else if (inAuthGroup) {
