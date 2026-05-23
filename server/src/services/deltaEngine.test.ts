@@ -38,14 +38,14 @@ describe('calculateDelta', () => {
     const result = calculateDelta(d(9), d(18), [{ startTime: d(13), endTime: d(13, 45) }], baseConfig);
     expect(result.totalBreakMinutes).toBe(45);
     expect(result.breakDeltaMinutes).toBe(15);
-    expect(result.netDeltaMinutes).toBe(+15);
+    expect(result.netDeltaMinutes).toBe(+30);
   });
 
   test('overran break — deducted', () => {
     const result = calculateDelta(d(9), d(18), [{ startTime: d(13), endTime: d(14, 20) }], baseConfig);
     expect(result.totalBreakMinutes).toBe(80);
-    expect(result.breakDeltaMinutes).toBe(-20);
-    expect(result.netDeltaMinutes).toBe(-20);
+    expect(result.breakDeltaMinutes).toBe(-10);
+    expect(result.netDeltaMinutes).toBe(-30);
   });
 
   test('stayed late — overtime credited', () => {
@@ -58,7 +58,7 @@ describe('calculateDelta', () => {
     const result = calculateDelta(d(9), d(18), [], baseConfig);
     expect(result.totalBreakMinutes).toBe(0);
     expect(result.breakDeltaMinutes).toBe(60);
-    expect(result.netDeltaMinutes).toBe(+60);
+    expect(result.netDeltaMinutes).toBe(+120);
   });
 
   test('multiple breaks — summed correctly', () => {

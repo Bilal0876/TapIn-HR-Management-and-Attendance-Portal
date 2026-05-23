@@ -78,7 +78,14 @@ export function calculateDelta(
 
   const workDeltaMinutes = totalWorkMinutes - workMinutesPerDay;
 
-  const breakDeltaMinutes = breakMinutesAllocated - totalBreakMinutes;
+  let breakDeltaMinutes = breakMinutesAllocated - totalBreakMinutes;
+  
+  // Apply grace period: if they overran their break, forgive up to `gracePeriodMinutes`
+  if (breakDeltaMinutes < 0) {
+    const overrun = Math.abs(breakDeltaMinutes);
+    const penalty = Math.max(0, overrun - gracePeriodMinutes);
+    breakDeltaMinutes = -penalty;
+  }
 
   const netDeltaMinutes = workDeltaMinutes + breakDeltaMinutes;
 

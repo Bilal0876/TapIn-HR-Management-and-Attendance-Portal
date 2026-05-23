@@ -77,7 +77,7 @@ export default function ProfileScreen() {
               </View>
               
               <Text style={s.name}>{employee?.name}</Text>
-              <Text style={s.role}>{employee?.role} • {employee?.profile?.department || 'Operations'}</Text>
+              <Text style={s.role}>{employee?.role} • {(employee as any)?.profile?.department || 'Operations'}</Text>
             </View>
           </SafeAreaView>
         </LinearGradient>
@@ -109,9 +109,9 @@ export default function ProfileScreen() {
             <View style={s.card}>
               <ProfileRow icon="mail-outline" label="Official Email" value={employee?.email} color={C.accent} />
               <View style={s.divider} />
-              <ProfileRow icon="finger-print-outline" label="Employee ID" value={employee?.employeeCode || 'EMP-001'} color={C.teal} />
+              <ProfileRow icon="finger-print-outline" label="Employee ID" value={(employee as any)?.employeeCode || 'EMP-001'} color={C.teal} />
               <View style={s.divider} />
-              <ProfileRow icon="briefcase-outline" label="Designation" value={employee?.profile?.designation || 'Software Engineer'} color="#7C5CBF" />
+              <ProfileRow icon="briefcase-outline" label="Designation" value={(employee as any)?.profile?.designation || 'Software Engineer'} color="#7C5CBF" />
             </View>
           </View>
 
@@ -153,7 +153,7 @@ export default function ProfileScreen() {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   header: { 
-    paddingBottom: 40,
+    paddingBottom: 120,
     borderBottomLeftRadius: 32,
     borderBottomRightRadius: 32,
   },
@@ -185,7 +185,7 @@ const s = StyleSheet.create({
   name: { fontSize: 24, fontWeight: '800', color: C.white, marginBottom: 4 },
   role: { fontSize: 14, color: 'rgba(255,255,255,0.7)', fontWeight: '500' },
   
-  content: { paddingHorizontal: 24, paddingBottom: 40 },
+  content: { paddingHorizontal: 24, paddingBottom: 120 },
   statsWrapper: {
     flexDirection: 'row',
     backgroundColor: C.white,
@@ -206,7 +206,7 @@ const s = StyleSheet.create({
   
   section: { marginTop: 32 },
   sectionTitle: { fontSize: 16, fontWeight: '700', color: C.navy, marginBottom: 12, paddingLeft: 4 },
-  card: { backgroundColor: C.white, borderRadius: 20, padding: 16, borderExport: 1, borderColor: '#F1F5F9' },
+  card: { backgroundColor: C.white, borderRadius: 20, padding: 16, borderWidth: 1, borderColor: '#F1F5F9' },
   
   row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12 },
   rowIcon: { width: 40, height: 40, borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginRight: 16 },

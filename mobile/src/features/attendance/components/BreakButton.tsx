@@ -60,7 +60,7 @@ function ArcProgress({ progress }: { progress: number }) {
   const isOver = progress > 1;
   const clamped = Math.min(progress, 1);
   const dashOffset = CIRCUMF * (1 - clamped);
-  const arcColor = isOver ? C.errorRed : C.amber;
+  const arcColor = isOver ? '#F59E0B' : C.amber; // keep it warm/amber, not red
 
   return (
     <Svg width={ARC_SIZE} height={ARC_SIZE} style={{ transform: [{ rotate: '-90deg' }] }}>
@@ -244,10 +244,10 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, onPress, loading }: {
           <PulseDot />
           <Text style={s.activeTitle}>On Break</Text>
         </View>
-        <View style={[s.overBadge, { backgroundColor: isOver ? '#FEE2E2' : C.amberLight }]}>
-          <Text style={[s.overBadgeText, { color: isOver ? C.errorRed : C.amber }]}>
+        <View style={[s.overBadge, { backgroundColor: isOver ? '#FFF7ED' : C.amberLight }]}>
+          <Text style={[s.overBadgeText, { color: isOver ? '#EA580C' : C.amber }]}>
             {isOver
-              ? `+${formatTime(elapsed - allocSecs)} over`
+              ? `+${formatTime(elapsed - allocSecs)} extended`
               : `${formatTime(Math.max(0, remaining))} left`}
           </Text>
         </View>
@@ -259,7 +259,7 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, onPress, loading }: {
           <ArcProgress progress={progress} />
           {/* centered text inside arc */}
           <View style={s.arcCenter} pointerEvents="none">
-            <Text style={[s.arcTime, isOver && { color: C.errorRed }]}>
+            <Text style={[s.arcTime, isOver && { color: '#EA580C' }]}>
               {formatTime(elapsed)}
             </Text>
             <Text style={s.arcSub}>elapsed</Text>
@@ -282,10 +282,10 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, onPress, loading }: {
               <Ionicons name="time-outline" size={13} color={C.teal} />
             </View>
             <View>
-              <Text style={[s.arcStatVal, isOver && { color: C.errorRed }]}>
-                {isOver ? `Over by ${formatTime(elapsed - allocSecs)}` : formatTime(Math.max(0, remaining))}
+              <Text style={[s.arcStatVal, isOver && { color: '#EA580C' }]}>
+                {isOver ? `Extended by ${formatTime(elapsed - allocSecs)}` : formatTime(Math.max(0, remaining))}
               </Text>
-              <Text style={s.arcStatLbl}>{isOver ? 'Overtime' : 'Remaining'}</Text>
+              <Text style={s.arcStatLbl}>{isOver ? 'Extended Time' : 'Remaining'}</Text>
             </View>
           </View>
         </View>
@@ -297,7 +297,7 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, onPress, loading }: {
           s.barFill,
           {
             width: `${Math.min(progress * 100, 100)}%`,
-            backgroundColor: isOver ? C.errorRed : C.amber,
+            backgroundColor: isOver ? '#F59E0B' : C.amber,
           },
         ]} />
       </View>
@@ -316,7 +316,7 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, onPress, loading }: {
           disabled={loading}
         >
           <LinearGradient
-            colors={isOver ? [C.errorRed, '#FC8181'] : [C.amber, '#FBBF24']}
+            colors={isOver ? ['#F97316', '#FB923C'] : [C.amber, '#FBBF24']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={s.endBtn}
@@ -329,7 +329,7 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, onPress, loading }: {
                 <Text style={s.endBtnText}>End Break</Text>
                 {isOver && (
                   <View style={s.endBtnBadge}>
-                    <Text style={s.endBtnBadgeText}>overtime!</Text>
+                    <Text style={s.endBtnBadgeText}>relaxing!</Text>
                   </View>
                 )}
               </>

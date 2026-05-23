@@ -181,7 +181,7 @@ const s = StyleSheet.create({
     gap: 12
   },
   searchText: { color: '#94A3B8', fontSize: 14 },
-  list: { paddingHorizontal: 24, paddingBottom: 100 },
+  list: { paddingHorizontal: 24, paddingBottom: 120 },
   cardContainer: { marginBottom: 12 },
   card: { 
     flexDirection: 'row', 

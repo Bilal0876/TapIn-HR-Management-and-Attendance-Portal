@@ -126,7 +126,7 @@ const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   header: { 
-    paddingBottom: 40, 
+    paddingBottom: 120, 
     borderBottomLeftRadius: 40, 
     borderBottomRightRadius: 40 
   },
@@ -147,7 +147,7 @@ const s = StyleSheet.create({
   flame: { position: 'absolute', bottom: -10, right: -5 },
   headerTitle: { fontSize: 22, fontWeight: '800', color: C.white, marginBottom: 4 },
   headerSub: { fontSize: 13, color: 'rgba(255,255,255,0.6)', fontWeight: '500' },
-  content: { padding: 24, paddingBottom: 40 },
+  content: { padding: 24, paddingBottom: 120 },
   grid: { flexDirection: 'row', gap: 16, marginTop: -50 },
   card: { flex: 1, backgroundColor: C.white, borderRadius: 24, padding: 20, elevation: 4, shadowColor: C.navy, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.1, shadowRadius: 20 },
   iconBox: { width: 44, height: 44, borderRadius: 14, justifyContent: 'center', alignItems: 'center', marginBottom: 12 },

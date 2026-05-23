@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ActivityIndicator, 
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
   StatusBar,
   ScrollView,
   TouchableOpacity
@@ -54,11 +54,11 @@ export default function EmployeeHome() {
     <SafeAreaView style={s.root}>
       <StatusBar barStyle="dark-content" />
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-        
+
         {/* ── Header ── */}
         <View style={s.header}>
           <View>
-            <Text style={s.greeting}>Hello, {employee?.name?.split(' ')[0]} 👋</Text>
+            <Text style={s.greeting}>Hello, {employee?.name?.split(' ')[0]}</Text>
             <Text style={s.subtitle}>Ready for your shift today?</Text>
           </View>
           <TouchableOpacity style={s.notifBtn}>
@@ -70,12 +70,12 @@ export default function EmployeeHome() {
         {/* ── Dashboard Stats ── */}
         <View style={s.dashboard}>
           <View style={s.centerCard}>
-            <CheckInButton 
-              status={record?.status || 'IDLE'} 
+            <CheckInButton
+              status={record?.status || 'IDLE'}
               checkinTime={record?.checkInTime}
               checkoutTime={record?.checkOutTime}
               workingHours={record?.workingHours}
-              onRefresh={loadData} 
+              onRefresh={loadData}
             />
           </View>
 
@@ -96,16 +96,16 @@ export default function EmployeeHome() {
 
           {/* Tips Section */}
           <View style={s.tipCard}>
-             <LinearGradient
-               colors={['#EEF2FF', '#E0E7FF']}
-               style={s.tipGradient}
-             >
-               <Ionicons name="bulb" size={24} color="#4F46E5" />
-               <View style={s.tipInfo}>
-                 <Text style={s.tipTitle}>Daily Reminder</Text>
-                 <Text style={s.tipText}>Don't forget to check-out before leaving the office to log your hours accurately.</Text>
-               </View>
-             </LinearGradient>
+            <LinearGradient
+              colors={['#EEF2FF', '#E0E7FF']}
+              style={s.tipGradient}
+            >
+              <Ionicons name="bulb" size={24} color="#4F46E5" />
+              <View style={s.tipInfo}>
+                <Text style={s.tipTitle}>Daily Reminder</Text>
+                <Text style={s.tipText}>Don't forget to check-out before leaving the office to log your hours accurately.</Text>
+              </View>
+            </LinearGradient>
           </View>
         </View>
       </ScrollView>
@@ -116,34 +116,34 @@ export default function EmployeeHome() {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  scroll: { paddingBottom: 60 },
-  header: { 
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    alignItems: 'center', 
-    paddingHorizontal: 24, 
+  scroll: { paddingBottom: 120 },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 24,
     paddingTop: 12,
     paddingBottom: 24
   },
   greeting: { fontSize: 24, fontWeight: '800', color: C.navy, letterSpacing: -0.5 },
   subtitle: { fontSize: 13, color: '#64748B', marginTop: 2, fontWeight: '500' },
-  notifBtn: { 
-    width: 44, 
-    height: 44, 
-    borderRadius: 12, 
-    backgroundColor: C.white, 
-    justifyContent: 'center', 
+  notifBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: C.white,
+    justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#E2E8F0'
   },
-  notifBadge: { 
-    position: 'absolute', 
-    top: 10, 
-    right: 10, 
-    width: 8, 
-    height: 8, 
-    borderRadius: 4, 
+  notifBadge: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
     backgroundColor: '#FF6B6B',
     borderWidth: 1.5,
     borderColor: C.white

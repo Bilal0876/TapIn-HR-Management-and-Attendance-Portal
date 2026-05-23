@@ -140,7 +140,7 @@ export default function AdminHome() {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  scroll: { paddingBottom: 40 },
+  scroll: { paddingBottom: 120 },
   header: { 
     flexDirection: 'row', 
     justifyContent: 'space-between', 

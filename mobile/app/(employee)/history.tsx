@@ -149,7 +149,7 @@ const s = StyleSheet.create({
   header: { padding: 24, paddingBottom: 16 },
   headerTitle: { fontSize: 28, fontWeight: '800', color: C.navy, letterSpacing: -0.5 },
   headerSub: { fontSize: 14, color: C.subtle, marginTop: 4, fontWeight: '500' },
-  list: { paddingHorizontal: 20, paddingBottom: 40 },
+  list: { paddingHorizontal: 20, paddingBottom: 120 },
   card: { 
     backgroundColor: C.white, 
     borderRadius: 24, 

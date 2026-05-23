@@ -159,7 +159,7 @@ const s = StyleSheet.create({
   header: { padding: 24, paddingBottom: 16 },
   headerTitle: { fontSize: 28, fontWeight: '800', color: C.navy },
   headerSub: { fontSize: 14, color: C.subtle, marginTop: 4, fontWeight: '500' },
-  list: { paddingHorizontal: 20, paddingBottom: 40 },
+  list: { paddingHorizontal: 20, paddingBottom: 120 },
   card: { backgroundColor: C.white, borderRadius: 24, padding: 20, marginBottom: 20, elevation: 2 },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 },
   userInfo: { flexDirection: 'row', gap: 12, alignItems: 'center' },

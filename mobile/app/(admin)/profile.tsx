@@ -121,7 +121,7 @@ export default function AdminProfileScreen() {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   header: { 
-    paddingBottom: 40,
+    paddingBottom: 120,
     borderBottomLeftRadius: 32,
     borderBottomRightRadius: 32,
   },
@@ -154,7 +154,7 @@ const s = StyleSheet.create({
   badge: { backgroundColor: 'rgba(255,255,255,0.1)', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 8 },
   badgeText: { fontSize: 10, fontWeight: '800', color: C.white, letterSpacing: 1 },
   
-  content: { paddingHorizontal: 24, paddingBottom: 40 },
+  content: { paddingHorizontal: 24, paddingBottom: 120 },
   section: { marginTop: 32 },
   sectionTitle: { fontSize: 16, fontWeight: '700', color: C.navy, marginBottom: 12, paddingLeft: 4 },
   card: { backgroundColor: C.white, borderRadius: 24, padding: 16, shadowColor: C.navy, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.04, shadowRadius: 12, elevation: 4 },

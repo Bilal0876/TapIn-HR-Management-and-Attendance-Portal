@@ -137,7 +137,7 @@ export default function AdminReportsScreen() {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  scroll: { paddingBottom: 40 },
+  scroll: { paddingBottom: 120 },
   header: { padding: 24, paddingBottom: 20 },
   headerTitle: { fontSize: 28, fontWeight: '800', color: C.navy, letterSpacing: -0.5 },
   headerSub: { fontSize: 14, color: C.subtle, marginTop: 4, fontWeight: '500' },
