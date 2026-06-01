@@ -23,24 +23,14 @@ const C = {
   white: '#FFFFFF',
 };
 
+import { useTodayAttendance } from '@/features/attendance/hooks';
+import { format, parseISO, addMinutes } from 'date-fns';
+
 export default function EmployeeHome() {
-  const { isAuthenticated, employee } = useAuthStore();
-  const [record, setRecord] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { employee } = useAuthStore();
+  const { data: record, isLoading, refetch } = useTodayAttendance();
 
-  const loadData = async () => {
-    if (!isAuthenticated) return;
-    setLoading(true);
-    try {
-      const data = await attendanceApi.getToday();
-      setRecord(data);
-    } catch (e) { }
-    setLoading(false);
-  };
-
-  useEffect(() => { loadData(); }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={s.loader}>
         <ActivityIndicator size="large" color={C.accent} />
@@ -49,6 +39,23 @@ export default function EmployeeHome() {
   }
 
   const activeBreak = record?.breakSessions?.find((b: any) => !b.endTime);
+  const previouslyConsumedSeconds = (record?.breakSessions || [])
+    .filter((b: any) => b.endTime)
+    .reduce((sum: number, b: any) => {
+      const diff = Math.floor((new Date(b.endTime).getTime() - new Date(b.startTime).getTime()) / 1000);
+      return sum + Math.max(0, diff);
+    }, 0);
+
+  // Dynamic Shift Info
+  const expectedCheckinStr = record?.config?.expectedCheckin || '09:00';
+  const workMinutes = record?.config?.expectedWorkMinutes || 480;
+  
+  // Calculate approximate checkout time
+  const [h, m] = expectedCheckinStr.split(':').map(Number);
+  const shiftStart = new Date();
+  shiftStart.setHours(h, m, 0, 0);
+  const shiftEnd = addMinutes(shiftStart, workMinutes + 60); // Assuming 1 hour break
+  const checkoutTimeStr = format(shiftEnd, 'hh:mm a');
 
   return (
     <SafeAreaView style={s.root}>
@@ -59,7 +66,7 @@ export default function EmployeeHome() {
         <View style={s.header}>
           <View>
             <Text style={s.greeting}>Hello, {employee?.name?.split(' ')[0]}</Text>
-            <Text style={s.subtitle}>Ready for your shift today?</Text>
+            <Text style={s.subtitle}>Shift: {expectedCheckinStr} — {checkoutTimeStr}</Text>
           </View>
           <TouchableOpacity style={s.notifBtn}>
             <Ionicons name="notifications-outline" size={24} color={C.navy} />
@@ -72,10 +79,13 @@ export default function EmployeeHome() {
           <View style={s.centerCard}>
             <CheckInButton
               status={record?.status || 'IDLE'}
-              checkinTime={record?.checkInTime}
-              checkoutTime={record?.checkOutTime}
-              workingHours={record?.workingHours}
-              onRefresh={loadData}
+              checkinTime={record?.checkinTime ? format(parseISO(record.checkinTime), 'hh:mm a') : null}
+              checkoutTime={record?.checkoutTime ? format(parseISO(record.checkoutTime), 'hh:mm a') : null}
+              workingHours={record?.dailySummary?.totalWorkMinutes ? 
+                `${Math.floor(record.dailySummary.totalWorkMinutes / 60)}h ${record.dailySummary.totalWorkMinutes % 60}m` 
+                : null
+              }
+              onRefresh={refetch}
             />
           </View>
 
@@ -89,7 +99,8 @@ export default function EmployeeHome() {
               <BreakButton
                 activeBreak={activeBreak}
                 attendanceStatus={record.status}
-                onRefresh={loadData}
+                previouslyConsumedSeconds={previouslyConsumedSeconds}
+                onRefresh={refetch}
               />
             </View>
           )}
@@ -102,8 +113,10 @@ export default function EmployeeHome() {
             >
               <Ionicons name="bulb" size={24} color="#4F46E5" />
               <View style={s.tipInfo}>
-                <Text style={s.tipTitle}>Daily Reminder</Text>
-                <Text style={s.tipText}>Don't forget to check-out before leaving the office to log your hours accurately.</Text>
+                <Text style={s.tipTitle}>Shift Reminder</Text>
+                <Text style={s.tipText}>
+                  Your estimated shift end is {checkoutTimeStr}. Don't forget to check-out to log your hours accurately.
+                </Text>
               </View>
             </LinearGradient>
           </View>

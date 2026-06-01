@@ -86,14 +86,14 @@ export default function AdminHome() {
               <Text style={s.actionLabel}>Add Staff</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={s.actionItem}>
+            <TouchableOpacity style={s.actionItem} onPress={() => router.push('/(admin)/leave-approvals')}>
               <View style={[s.actionIcon, { backgroundColor: '#ECFDF5' }]}>
-                <Ionicons name="calendar" size={24} color="#059669" />
+                <Ionicons name="airplane" size={24} color="#059669" />
               </View>
-              <Text style={s.actionLabel}>Shift Plan</Text>
+              <Text style={s.actionLabel}>Leaves</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={s.actionItem}>
+            <TouchableOpacity style={s.actionItem} onPress={() => router.push('/(admin)/reports')}>
               <View style={[s.actionIcon, { backgroundColor: '#FFF7ED' }]}>
                 <Ionicons name="document-text" size={24} color="#D97706" />
               </View>

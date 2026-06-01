@@ -10,7 +10,6 @@ export default function EmployeeLayout() {
     <Tabs
       tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' } }}
-      sceneContainerStyle={{ paddingBottom: TAB_BAR_HEIGHT }}
     >
       <Tabs.Screen
         name="index"
@@ -27,10 +26,10 @@ export default function EmployeeLayout() {
         }}
       />
       <Tabs.Screen
-        name="summary"
+        name="leaves"
         options={{
-          title: 'Insights',
-          tabBarIcon: ({ color, size }) => <Ionicons name="bar-chart-outline" size={size} color={color} />,
+          title: 'Leaves',
+          tabBarIcon: ({ color, size }) => <Ionicons name="airplane-outline" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -47,8 +46,9 @@ export default function EmployeeLayout() {
           tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />,
         }}
       />
-      {/* Hidden — accessed via tapping a card in History */}
+      {/* Hidden — accessed via tapping a card in History or Leaves */}
       <Tabs.Screen name="request-correction" options={{ href: null }} />
+      <Tabs.Screen name="request-leave" options={{ href: null }} />
     </Tabs>
   );
 }

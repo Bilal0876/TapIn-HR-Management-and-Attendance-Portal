@@ -70,6 +70,11 @@ export class AuthService {
     const accessToken = issueAccessToken(employee.id, employee.role);
     const refreshToken = issueRefreshToken(employee.id, tokenPayload);
 
+    const refreshedEmployee = await prisma.employee.findUnique({
+      where: { id: employee.id },
+      include: { profile: true, company: true }
+    });
+
     return {
       accessToken,
       refreshToken,
@@ -79,6 +84,13 @@ export class AuthService {
         name: employee.name,
         role: employee.role,
         mustChangePassword: employee.mustChangePassword,
+        employeeCode: refreshedEmployee?.profile?.employeeCode,
+        designation: refreshedEmployee?.profile?.designation,
+        department: refreshedEmployee?.profile?.department,
+        company: refreshedEmployee?.company ? {
+          name: refreshedEmployee.company.name,
+          timezone: refreshedEmployee.company.timezone
+        } : undefined
       },
     };
   }

@@ -10,7 +10,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { format } from 'date-fns';
 import { attendanceApi } from '@/features/attendance/api';
+import { reportsApi } from '@/features/reports/api';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -41,7 +43,7 @@ function StatCard({ title, value, icon, colors, sub }: any) {
   );
 }
 
-export default function AdminReportsScreen() {
+function AdminReportsScreen() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -50,6 +52,33 @@ export default function AdminReportsScreen() {
       .then(setStats)
       .finally(() => setLoading(false));
   }, []);
+
+  const [downloading, setDownloading] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
+  const handleDownloadExcel = async () => {
+    setDownloading(true);
+    try {
+      await reportsApi.downloadMonthlyReport(selectedYear, selectedMonth);
+    } catch (e) {
+      alert('Failed to download Excel report.');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    setDownloadingPdf(true);
+    try {
+      await reportsApi.downloadMonthlyPDF(selectedYear, selectedMonth);
+    } catch (e) {
+      alert('Failed to download PDF report.');
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
 
   if (loading) return <View style={s.center}><ActivityIndicator color={C.accent} /></View>;
 
@@ -110,23 +139,67 @@ export default function AdminReportsScreen() {
         </View>
 
         <View style={s.section}>
-          <Text style={s.sectionTitle}>Efficiency Leaderboard</Text>
-          {[
-            { name: 'John Doe', rate: '98%', dept: 'Engineering', color: C.teal },
-            { name: 'Sarah Wilson', rate: '97%', dept: 'Design', color: C.accent },
-            { name: 'Mike Ross', rate: '94%', dept: 'Sales', color: C.gold }
-          ].map((user, i) => (
-            <View key={i} style={s.listCard}>
-               <View style={[s.rankBox, { backgroundColor: user.color + '10'}]}>
-                  <Text style={[s.rankText, { color: user.color }]}>#{i+1}</Text>
-               </View>
-               <View style={{ flex: 1 }}>
-                  <Text style={s.userName}>{user.name}</Text>
-                  <Text style={s.userDept}>{user.dept}</Text>
-               </View>
-               <Text style={s.userRate}>{user.rate}</Text>
-            </View>
-          ))}
+          <Text style={s.sectionTitle}>Data Exports</Text>
+          <View style={s.exportCard}>
+             <View style={s.exportHeader}>
+                <Ionicons name="cloud-download-outline" size={24} color={C.navy} />
+                <View>
+                   <Text style={s.exportTitle}>Monthly Attendance Sheet</Text>
+                   <Text style={s.exportSub}>Generated as professional .xlsx</Text>
+                </View>
+             </View>
+
+             <View style={s.pickerRow}>
+                <View style={s.pickerBox}>
+                   <Text style={s.pickerLabel}>MONTH</Text>
+                   <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.pillScroll}>
+                      {[1,2,3,4,5,6,7,8,9,10,11,12].map(m => (
+                        <TouchableOpacity 
+                          key={m} 
+                          onPress={() => setSelectedMonth(m)}
+                          style={[s.pill, selectedMonth === m && s.pillActive]}
+                        >
+                           <Text style={[s.pillText, selectedMonth === m && s.pillTextActive]}>
+                              {format(new Date(2025, m-1), 'MMM')}
+                           </Text>
+                        </TouchableOpacity>
+                      ))}
+                   </ScrollView>
+                </View>
+             </View>
+
+             <View style={s.btnRow}>
+                <TouchableOpacity 
+                   style={[s.downloadBtn, s.excelBtn, downloading && s.disabled]} 
+                   onPress={handleDownloadExcel}
+                   disabled={downloading || downloadingPdf}
+                >
+                   {downloading ? (
+                      <ActivityIndicator color={C.white} size="small" />
+                   ) : (
+                      <>
+                        <Ionicons name="grid-outline" size={18} color={C.white} />
+                        <Text style={s.downloadText}>Excel</Text>
+                      </>
+                   )}
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                   style={[s.downloadBtn, s.pdfBtn, downloadingPdf && s.disabled]} 
+                   onPress={handleDownloadPdf}
+                   disabled={downloading || downloadingPdf}
+                >
+                   {downloadingPdf ? (
+                      <ActivityIndicator color={C.white} size="small" />
+                   ) : (
+                      <>
+                        <Ionicons name="document-outline" size={18} color={C.white} />
+                        <Text style={s.downloadText}>PDF</Text>
+                      </>
+                   )}
+                </TouchableOpacity>
+             </View>
+          </View>
         </View>
 
       </ScrollView>
@@ -162,10 +235,25 @@ const s = StyleSheet.create({
   barGroup: { alignItems: 'center', gap: 8 },
   bar: { width: 8, borderRadius: 4, backgroundColor: '#E2E8F0' },
   barDate: { fontSize: 10, fontWeight: '700', color: C.subtle },
-  listCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: C.white, borderRadius: 20, padding: 16, marginBottom: 12, elevation: 1 },
-  rankBox: { width: 40, height: 40, borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginRight: 16 },
-  rankText: { fontSize: 16, fontWeight: '800' },
-  userName: { fontSize: 15, fontWeight: '700', color: C.navy },
-  userDept: { fontSize: 12, color: C.subtle, fontWeight: '500' },
-  userRate: { fontSize: 16, fontWeight: '800', color: C.navy }
+  userRate: { fontSize: 16, fontWeight: '800', color: C.navy },
+  exportCard: { backgroundColor: C.white, borderRadius: 24, padding: 20, marginTop: 12, elevation: 2 },
+  exportHeader: { flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 20 },
+  exportTitle: { fontSize: 15, fontWeight: '700', color: C.navy },
+  exportSub: { fontSize: 12, color: C.subtle, marginTop: 2 },
+  pickerRow: { marginBottom: 20 },
+  pickerBox: { gap: 10 },
+  pickerLabel: { fontSize: 10, fontWeight: '700', color: C.subtle, letterSpacing: 0.5 },
+  pillScroll: { gap: 8 },
+  pill: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 12, backgroundColor: C.bg, borderWidth: 1, borderColor: '#E2E8F0' },
+  pillActive: { backgroundColor: C.navy, borderColor: C.navy },
+  pillText: { fontSize: 12, fontWeight: '600', color: C.navy },
+  pillTextActive: { color: C.white },
+  btnRow: { flexDirection: 'row', gap: 12 },
+  downloadBtn: { flex: 1, borderRadius: 16, paddingVertical: 14, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8 },
+  excelBtn: { backgroundColor: C.teal },
+  pdfBtn: { backgroundColor: '#EF4444' },
+  downloadText: { color: C.white, fontSize: 14, fontWeight: '700' },
+  disabled: { opacity: 0.6 }
 });
+
+export default AdminReportsScreen;

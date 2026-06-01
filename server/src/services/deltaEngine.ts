@@ -61,11 +61,13 @@ export function calculateDelta(
   } = config;
 
   const localCheckin = toZonedTime(checkinTime, timezone);
-  const expectedCheckin = new Date(localCheckin);
+
+  // Build expectedCheckin as the same calendar date as localCheckin but at the expected time
+  const expectedCheckin = toZonedTime(checkinTime, timezone);
   expectedCheckin.setHours(expectedCheckinHour, expectedCheckinMinute, 0, 0);
 
   const minutesPastExpected = differenceInMinutes(localCheckin, expectedCheckin);
-  const lateMinutes = Math.max(0, minutesPastExpected - gracePeriodMinutes);
+  const lateMinutes = isNaN(minutesPastExpected) ? 0 : Math.max(0, minutesPastExpected - gracePeriodMinutes);
 
   const totalOnSiteMinutes = differenceInMinutes(checkoutTime, checkinTime);
 

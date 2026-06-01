@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { Slot, useRouter, useSegments } from 'expo-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuthStore } from '@/features/auth/store';
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const { isAuthenticated, employee } = useAuthStore();
@@ -31,5 +34,9 @@ export default function RootLayout() {
     }
   }, [isAuthenticated, employee, segments]);
 
-  return <Slot />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Slot />
+    </QueryClientProvider>
+  );
 }

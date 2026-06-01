@@ -60,6 +60,21 @@ export function startMidnightSweep() {
         });
 
         if (!existingRecord) {
+          // 2.1 Check if employee is on APPROVED leave for this date
+          const onLeave = await prisma.leaveRequest.findFirst({
+            where: {
+              employeeId: emp.id,
+              status: 'APPROVED',
+              startDate: { lte: targetDate },
+              endDate: { gte: targetDate },
+            }
+          });
+
+          if (onLeave) {
+            logger.info(`Skipping ABSENT mark for ${emp.name} (On Leave: ${onLeave.type}).`);
+            continue;
+          }
+
           // No record exists -> Mark ABSENT
           // For an absent record, checkinTime uses the date but it has no real meaning. 
           // We can use 00:00:00 as a placeholder, checkoutTime is null.

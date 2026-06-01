@@ -24,6 +24,7 @@ export interface BreakButtonProps {
   activeBreak: ActiveBreak | null;
   attendanceStatus: string;         // 'PENDING' = checked in; anything else = disabled
   breakAllocatedMinutes?: number;   // default 60
+  previouslyConsumedSeconds?: number;
   onRefresh: () => void;
 }
 
@@ -166,13 +167,23 @@ function useMountAnim() {
 // ════════════════════════════════════════════════════════════════════════════
 //  IDLE STATE — "Start Break" pill button
 // ════════════════════════════════════════════════════════════════════════════
-function IdleBreak({ onPress, disabled, loading }: {
+function IdleBreak({ onPress, disabled, loading, allocatedMinutes, previouslyConsumedSeconds = 0 }: {
   onPress: () => void; disabled: boolean; loading: boolean;
+  allocatedMinutes: number; previouslyConsumedSeconds: number;
 }) {
   const { opacity, translateY } = useMountAnim();
   const pressScale = useRef(new Animated.Value(1)).current;
   const onPressIn = () => Animated.spring(pressScale, { toValue: 0.96, useNativeDriver: true, speed: 40 }).start();
   const onPressOut = () => Animated.spring(pressScale, { toValue: 1, useNativeDriver: true, speed: 20 }).start();
+
+  const remainingMinutes = Math.max(0, allocatedMinutes - Math.floor(previouslyConsumedSeconds / 60));
+  const isOver = allocatedMinutes - Math.floor(previouslyConsumedSeconds / 60) < 0;
+
+  const subText = disabled ? 'Check in first' : (
+    previouslyConsumedSeconds > 0 
+      ? (isOver ? 'No allocated time left' : `${remainingMinutes} min remaining`)
+      : `${allocatedMinutes} min allocated`
+  );
 
   return (
     <Animated.View style={{ opacity, transform: [{ translateY }] }}>
@@ -200,7 +211,7 @@ function IdleBreak({ onPress, disabled, loading }: {
                 <View>
                   <Text style={s.idleBtnLabel}>Start Break</Text>
                   <Text style={s.idleBtnSub}>
-                    {disabled ? 'Check in first' : '60 min allocated'}
+                    {subText}
                   </Text>
                 </View>
                 {!disabled && (
@@ -218,14 +229,16 @@ function IdleBreak({ onPress, disabled, loading }: {
 // ════════════════════════════════════════════════════════════════════════════
 //  ACTIVE STATE — timer card with arc
 // ════════════════════════════════════════════════════════════════════════════
-function ActiveBreakCard({ activeBreak, allocatedMinutes, onPress, loading }: {
+function ActiveBreakCard({ activeBreak, allocatedMinutes, previouslyConsumedSeconds, onPress, loading }: {
   activeBreak: ActiveBreak;
   allocatedMinutes: number;
+  previouslyConsumedSeconds: number;
   onPress: () => void;
   loading: boolean;
 }) {
   const { opacity, translateY } = useMountAnim();
-  const elapsed = useElapsed(activeBreak.startTime);
+  const sessionElapsed = useElapsed(activeBreak.startTime);
+  const elapsed = sessionElapsed + previouslyConsumedSeconds;
   const allocSecs = allocatedMinutes * 60;
   const progress = elapsed / allocSecs;
   const isOver = elapsed > allocSecs;
@@ -349,6 +362,7 @@ export function BreakButton({
   activeBreak,
   attendanceStatus,
   breakAllocatedMinutes = 60,
+  previouslyConsumedSeconds = 0,
   onRefresh,
 }: BreakButtonProps) {
   const [loading, setLoading] = useState(false);
@@ -375,6 +389,7 @@ export function BreakButton({
       <ActiveBreakCard
         activeBreak={activeBreak}
         allocatedMinutes={breakAllocatedMinutes}
+        previouslyConsumedSeconds={previouslyConsumedSeconds}
         onPress={handlePress}
         loading={loading}
       />
@@ -386,6 +401,8 @@ export function BreakButton({
       onPress={handlePress}
       disabled={isDisabled}
       loading={loading}
+      allocatedMinutes={breakAllocatedMinutes}
+      previouslyConsumedSeconds={previouslyConsumedSeconds}
     />
   );
 }

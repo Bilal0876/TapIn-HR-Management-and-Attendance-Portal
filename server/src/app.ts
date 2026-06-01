@@ -6,6 +6,8 @@ import authRoutes from './features/auth/auth.routes';
 import attendanceRoutes from './features/attendance/attendance.routes';
 import employeeRoutes from './features/employees/employees.routes';
 import correctionRoutes from './features/corrections/correction.routes';
+import reportsRoutes from './features/reports/reports.routes';
+import leaveRoutes from './features/leaves/leaves.routes';
 import { errorHandler } from './middleware/errorHandler';
 
 export function createApp() {
@@ -22,6 +24,8 @@ export function createApp() {
   app.use('/api/v1/attendance', attendanceRoutes);
   app.use('/api/v1/employees', employeeRoutes);
   app.use('/api/v1/corrections', correctionRoutes);
+  app.use('/api/v1/reports', reportsRoutes);
+  app.use('/api/v1/leaves', leaveRoutes);
 
   app.use(errorHandler);
 

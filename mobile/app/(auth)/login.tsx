@@ -215,7 +215,7 @@ export default function LoginScreen() {
             <View style={styles.logoBox}>
               <Ionicons name="time-outline" size={20} color={C.white} />
             </View>
-            <Text style={styles.brandName}>AttendX</Text>
+            <Text style={styles.brandName}>TapIn</Text>
           </View>
 
           <LiveClock />

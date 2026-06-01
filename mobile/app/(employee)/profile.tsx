@@ -14,6 +14,7 @@ import { secureStorage } from '@/lib/secureStorage';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { usePersonalStats } from '@/features/attendance/hooks';
 
 const { width: SCREEN_W } = Dimensions.get('window');
 
@@ -43,6 +44,7 @@ function ProfileRow({ icon, label, value, color = C.navy }: any) {
 
 export default function ProfileScreen() {
   const { employee, clearAuth } = useAuthStore();
+  const { data: stats, isLoading } = usePersonalStats();
 
   const handleLogout = async () => {
     await secureStorage.removeTokens();
@@ -77,7 +79,7 @@ export default function ProfileScreen() {
               </View>
               
               <Text style={s.name}>{employee?.name}</Text>
-              <Text style={s.role}>{employee?.role} • {(employee as any)?.profile?.department || 'Operations'}</Text>
+              <Text style={s.role}>{employee?.role} • {employee?.department || 'Operations'}</Text>
             </View>
           </SafeAreaView>
         </LinearGradient>
@@ -88,17 +90,17 @@ export default function ProfileScreen() {
           {/* Stats Card */}
           <View style={s.statsWrapper}>
              <View style={s.statBox}>
-                <Text style={s.statVal}>94%</Text>
+                <Text style={s.statVal}>{isLoading ? '...' : `${stats?.onTimeRate}%`}</Text>
                 <Text style={s.statLbl}>On-Time</Text>
              </View>
              <View style={s.statDivider} />
              <View style={s.statBox}>
-                <Text style={s.statVal}>12</Text>
+                <Text style={s.statVal}>{isLoading ? '...' : stats?.leavesTaken}</Text>
                 <Text style={s.statLbl}>Leaves</Text>
              </View>
              <View style={s.statDivider} />
              <View style={s.statBox}>
-                <Text style={s.statVal}>8.5h</Text>
+                <Text style={s.statVal}>{isLoading ? '...' : `${stats?.avgWorkHours}h`}</Text>
                 <Text style={s.statLbl}>Avg Work</Text>
              </View>
           </View>
@@ -109,9 +111,9 @@ export default function ProfileScreen() {
             <View style={s.card}>
               <ProfileRow icon="mail-outline" label="Official Email" value={employee?.email} color={C.accent} />
               <View style={s.divider} />
-              <ProfileRow icon="finger-print-outline" label="Employee ID" value={(employee as any)?.employeeCode || 'EMP-001'} color={C.teal} />
+              <ProfileRow icon="finger-print-outline" label="Employee ID" value={employee?.employeeCode || 'EMP-001'} color={C.teal} />
               <View style={s.divider} />
-              <ProfileRow icon="briefcase-outline" label="Designation" value={(employee as any)?.profile?.designation || 'Software Engineer'} color="#7C5CBF" />
+              <ProfileRow icon="briefcase-outline" label="Designation" value={employee?.designation || 'Software Engineer'} color="#7C5CBF" />
             </View>
           </View>
 

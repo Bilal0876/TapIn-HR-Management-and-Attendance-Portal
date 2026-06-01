@@ -67,6 +67,14 @@ export class AnalyticsService {
     const lateDays = summaries.filter(s => s.lateMinutes > 0).length;
     const totalDays = summaries.length;
 
+    const leavesTaken = await prisma.leaveRequest.count({
+      where: {
+        employeeId,
+        status: 'APPROVED',
+        startDate: { gte: monthStart, lte: monthEnd }
+      }
+    });
+
     // Simple streak calculation
     let streak = 0;
     for (const record of allRecords) {
@@ -75,12 +83,12 @@ export class AnalyticsService {
     }
 
     return {
-       monthProgress: {
-         totalHours: (totalMinutes / 60).toFixed(1),
-         daysPresent: totalDays,
-         onTimeRate: totalDays > 0 ? Math.round(((totalDays - lateDays) / totalDays) * 100) : 0,
-       },
-       streak
+       onTimeRate: totalDays > 0 ? Math.round(((totalDays - lateDays) / totalDays) * 100) : 0,
+       avgWorkHours: totalDays > 0 ? (totalMinutes / 60 / totalDays).toFixed(1) : '0.0',
+       leavesTaken,
+       streak,
+       totalHours: (totalMinutes / 60).toFixed(1),
+       daysPresent: totalDays,
     };
   }
 }

@@ -10,7 +10,6 @@ export default function AdminLayout() {
     <Tabs
       tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' } }}
-      sceneContainerStyle={{ paddingBottom: TAB_BAR_HEIGHT }}
     >
       <Tabs.Screen
         name="index"
@@ -29,8 +28,16 @@ export default function AdminLayout() {
       <Tabs.Screen
         name="corrections"
         options={{
-          title: 'Approvals',
+          title: 'Corrections',
           tabBarIcon: ({ color, size }) => <Ionicons name="checkmark-circle" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="leave-approvals"
+        options={{
+          href: null,
+          title: 'Leaves',
+          tabBarIcon: ({ color, size }) => <Ionicons name="airplane" size={size} color={color} />,
         }}
       />
       <Tabs.Screen

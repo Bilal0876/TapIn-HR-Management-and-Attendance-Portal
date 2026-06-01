@@ -91,12 +91,17 @@ export class AttendanceService {
 
       const dailySummary = await tx.dailySummary.create({
         data: {
-          attendanceRecordId: record.id,
+          attendanceRecord: { connect: { id: record.id } },
           employeeId,
           date,
           checkinTime: record.checkinTime,
           checkoutTime,
           ...delta,
+          // Guard against NaN values from deltaEngine
+          lateMinutes: isNaN(delta.lateMinutes) ? 0 : delta.lateMinutes,
+          workDeltaMinutes: isNaN(delta.workDeltaMinutes) ? 0 : delta.workDeltaMinutes,
+          breakDeltaMinutes: isNaN(delta.breakDeltaMinutes) ? 0 : delta.breakDeltaMinutes,
+          netDeltaMinutes: isNaN(delta.netDeltaMinutes) ? 0 : delta.netDeltaMinutes,
         },
       });
 
@@ -113,10 +118,76 @@ export class AttendanceService {
       include: {
         breakSessions: true,
         dailySummary: true,
+        employee: {
+          include: { company: true, profile: true }
+        }
       },
     });
 
-    return record;
+    if (!record) {
+      // Find employee to get company schedule even if not checked in
+      const employee = await prisma.employee.findUnique({
+        where: { id: employeeId },
+        include: { company: true, profile: true }
+      });
+      if (!employee) return null;
+      
+      const config = resolveConfig(employee.company as any, (employee.profile as any) || {});
+      return { 
+        status: AttendanceStatus.IDLE,
+        config: {
+          expectedCheckin: `${config.expectedCheckinHour.toString().padStart(2, '0')}:${config.expectedCheckinMinute.toString().padStart(2, '0')}`,
+          expectedWorkMinutes: config.workMinutesPerDay,
+          timezone: config.timezone
+        }
+      };
+    }
+
+    const config = resolveConfig(record.employee.company as any, (record.employee.profile as any) || {});
+    
+    return {
+      ...record,
+      config: {
+        expectedCheckin: `${config.expectedCheckinHour.toString().padStart(2, '0')}:${config.expectedCheckinMinute.toString().padStart(2, '0')}`,
+        expectedWorkMinutes: config.workMinutesPerDay,
+        timezone: config.timezone
+      }
+    };
+  }
+
+  static async getStats(employeeId: string) {
+    const summaries = await prisma.dailySummary.findMany({
+      where: { employeeId },
+      orderBy: { date: 'desc' },
+      take: 30
+    });
+
+    const leaves = await prisma.leaveRequest.count({
+      where: { 
+        employeeId, 
+        status: 'APPROVED',
+        startDate: { gte: new Date(new Date().getFullYear(), 0, 1) }
+      }
+    });
+
+    if (summaries.length === 0) {
+      return {
+        onTimeRate: 100,
+        avgWorkMinutes: 0,
+        leavesTaken: leaves,
+        totalDays: 0
+      };
+    }
+
+    const onTimeCount = summaries.filter(s => s.lateMinutes === 0).length;
+    const totalWorkMinutes = summaries.reduce((sum, s) => sum + s.totalWorkMinutes, 0);
+
+    return {
+      onTimeRate: Math.round((onTimeCount / summaries.length) * 100),
+      avgWorkMinutes: Math.round(totalWorkMinutes / summaries.length),
+      leavesTaken: leaves,
+      totalDays: summaries.length
+    };
   }
 
   static async startBreak(employeeId: string) {

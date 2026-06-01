@@ -4,6 +4,13 @@ export interface Employee {
   name: string;
   role: 'EMPLOYEE' | 'ADMIN' | 'SUPER_ADMIN';
   mustChangePassword: boolean;
+  employeeCode?: string;
+  designation?: string;
+  department?: string;
+  company?: {
+    name: string;
+    timezone: string;
+  };
 }
 
 export interface LoginInput {

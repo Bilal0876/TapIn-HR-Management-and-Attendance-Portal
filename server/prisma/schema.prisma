@@ -47,6 +47,8 @@ model Employee {
   monthlySummaries   MonthlySummary[]
   refreshTokens      RefreshToken[]
   passwordResetTokens PasswordResetToken[]
+  leaveRequests      LeaveRequest[]
+
 
   @@map("employees")
 }
@@ -227,4 +229,32 @@ model RefreshToken {
 
   @@index([employeeId])
   @@map("refresh_tokens")
+}
+
+// ─── Leaves ────────────────────────────────────────────────────────────────
+
+model LeaveRequest {
+  id                String           @id @default(cuid())
+  employeeId        String
+  type              LeaveType        @default(CASUAL)
+  startDate         DateTime         @db.Date
+  endDate           DateTime         @db.Date
+  reason            String
+  status            CorrectionStatus @default(PENDING) // Reusing CorrectionStatus enum (PENDING, APPROVED, REJECTED)
+  reviewedBy        String?          // admin employeeId
+  reviewedAt        DateTime?
+  reviewNote        String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  employee          Employee         @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId, status])
+  @@map("leave_requests")
+}
+
+enum LeaveType {
+  SICK
+  CASUAL
+  VACATION
+  OTHER
 }
