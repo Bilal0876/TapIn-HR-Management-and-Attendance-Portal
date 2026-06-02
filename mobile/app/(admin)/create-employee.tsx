@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   View, 
   Text, 
@@ -60,22 +60,51 @@ export default function CreateEmployeeScreen() {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors }, watch, setValue } = useForm({
     defaultValues: {
       name: '',
       email: '',
       employeeCode: '',
       designation: '',
       department: '',
+      joiningDate: '',
       role: 'EMPLOYEE'
     }
   });
+
+  const watchedDepartment = watch('department');
+  const watchedDesignation = watch('designation');
+
+  useEffect(() => {
+    let mounted = true;
+    const timer = setTimeout(async () => {
+      try {
+        const { employeeCode } = await employeeApi.suggestCode(watchedDepartment, watchedDesignation);
+        if (mounted) {
+          setValue('employeeCode', employeeCode);
+        }
+      } catch {
+        // Keep manual fallback from backend on create.
+      }
+    }, 300);
+
+    return () => {
+      mounted = false;
+      clearTimeout(timer);
+    };
+  }, [watchedDepartment, watchedDesignation, setValue]);
 
   const onSubmit = async (data: any) => {
     setLoading(true);
     setApiError(null);
     try {
-      await employeeApi.create(data);
+      const payload = {
+        ...data,
+        joiningDate: data.joiningDate
+          ? new Date(`${data.joiningDate}T00:00:00.000Z`).toISOString()
+          : undefined,
+      };
+      await employeeApi.create(payload);
       router.back();
     } catch (e: any) {
       setApiError(e.response?.data?.message || 'Failed to create employee');
@@ -129,15 +158,6 @@ export default function CreateEmployeeScreen() {
 
             <Controller
               control={control}
-              name="employeeCode"
-              rules={{ required: 'Employee code is required' }}
-              render={({ field: { onChange, value } }) => (
-                <StyledInput label="Employee ID" icon="finger-print-outline" value={value} onChangeText={onChange} placeholder="e.g. EMP-123" error={errors.employeeCode?.message} />
-              )}
-            />
-
-            <Controller
-              control={control}
               name="designation"
               render={({ field: { onChange, value } }) => (
                 <StyledInput label="Designation" icon="briefcase-outline" value={value} onChangeText={onChange} placeholder="e.g. Software Engineer" />
@@ -149,6 +169,43 @@ export default function CreateEmployeeScreen() {
               name="department"
               render={({ field: { onChange, value } }) => (
                 <StyledInput label="Department" icon="business-outline" value={value} onChangeText={onChange} placeholder="e.g. Engineering" />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="employeeCode"
+              render={({ field: { value } }) => (
+                <StyledInput
+                  label="Employee ID (Auto)"
+                  icon="finger-print-outline"
+                  value={value}
+                  onChangeText={() => {}}
+                  placeholder="Auto-generated from department/designation"
+                  editable={false}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="joiningDate"
+              rules={{
+                validate: (value) => {
+                  if (!value) return true;
+                  const isValid = /^\d{4}-\d{2}-\d{2}$/.test(value);
+                  return isValid || 'Use format YYYY-MM-DD';
+                },
+              }}
+              render={({ field: { onChange, value } }) => (
+                <StyledInput
+                  label="Joining Date"
+                  icon="calendar-outline"
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="YYYY-MM-DD (optional)"
+                  error={errors.joiningDate?.message}
+                />
               )}
             />
           </View>

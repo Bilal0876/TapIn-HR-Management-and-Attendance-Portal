@@ -7,7 +7,7 @@ import PDFDocument from 'pdfkit-table';
 export class ReportsService {
   static async generateMonthlyExcel(companyId: string, year: number, month: number) {
     const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0); // Last day of month
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999); // Include full last day
 
     const company = await prisma.company.findUnique({
       where: { id: companyId },
@@ -62,21 +62,33 @@ export class ReportsService {
     employees.forEach((emp) => {
       emp.attendanceRecords.forEach((record) => {
         const summary = record.dailySummary;
-        
+
+        const safeFormat = (date: any, fmt: string) => {
+          if (!date) return '-';
+          const d = new Date(date);
+          if (isNaN(d.getTime())) return '-';
+          try {
+            const zoned = toZonedTime(d, company.timezone || 'UTC');
+            if (isNaN(zoned.getTime())) return '-';
+            return format(zoned, fmt);
+          } catch {
+            return '-';
+          }
+        };
+
         const row = sheet.addRow({
           name: emp.name,
           code: emp.profile?.employeeCode || '-',
-          date: format(record.date, 'yyyy-MM-dd'),
+          date: safeFormat(record.date, 'yyyy-MM-dd'),
           status: record.status,
-          checkin: record.checkinTime ? format(toZonedTime(record.checkinTime, company.timezone), 'HH:mm') : '-',
-          checkout: record.checkoutTime ? format(toZonedTime(record.checkoutTime, company.timezone), 'HH:mm') : '-',
+          checkin: safeFormat(record.checkinTime, 'HH:mm'),
+          checkout: safeFormat(record.checkoutTime, 'HH:mm'),
           workMins: summary?.totalWorkMinutes ?? 0,
           breakMins: summary?.totalBreakMinutes ?? 0,
           lateMins: summary?.lateMinutes ?? 0,
           netDelta: summary?.netDeltaMinutes ?? 0,
         });
 
-        // Color coding for status
         if (record.status === 'ABSENT') {
           row.getCell('status').font = { color: { argb: 'FFFF0000' }, bold: true };
         } else if (record.status === 'FLAGGED') {
@@ -90,7 +102,7 @@ export class ReportsService {
 
   static async generateMonthlyPDF(companyId: string, year: number, month: number): Promise<PDFKit.PDFDocument> {
     const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0);
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 
     const data = await prisma.company.findUnique({
       where: { id: companyId },
@@ -123,13 +135,26 @@ export class ReportsService {
     data.employees.forEach((emp) => {
       emp.attendanceRecords.forEach((record) => {
         const summary = record.dailySummary;
+        const safeFormat = (date: any, fmt: string) => {
+          if (!date) return '-';
+          const d = new Date(date);
+          if (isNaN(d.getTime())) return '-';
+          try {
+            const zoned = toZonedTime(d, data.timezone || 'UTC');
+            if (isNaN(zoned.getTime())) return '-';
+            return format(zoned, fmt);
+          } catch (e) {
+            return '-';
+          }
+        };
+
         tableRows.push([
           emp.name,
           emp.profile?.employeeCode || '-',
-          format(record.date, 'MMM dd'),
+          safeFormat(record.date, 'MMM dd'),
           record.status,
-          record.checkinTime ? format(toZonedTime(record.checkinTime, data.timezone), 'HH:mm') : '-',
-          record.checkoutTime ? format(toZonedTime(record.checkoutTime, data.timezone), 'HH:mm') : '-',
+          safeFormat(record.checkinTime, 'HH:mm'),
+          safeFormat(record.checkoutTime, 'HH:mm'),
           String(summary?.totalWorkMinutes ?? 0),
           String(summary?.netDeltaMinutes ?? 0),
         ]);
@@ -142,14 +167,91 @@ export class ReportsService {
       rows: tableRows,
     };
 
-    await doc.table(table, {
-      prepareHeader: () => doc.font("Helvetica-Bold").fontSize(10),
+    await (doc as any).table(table, {
+      prepareHeader: () => { doc.font("Helvetica-Bold").fontSize(10); },
       prepareRow: (row: any, index: any, column: any, rect: any, rowRect: any) => {
         doc.font("Helvetica").fontSize(8);
-        return doc;
       },
     });
 
-    return doc;
+    return doc as any;
+  }
+
+  static async generateEmployeeMonthlyPDF(
+    companyId: string,
+    employeeId: string,
+    year: number,
+    month: number
+  ): Promise<PDFKit.PDFDocument> {
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+    const employee = await prisma.employee.findFirst({
+      where: { id: employeeId, companyId, isActive: true },
+      include: {
+        company: true,
+        profile: true,
+        attendanceRecords: {
+          where: { date: { gte: startDate, lte: endDate } },
+          include: { dailySummary: true },
+          orderBy: { date: 'asc' },
+        },
+      },
+    });
+
+    if (!employee) throw new Error('Employee not found');
+
+    const doc = new PDFDocument({ margin: 30, size: 'A4' });
+
+    doc.fontSize(18).text(employee.company.name, { align: 'center' });
+    doc
+      .fontSize(12)
+      .text(`Attendance Report - ${employee.name} - ${format(startDate, 'MMMM yyyy')}`, {
+        align: 'center',
+      });
+    doc.moveDown();
+
+    const tableRows: string[][] = [];
+    employee.attendanceRecords.forEach((record) => {
+      const summary = record.dailySummary;
+      const safeFormat = (date: any, fmt: string) => {
+        if (!date) return '-';
+        const d = new Date(date);
+        if (isNaN(d.getTime())) return '-';
+        try {
+          const zoned = toZonedTime(d, employee.company.timezone || 'UTC');
+          if (isNaN(zoned.getTime())) return '-';
+          return format(zoned, fmt);
+        } catch {
+          return '-';
+        }
+      };
+
+      tableRows.push([
+        safeFormat(record.date, 'MMM dd'),
+        record.status,
+        safeFormat(record.checkinTime, 'HH:mm'),
+        safeFormat(record.checkoutTime, 'HH:mm'),
+        String(summary?.totalWorkMinutes ?? 0),
+        String(summary?.netDeltaMinutes ?? 0),
+      ]);
+    });
+
+    const table = {
+      title: 'Attendance Details',
+      headers: ['Date', 'Status', 'In', 'Out', 'Work', 'Net'],
+      rows: tableRows,
+    };
+
+    await (doc as any).table(table, {
+      prepareHeader: () => {
+        doc.font('Helvetica-Bold').fontSize(10);
+      },
+      prepareRow: () => {
+        doc.font('Helvetica').fontSize(8);
+      },
+    });
+
+    return doc as any;
   }
 }

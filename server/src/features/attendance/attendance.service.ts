@@ -134,7 +134,7 @@ export class AttendanceService {
       
       const config = resolveConfig(employee.company as any, (employee.profile as any) || {});
       return { 
-        status: AttendanceStatus.IDLE,
+        status: 'IDLE' as any,
         config: {
           expectedCheckin: `${config.expectedCheckinHour.toString().padStart(2, '0')}:${config.expectedCheckinMinute.toString().padStart(2, '0')}`,
           expectedWorkMinutes: config.workMinutesPerDay,

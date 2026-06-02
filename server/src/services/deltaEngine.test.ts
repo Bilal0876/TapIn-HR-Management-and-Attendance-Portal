@@ -72,7 +72,7 @@ describe('calculateDelta', () => {
 
   test('arrived late AND compensated with overtime — net correct', () => {
     const result = calculateDelta(d(9, 20), d(18, 20), [{ startTime: d(13), endTime: d(14) }], baseConfig);
-    expect(result.lateMinutes).toBe(10);
+    expect(result.lateMinutes).toBe(0);
     expect(result.totalWorkMinutes).toBe(480);
     expect(result.netDeltaMinutes).toBe(0);
   });

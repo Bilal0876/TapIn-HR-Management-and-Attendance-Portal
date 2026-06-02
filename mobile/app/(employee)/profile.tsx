@@ -6,7 +6,8 @@ import {
   TouchableOpacity, 
   ScrollView, 
   StatusBar,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuthStore } from '@/features/auth/store';
@@ -73,7 +74,7 @@ export default function ProfileScreen() {
                     {employee?.name ? employee.name[0].toUpperCase() : 'U'}
                   </Text>
                 </LinearGradient>
-                <TouchableOpacity style={s.editBadge}>
+                <TouchableOpacity style={s.editBadge} onPress={() => Alert.alert('Coming Soon', 'Profile picture editing will be available in a future update.')}>
                   <Ionicons name="camera" size={14} color={C.white} />
                 </TouchableOpacity>
               </View>
@@ -121,13 +122,13 @@ export default function ProfileScreen() {
           <View style={s.section}>
              <Text style={s.sectionTitle}>Preferences</Text>
              <View style={s.card}>
-                <TouchableOpacity style={s.actionRow}>
+                <TouchableOpacity style={s.actionRow} onPress={() => Alert.alert('Coming Soon', 'Notification settings will be available soon.')}>
                    <Ionicons name="notifications-outline" size={20} color={C.navy} />
                    <Text style={s.actionText}>Notifications</Text>
                    <Ionicons name="chevron-forward" size={18} color={C.subtle} style={{marginLeft: 'auto'}} />
                 </TouchableOpacity>
                 <View style={s.divider} />
-                <TouchableOpacity style={s.actionRow}>
+                <TouchableOpacity style={s.actionRow} onPress={() => Alert.alert('Coming Soon', 'Privacy controls will be available in the next version.')}>
                    <Ionicons name="shield-checkmark-outline" size={20} color={C.navy} />
                    <Text style={s.actionText}>Privacy & Security</Text>
                    <Ionicons name="chevron-forward" size={18} color={C.subtle} style={{marginLeft: 'auto'}} />

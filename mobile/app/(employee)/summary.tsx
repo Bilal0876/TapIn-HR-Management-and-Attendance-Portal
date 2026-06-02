@@ -73,16 +73,16 @@ export default function EmployeeSummaryScreen() {
         {/* ── Content ── */}
         <View style={s.content}>
            <View style={s.grid}>
-              <AchievementCard 
+               <AchievementCard 
                 icon="time-outline" 
                 label="TOTAL HOURS" 
-                value={`${stats.monthProgress.totalHours}h`} 
+                value={`${stats.totalHours}h`} 
                 color={C.accent} 
               />
               <AchievementCard 
                 icon="calendar-outline" 
                 label="DAYS PRESENT" 
-                value={stats.monthProgress.daysPresent} 
+                value={stats.daysPresent} 
                 color={C.teal} 
               />
            </View>
@@ -91,11 +91,11 @@ export default function EmployeeSummaryScreen() {
               <Text style={s.sectionTitle}>Precision Score</Text>
               <View style={s.scoreCard}>
                  <View style={s.scoreInfo}>
-                    <Text style={s.scoreValue}>{stats.monthProgress.onTimeRate}%</Text>
+                    <Text style={s.scoreValue}>{stats.onTimeRate}%</Text>
                     <Text style={s.scoreLabel}>On-Time Arrival</Text>
                  </View>
                  <View style={s.progressTrack}>
-                    <View style={[s.progressBar, { width: `${stats.monthProgress.onTimeRate}%` }]} />
+                    <View style={[s.progressBar, { width: `${stats.onTimeRate}%` }]} />
                  </View>
               </View>
            </View>
@@ -105,7 +105,7 @@ export default function EmployeeSummaryScreen() {
               <View style={s.goalItem}>
                  <Ionicons name="trophy-outline" size={20} color="#F59E0B" />
                  <Text style={s.goalText}>Complete 20 check-ins this month</Text>
-                 <Text style={s.goalProgress}>{stats.monthProgress.daysPresent}/20</Text>
+                 <Text style={s.goalProgress}>{stats.daysPresent}/20</Text>
               </View>
               <View style={s.goalItem}>
                  <Ionicons name="shield-checkmark-outline" size={20} color={C.teal} />

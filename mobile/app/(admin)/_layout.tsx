@@ -59,6 +59,10 @@ export default function AdminLayout() {
         name="create-employee"
         options={{ href: null }}
       />
+      <Tabs.Screen
+        name="shift-settings"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }

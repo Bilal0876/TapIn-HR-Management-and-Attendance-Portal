@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   View, 
   Text, 
@@ -6,12 +6,14 @@ import {
   ScrollView, 
   StatusBar, 
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import { attendanceApi } from '@/features/attendance/api';
 
 const { width: SCREEN_W } = Dimensions.get('window');
 
@@ -40,6 +42,28 @@ function StatCard({ title, value, icon, colors, subtitle }: any) {
 }
 
 export default function AdminHome() {
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadDashboard = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await attendanceApi.getCompanyStats();
+      setStats(data);
+    } catch (e) {
+      console.error('Failed to load admin stats:', e);
+      setError('Could not load dashboard stats.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
   return (
     <SafeAreaView style={s.root}>
       <StatusBar barStyle="dark-content" />
@@ -51,29 +75,42 @@ export default function AdminHome() {
             <Text style={s.headerTitle}>System Overview</Text>
             <Text style={s.headerDate}>{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</Text>
           </View>
-          <TouchableOpacity style={s.notifBtn}>
-            <Ionicons name="notifications-outline" size={24} color={C.navy} />
-            <View style={s.notifBadge} />
-          </TouchableOpacity>
         </View>
 
         {/* ── Big Stats ── */}
+        {error ? (
+          <View style={s.errorCard}>
+            <Ionicons name="alert-circle-outline" size={18} color="#EF4444" />
+            <Text style={s.errorText}>{error}</Text>
+            <TouchableOpacity style={s.retryBtn} onPress={loadDashboard}>
+              <Text style={s.retryText}>Retry</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
         <View style={s.statRow}>
           <StatCard 
             title="Today's Attendance" 
-            value="86%" 
+            value={loading ? '--' : `${Math.round(stats?.overallAttendance ?? 0)}%`}
             icon="people" 
             colors={[C.accent, '#3B82F6']} 
-            subtitle="+4% from yesterday"
+            subtitle={loading ? 'Syncing...' : `${stats?.present ?? 0} / ${stats?.total ?? 0} present`}
           />
           <StatCard 
-            title="Late Arrivals" 
-            value="3" 
+            title="Avg. Work Hours" 
+            value={loading ? '--' : `${stats?.avgWorkHours ?? 0}h`}
             icon="time" 
-            colors={['#FF6B6B', '#EE5253']} 
-            subtitle="Needs attention"
+            colors={['#8B5CF6', '#7C3AED']} 
+            subtitle="Team average (last 7 days)"
           />
         </View>
+        )}
+
+        {loading && (
+          <View style={s.loadingRow}>
+            <ActivityIndicator size="small" color={C.accent} />
+            <Text style={s.loadingText}>Refreshing dashboard...</Text>
+          </View>
+        )}
 
         {/* ── Action Grid ── */}
         <View style={s.section}>
@@ -100,36 +137,12 @@ export default function AdminHome() {
               <Text style={s.actionLabel}>Reports</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={s.actionItem}>
+            <TouchableOpacity style={s.actionItem} onPress={() => router.push('/(admin)/profile')}>
               <View style={[s.actionIcon, { backgroundColor: '#FDF2F9' }]}>
                 <Ionicons name="settings-outline" size={24} color="#DB2777" />
               </View>
               <Text style={s.actionLabel}>Settings</Text>
             </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* ── Recent Activity ── */}
-        <View style={s.section}>
-          <View style={s.sectionHeader}>
-             <Text style={s.sectionTitle}>Real-time Feed</Text>
-             <TouchableOpacity><Text style={s.viewAll}>View All</Text></TouchableOpacity>
-          </View>
-          <View style={s.activityCard}>
-             {[
-               { name: 'John Doe', time: '09:02 AM', status: 'Checked In', color: C.teal },
-               { name: 'Sarah Wilson', time: '08:55 AM', status: 'Checked In', color: C.teal },
-               { name: 'Mike Ross', time: '08:45 AM', status: 'Late', color: '#FF6B6B' },
-             ].map((item, i) => (
-               <View key={i} style={[s.activityRow, i === 2 && { borderBottomWidth: 0 }]}>
-                  <View style={[s.activityDot, { backgroundColor: item.color }]} />
-                  <View style={s.activityInfo}>
-                     <Text style={s.activityName}>{item.name}</Text>
-                     <Text style={s.activitySub}>{item.status} today</Text>
-                  </View>
-                  <Text style={s.activityTime}>{item.time}</Text>
-               </View>
-             ))}
           </View>
         </View>
 
@@ -150,28 +163,21 @@ const s = StyleSheet.create({
   },
   headerTitle: { fontSize: 24, fontWeight: '800', color: C.navy, letterSpacing: -0.5 },
   headerDate: { fontSize: 13, color: C.subtle, marginTop: 2, fontWeight: '500' },
-  notifBtn: { 
-    width: 44, 
-    height: 44, 
-    borderRadius: 12, 
-    backgroundColor: C.white, 
-    justifyContent: 'center', 
-    alignItems: 'center',
+  errorCard: {
+    marginHorizontal: 20,
+    marginTop: 8,
+    backgroundColor: '#FEF2F2',
+    borderColor: '#FECACA',
     borderWidth: 1,
-    borderColor: '#E2E8F0'
+    borderRadius: 14,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
-  notifBadge: { 
-    position: 'absolute', 
-    top: 10, 
-    right: 10, 
-    width: 8, 
-    height: 8, 
-    borderRadius: 4, 
-    backgroundColor: '#FF6B6B',
-    borderWidth: 1.5,
-    borderColor: C.white
-  },
-  
+  errorText: { flex: 1, color: '#991B1B', fontSize: 12, fontWeight: '600' },
+  retryBtn: { backgroundColor: C.white, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
+  retryText: { color: C.navy, fontSize: 12, fontWeight: '700' },
   statRow: { flexDirection: 'row', paddingHorizontal: 20, gap: 12 },
   statCard: { 
     flex: 1, 
@@ -188,6 +194,8 @@ const s = StyleSheet.create({
   statValue: { fontSize: 22, fontWeight: '800', color: C.white },
   statTitle: { fontSize: 13, fontWeight: '700', color: C.white, marginBottom: 4 },
   statSub: { fontSize: 10, color: 'rgba(255,255,255,0.7)', fontWeight: '500' },
+  loadingRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 24, marginTop: 12 },
+  loadingText: { color: C.subtle, fontSize: 12, fontWeight: '600' },
   
   section: { marginTop: 32, paddingHorizontal: 24 },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
@@ -209,12 +217,4 @@ const s = StyleSheet.create({
   },
   actionIcon: { width: 50, height: 50, borderRadius: 16, justifyContent: 'center', alignItems: 'center', marginBottom: 10 },
   actionLabel: { fontSize: 14, fontWeight: '700', color: C.navy },
-  
-  activityCard: { backgroundColor: C.white, borderRadius: 24, padding: 8, shadowColor: '#64748B', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.05, shadowRadius: 10, elevation: 2 },
-  activityRow: { flexDirection: 'row', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: '#F1F5F9' },
-  activityDot: { width: 8, height: 8, borderRadius: 4, marginRight: 12 },
-  activityInfo: { flex: 1 },
-  activityName: { fontSize: 15, fontWeight: '700', color: C.navy },
-  activitySub: { fontSize: 12, color: C.subtle, marginTop: 2 },
-  activityTime: { fontSize: 12, fontWeight: '600', color: C.navy }
 });

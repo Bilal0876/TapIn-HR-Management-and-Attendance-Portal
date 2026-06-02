@@ -9,7 +9,8 @@ import {
   KeyboardAvoidingView, 
   Platform,
   ActivityIndicator,
-  StatusBar
+  StatusBar,
+  Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, router } from 'expo-router';
@@ -38,7 +39,7 @@ export default function RequestCorrectionScreen() {
   const [outTime, setOutTime] = useState('18:00');
 
   const handleSubmit = async () => {
-    if (!reason.trim()) return alert('Please provide a reason');
+    if (!reason.trim()) return Alert.alert('Error', 'Please provide a reason');
     
     setLoading(true);
     try {
@@ -57,7 +58,7 @@ export default function RequestCorrectionScreen() {
       router.back();
     } catch (e) {
       console.error(e);
-      alert('Failed to submit request');
+      Alert.alert('Error', 'Failed to submit request');
     } finally {
       setLoading(false);
     }

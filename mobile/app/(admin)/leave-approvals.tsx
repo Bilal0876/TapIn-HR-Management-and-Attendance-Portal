@@ -18,7 +18,7 @@ const C = {
 };
 
 export default function LeaveApprovalsScreen() {
-  const { data: pending, isLoading, refetch } = useAdminPendingLeaves();
+  const { data: pending, isLoading, refetch, error } = useAdminPendingLeaves();
   const reviewLeave = useReviewLeave();
 
   const handleReview = (id: string, status: 'APPROVED' | 'REJECTED') => {
@@ -54,10 +54,18 @@ export default function LeaveApprovalsScreen() {
 
         {isLoading ? (
           <ActivityIndicator color={C.accent} style={{ marginTop: 40 }} />
+        ) : error ? (
+          <View style={s.errorCard}>
+            <Ionicons name="alert-circle-outline" size={18} color={C.danger} />
+            <Text style={s.errorText}>Could not load leave requests.</Text>
+            <TouchableOpacity style={s.retryBtn} onPress={() => refetch()}>
+              <Text style={s.retryText}>Retry</Text>
+            </TouchableOpacity>
+          </View>
         ) : pending?.length === 0 ? (
           <View style={s.empty}>
             <Ionicons name="checkmark-done-circle-outline" size={64} color={C.border} />
-            <Text style={s.emptyText}>All leave requests processed!</Text>
+            <Text style={s.emptyText}>No pending leave requests.</Text>
           </View>
         ) : (
           pending?.map((req: LeaveRequest) => (
@@ -85,14 +93,14 @@ export default function LeaveApprovalsScreen() {
 
               <View style={s.actions}>
                 <TouchableOpacity 
-                   style={[s.btn, s.rejectBtn]} 
+                   style={[s.btn, s.rejectBtn, reviewLeave.isPending && s.disabledBtn]} 
                    onPress={() => handleReview(req.id, 'REJECTED')}
                    disabled={reviewLeave.isPending}
                 >
                   <Text style={s.rejectText}>Reject</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                   style={[s.btn, s.approveBtn]} 
+                   style={[s.btn, s.approveBtn, reviewLeave.isPending && s.disabledBtn]} 
                    onPress={() => handleReview(req.id, 'APPROVED')}
                    disabled={reviewLeave.isPending}
                 >
@@ -122,10 +130,24 @@ const s = StyleSheet.create({
   reason: { fontSize: 13, color: C.gray, lineHeight: 18, marginBottom: 16 },
   actions: { flexDirection: 'row', gap: 10 },
   btn: { flex: 1, paddingVertical: 12, borderRadius: 12, alignItems: 'center' },
+  disabledBtn: { opacity: 0.6 },
   rejectBtn: { backgroundColor: '#FEF2F2' },
   approveBtn: { backgroundColor: C.success },
   rejectText: { color: C.danger, fontWeight: '700', fontSize: 14 },
   approveText: { color: C.white, fontWeight: '700', fontSize: 14 },
+  errorCard: {
+    backgroundColor: '#FEF2F2',
+    borderColor: '#FECACA',
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  errorText: { flex: 1, color: '#991B1B', fontSize: 12, fontWeight: '600' },
+  retryBtn: { backgroundColor: C.white, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
+  retryText: { color: C.navy, fontSize: 12, fontWeight: '700' },
   empty: { alignItems: 'center', marginTop: 60, opacity: 0.5 },
   emptyText: { marginTop: 12, fontSize: 16, color: C.gray, fontWeight: '600' }
 });

@@ -1,5 +1,5 @@
 import { prisma } from '../../lib/prisma';
-import { startOfMonth, endOfMonth, subDays, startOfDay } from 'date-fns';
+import { startOfMonth, endOfMonth, subDays, startOfDay, endOfDay, eachDayOfInterval, format } from 'date-fns';
 import { AttendanceStatus } from '@prisma/client';
 
 export class AnalyticsService {
@@ -42,6 +42,77 @@ export class AnalyticsService {
     };
 
     return stats;
+  }
+
+  static async getCompanyTrend(companyId: string, days: number = 7) {
+    const safeDays = Math.max(1, Math.min(days, 31));
+    const today = startOfDay(new Date());
+    const startDate = startOfDay(subDays(today, safeDays - 1));
+    const endDate = endOfDay(today);
+
+    const [totalEmployees, records, summaries] = await Promise.all([
+      prisma.employee.count({ where: { companyId, isActive: true } }),
+      prisma.attendanceRecord.findMany({
+        where: {
+          employee: { companyId },
+          date: { gte: startDate, lte: endDate },
+        },
+        select: { date: true },
+      }),
+      prisma.dailySummary.findMany({
+        where: {
+          attendanceRecord: { employee: { companyId } },
+          date: { gte: startDate, lte: endDate },
+        },
+        select: { date: true, lateMinutes: true, totalWorkMinutes: true },
+      }),
+    ]);
+
+    const dateRange = eachDayOfInterval({ start: startDate, end: today });
+    const recordsByDate = new Map<string, number>();
+    const onTimeByDate = new Map<string, { onTime: number; total: number; workMinutes: number }>();
+
+    for (const record of records) {
+      const key = format(record.date, 'yyyy-MM-dd');
+      recordsByDate.set(key, (recordsByDate.get(key) || 0) + 1);
+    }
+
+    for (const summary of summaries) {
+      const key = format(summary.date, 'yyyy-MM-dd');
+      const current = onTimeByDate.get(key) || { onTime: 0, total: 0, workMinutes: 0 };
+      current.total += 1;
+      current.workMinutes += summary.totalWorkMinutes;
+      if (summary.lateMinutes === 0) current.onTime += 1;
+      onTimeByDate.set(key, current);
+    }
+
+    const trend = dateRange.map((date) => {
+      const key = format(date, 'yyyy-MM-dd');
+      const present = recordsByDate.get(key) || 0;
+      const summary = onTimeByDate.get(key) || { onTime: 0, total: 0, workMinutes: 0 };
+      const attendanceRate = totalEmployees > 0 ? Math.round((present / totalEmployees) * 100) : 0;
+      const onTimeRate = summary.total > 0 ? Math.round((summary.onTime / summary.total) * 100) : 0;
+      const avgWorkHours = summary.total > 0 ? Number((summary.workMinutes / summary.total / 60).toFixed(1)) : 0;
+
+      return {
+        date: key,
+        dayLabel: format(date, 'EEE'),
+        attendanceRate,
+        onTimeRate,
+        present,
+        total: totalEmployees,
+        avgWorkHours,
+      };
+    });
+
+    const latest = trend[trend.length - 1];
+    const previous = trend.length > 1 ? trend[trend.length - 2] : latest;
+
+    return {
+      trend,
+      latestOnTimeRate: latest?.onTimeRate || 0,
+      onTimeDelta: (latest?.onTimeRate || 0) - (previous?.onTimeRate || 0),
+    };
   }
 
   /**

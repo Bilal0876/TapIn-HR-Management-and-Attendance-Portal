@@ -60,4 +60,33 @@ export class ReportsController {
       next(e);
     }
   }
+
+  static async downloadMyMonthlyPDF(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { year, month } = req.query;
+      const { companyId, id: employeeId } = (req as any).employee;
+
+      if (!year || !month) {
+        return res.status(400).json({ error: 'Year and month are required' });
+      }
+
+      const doc = await ReportsService.generateEmployeeMonthlyPDF(
+        companyId,
+        employeeId,
+        parseInt(year as string),
+        parseInt(month as string)
+      );
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename=my-attendance-${year}-${month}.pdf`
+      );
+
+      doc.pipe(res);
+      doc.end();
+    } catch (e) {
+      next(e);
+    }
+  }
 }

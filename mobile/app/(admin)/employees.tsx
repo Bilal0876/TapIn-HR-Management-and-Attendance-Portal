@@ -7,7 +7,9 @@ import {
   TouchableOpacity, 
   ActivityIndicator, 
   StatusBar,
-  Animated
+  Animated,
+  TextInput,
+  Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { employeeApi } from '@/features/employees/api';
@@ -27,21 +29,37 @@ const C = {
 export default function EmployeesScreen() {
   const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
   const scrollY = React.useRef(new Animated.Value(0)).current;
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       const data = await employeeApi.list();
       setEmployees(data);
     } catch (e) {
       console.error(e);
+      setError('Could not load employees.');
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => { loadData(); }, [loadData]);
+
+  const filteredEmployees = employees.filter((item) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      item.name?.toLowerCase().includes(q) ||
+      item.email?.toLowerCase().includes(q) ||
+      item.profile?.department?.toLowerCase().includes(q) ||
+      item.profile?.designation?.toLowerCase().includes(q) ||
+      item.profile?.employeeCode?.toLowerCase().includes(q)
+    );
+  });
 
   const renderItem = ({ item, index }: { item: any, index: number }) => {
     // Subtle entry animation for list items
@@ -50,12 +68,30 @@ export default function EmployeesScreen() {
       outputRange: [1, 1, 1, 0],
     });
 
+    const handleDeactivate = () => {
+      Alert.alert(
+        'Remove Employee?',
+        `This will deactivate ${item.name} and remove them from active lists.`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Remove',
+            style: 'destructive',
+            onPress: async () => {
+              try {
+                await employeeApi.deactivate(item.id);
+                await loadData();
+              } catch (e: any) {
+                Alert.alert('Error', e?.response?.data?.message || 'Failed to remove employee.');
+              }
+            },
+          },
+        ]
+      );
+    };
+
     return (
-      <TouchableOpacity 
-        activeOpacity={0.7} 
-        onPress={() => {/* View Details */}}
-        style={s.cardContainer}
-      >
+      <View style={s.cardContainer}>
         <View style={s.card}>
           <LinearGradient
             colors={['#F1F5F9', '#FFFFFF']}
@@ -81,11 +117,12 @@ export default function EmployeesScreen() {
             </View>
           </View>
 
-          <View style={s.chevronBox}>
-            <Ionicons name="chevron-forward" size={18} color="#CBD5E1" />
-          </View>
+          <TouchableOpacity style={s.removeBtn} onPress={handleDeactivate}>
+            <Ionicons name="trash-outline" size={16} color="#EF4444" />
+          </TouchableOpacity>
+
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
 
@@ -97,7 +134,7 @@ export default function EmployeesScreen() {
       <View style={s.header}>
         <View>
           <Text style={s.headerTitle}>Team Directory</Text>
-          <Text style={s.headerSub}>{employees.length} Active Members</Text>
+          <Text style={s.headerSub}>{filteredEmployees.length} Active Members</Text>
         </View>
         <TouchableOpacity 
           activeOpacity={0.8}
@@ -114,11 +151,34 @@ export default function EmployeesScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* ── Search Bar Placeholder ── */}
+      {/* ── Search Bar ── */}
       <View style={s.searchBar}>
         <Ionicons name="search" size={20} color={C.subtle} />
-        <Text style={s.searchText}>Search by name or department...</Text>
+        <TextInput
+          value={query}
+          onChangeText={setQuery}
+          placeholder="Search by name, email, department..."
+          placeholderTextColor="#94A3B8"
+          style={s.searchInput}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+        {query.length > 0 && (
+          <TouchableOpacity onPress={() => setQuery('')}>
+            <Ionicons name="close-circle" size={18} color="#94A3B8" />
+          </TouchableOpacity>
+        )}
       </View>
+
+      {error && (
+        <View style={s.errorCard}>
+          <Ionicons name="alert-circle-outline" size={18} color="#EF4444" />
+          <Text style={s.errorText}>{error}</Text>
+          <TouchableOpacity style={s.retryBtn} onPress={loadData}>
+            <Text style={s.retryText}>Retry</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {loading ? (
         <View style={s.loader}>
@@ -127,7 +187,7 @@ export default function EmployeesScreen() {
         </View>
       ) : (
         <FlatList
-          data={employees}
+          data={filteredEmployees}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           contentContainerStyle={s.list}
@@ -138,6 +198,14 @@ export default function EmployeesScreen() {
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
             { useNativeDriver: false }
           )}
+          ListEmptyComponent={
+            <View style={s.empty}>
+              <Ionicons name="search-outline" size={52} color="#CBD5E1" />
+              <Text style={s.emptyText}>
+                {query.trim() ? 'No employees match your search.' : 'No active employees yet.'}
+              </Text>
+            </View>
+          }
         />
       )}
     </SafeAreaView>
@@ -180,7 +248,22 @@ const s = StyleSheet.create({
     borderColor: '#E2E8F0',
     gap: 12
   },
-  searchText: { color: '#94A3B8', fontSize: 14 },
+  errorCard: {
+    marginHorizontal: 24,
+    marginBottom: 12,
+    backgroundColor: '#FEF2F2',
+    borderColor: '#FECACA',
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  errorText: { flex: 1, color: '#991B1B', fontSize: 12, fontWeight: '600' },
+  retryBtn: { backgroundColor: C.white, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
+  retryText: { color: C.navy, fontSize: 12, fontWeight: '700' },
+  searchInput: { flex: 1, color: C.navy, fontSize: 14, fontWeight: '500' },
   list: { paddingHorizontal: 24, paddingBottom: 120 },
   cardContainer: { marginBottom: 12 },
   card: { 
@@ -215,7 +298,19 @@ const s = StyleSheet.create({
   deptText: { fontSize: 12, color: C.subtle, fontWeight: '500' },
   emailRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 6 },
   email: { fontSize: 12, color: '#94A3B8' },
-  chevronBox: { marginLeft: 8 },
+  removeBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 10,
+    backgroundColor: '#FEF2F2',
+    borderWidth: 1,
+    borderColor: '#FECACA',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+  },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  loaderText: { marginTop: 12, color: C.subtle, fontSize: 14, fontWeight: '500' }
+  loaderText: { marginTop: 12, color: C.subtle, fontSize: 14, fontWeight: '500' },
+  empty: { alignItems: 'center', marginTop: 40, paddingHorizontal: 24 },
+  emptyText: { marginTop: 12, color: C.subtle, fontSize: 13, fontWeight: '600', textAlign: 'center' }
 });

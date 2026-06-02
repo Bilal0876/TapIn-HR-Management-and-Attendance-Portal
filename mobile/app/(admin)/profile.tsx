@@ -5,8 +5,7 @@ import {
   StyleSheet, 
   TouchableOpacity, 
   ScrollView, 
-  StatusBar,
-  Dimensions
+  StatusBar
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuthStore } from '@/features/auth/store';
@@ -39,6 +38,7 @@ function SettingRow({ icon, label, color = C.navy, onPress }: any) {
 
 export default function AdminProfileScreen() {
   const { employee, clearAuth } = useAuthStore();
+  const avatarLetter = employee?.name?.[0]?.toUpperCase() || 'A';
 
   const handleLogout = async () => {
     await secureStorage.removeTokens();
@@ -63,7 +63,7 @@ export default function AdminProfileScreen() {
                   colors={['#818CF8', '#4F46E5']}
                   style={s.avatarGradient}
                 >
-                  <Text style={s.avatarText}>A</Text>
+                  <Text style={s.avatarText}>{avatarLetter}</Text>
                 </LinearGradient>
                 <View style={s.adminBadge}>
                   <Ionicons name="shield-checkmark" size={12} color={C.white} />
@@ -72,7 +72,7 @@ export default function AdminProfileScreen() {
               
               <Text style={s.name}>{employee?.name || 'Administrator'}</Text>
               <View style={s.badge}>
-                <Text style={s.badgeText}>SYSTEM SUPER ADMIN</Text>
+                <Text style={s.badgeText}>{employee?.role || 'ADMIN'}</Text>
               </View>
             </View>
           </SafeAreaView>
@@ -80,24 +80,40 @@ export default function AdminProfileScreen() {
 
         {/* ── Content ── */}
         <View style={s.content}>
-          
           <View style={s.section}>
-            <Text style={s.sectionTitle}>System Management</Text>
+            <Text style={s.sectionTitle}>Account</Text>
             <View style={s.card}>
-              <SettingRow icon="settings-outline" label="Global Settings" color={C.accent} />
+              <View style={s.infoRow}>
+                <Text style={s.infoLabel}>Name</Text>
+                <Text style={s.infoValue}>{employee?.name || '-'}</Text>
+              </View>
               <View style={s.divider} />
-              <SettingRow icon="notifications-outline" label="Alert Configurations" color={C.teal} />
+              <View style={s.infoRow}>
+                <Text style={s.infoLabel}>Email</Text>
+                <Text style={s.infoValue}>{employee?.email || '-'}</Text>
+              </View>
               <View style={s.divider} />
-              <SettingRow icon="people-outline" label="Role Permissions" color="#7C5CBF" />
+              <View style={s.infoRow}>
+                <Text style={s.infoLabel}>Role</Text>
+                <Text style={s.infoValue}>{employee?.role || 'ADMIN'}</Text>
+              </View>
             </View>
           </View>
-
+          
           <View style={s.section}>
-            <Text style={s.sectionTitle}>Support & Sync</Text>
+            <Text style={s.sectionTitle}>Quick Actions</Text>
             <View style={s.card}>
-              <SettingRow icon="cloud-download-outline" label="External Export" color="#F59E0B" />
+              <SettingRow icon="people-outline" label="Team Directory" color={C.accent} onPress={() => router.push('/(admin)/employees')} />
               <View style={s.divider} />
-              <SettingRow icon="help-circle-outline" label="Admin Support" color="#10B981" />
+              <SettingRow icon="person-add-outline" label="Add Employee" color={C.teal} onPress={() => router.push('/(admin)/create-employee')} />
+              <View style={s.divider} />
+              <SettingRow icon="time-outline" label="Shift Settings" color="#2563EB" onPress={() => router.push('/(admin)/shift-settings')} />
+              <View style={s.divider} />
+              <SettingRow icon="calendar-outline" label="Leave Approvals" color="#7C5CBF" onPress={() => router.push('/(admin)/leave-approvals')} />
+              <View style={s.divider} />
+              <SettingRow icon="checkmark-done-outline" label="Corrections Queue" color="#F59E0B" onPress={() => router.push('/(admin)/corrections')} />
+              <View style={s.divider} />
+              <SettingRow icon="bar-chart-outline" label="Reports & Exports" color="#10B981" onPress={() => router.push('/(admin)/reports')} />
             </View>
           </View>
 
@@ -163,6 +179,9 @@ const s = StyleSheet.create({
   rowIcon: { width: 42, height: 42, borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginRight: 16 },
   rowLabel: { fontSize: 15, color: C.navy, fontWeight: '700' },
   divider: { height: 1, backgroundColor: '#F8FAFC' },
+  infoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 14 },
+  infoLabel: { fontSize: 13, color: C.subtle, fontWeight: '600' },
+  infoValue: { fontSize: 14, color: C.navy, fontWeight: '700' },
   
   logoutBtn: { marginTop: 40 },
   logoutGradient: { 

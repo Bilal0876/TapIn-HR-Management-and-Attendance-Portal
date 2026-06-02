@@ -10,6 +10,7 @@ const router = Router();
 router.use(authenticate, requireAdmin);
 
 router.get('/', EmployeesController.list);
+router.get('/suggest-code', EmployeesController.suggestCode);
 router.post('/', validate({ body: CreateEmployeeSchema }), EmployeesController.create);
 router.get('/:id', EmployeesController.getOne);
 router.delete('/:id', EmployeesController.deactivate);

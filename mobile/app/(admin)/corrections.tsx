@@ -29,13 +29,17 @@ export default function AdminCorrectionsScreen() {
   const [requests, setRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [reviewing, setReviewing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
+    setError(null);
     try {
       const data = await correctionApi.getPending();
       setRequests(data);
     } catch (e) {
       console.error(e);
+      setError('Could not load correction requests.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -54,10 +58,13 @@ export default function AdminCorrectionsScreen() {
           text: 'Confirm', 
           onPress: async () => {
             try {
+              setReviewing(true);
               await correctionApi.review(id, { status });
-              loadData();
+              await loadData();
             } catch (e) {
-              alert('Review failed');
+              Alert.alert('Error', 'Failed to update correction request');
+            } finally {
+              setReviewing(false);
             }
           }
         }
@@ -103,16 +110,18 @@ export default function AdminCorrectionsScreen() {
 
       <View style={s.actions}>
         <TouchableOpacity 
-          style={[s.actionBtn, s.rejectBtn]} 
+          style={[s.actionBtn, s.rejectBtn, reviewing && s.disabledBtn]} 
           onPress={() => handleReview(item.id, 'REJECTED')}
+          disabled={reviewing}
         >
           <Ionicons name="close" size={20} color={C.danger} />
           <Text style={s.rejectText}>Reject</Text>
         </TouchableOpacity>
         
         <TouchableOpacity 
-          style={[s.actionBtn, s.approveBtn]} 
+          style={[s.actionBtn, s.approveBtn, reviewing && s.disabledBtn]} 
           onPress={() => handleReview(item.id, 'APPROVED')}
+          disabled={reviewing}
         >
           <Ionicons name="checkmark" size={20} color={C.white} />
           <Text style={s.approveText}>Approve</Text>
@@ -133,6 +142,14 @@ export default function AdminCorrectionsScreen() {
         <View style={s.center}>
           <ActivityIndicator color={C.accent} size="large" />
         </View>
+      ) : error ? (
+        <View style={s.errorCard}>
+          <Ionicons name="alert-circle-outline" size={18} color={C.danger} />
+          <Text style={s.errorText}>{error}</Text>
+          <TouchableOpacity style={s.retryBtn} onPress={loadData}>
+            <Text style={s.retryText}>Retry</Text>
+          </TouchableOpacity>
+        </View>
       ) : (
         <FlatList
           data={requests}
@@ -144,8 +161,8 @@ export default function AdminCorrectionsScreen() {
           }
           ListEmptyComponent={
             <View style={s.empty}>
-              <Ionicons name="happy-outline" size={60} color="#E2E8F0" />
-              <Text style={s.emptyText}>All caught up!</Text>
+              <Ionicons name="checkmark-done-circle-outline" size={60} color="#CBD5E1" />
+              <Text style={s.emptyText}>No pending correction requests.</Text>
             </View>
           }
         />
@@ -177,11 +194,27 @@ const s = StyleSheet.create({
   reasonText: { fontSize: 14, color: '#475569', lineHeight: 20, fontWeight: '500' },
   actions: { flexDirection: 'row', gap: 12 },
   actionBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 14, borderRadius: 16, gap: 8 },
+  disabledBtn: { opacity: 0.6 },
   rejectBtn: { backgroundColor: '#FFF1F1', borderWidth: 1, borderColor: '#FFE4E4' },
   rejectText: { color: C.danger, fontWeight: '700' },
   approveBtn: { backgroundColor: C.accent },
   approveText: { color: C.white, fontWeight: '700' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  errorCard: {
+    marginHorizontal: 20,
+    marginTop: 8,
+    backgroundColor: '#FEF2F2',
+    borderColor: '#FECACA',
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  errorText: { flex: 1, color: '#991B1B', fontSize: 12, fontWeight: '600' },
+  retryBtn: { backgroundColor: C.white, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
+  retryText: { color: C.navy, fontSize: 12, fontWeight: '700' },
   empty: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100 },
-  emptyText: { marginTop: 16, fontSize: 16, fontWeight: '600', color: '#CBD5E1' }
+  emptyText: { marginTop: 16, fontSize: 16, fontWeight: '600', color: C.subtle }
 });

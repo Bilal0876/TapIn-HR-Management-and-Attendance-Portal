@@ -15,14 +15,16 @@ const secureStorage: StateStorage = {
   },
   removeItem: async (name: string): Promise<void> => {
     if (Platform.OS === 'web') return localStorage.removeItem(name);
-    await SecureStore.removeItemAsync(name);
+    await SecureStore.deleteItemAsync(name);
   },
 };
 
 interface AuthState {
   employee: Employee | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
-  setAuth: (employee: Employee) => void;
+  setAuth: (employee: Employee, accessToken: string, refreshToken: string) => void;
   clearAuth: () => void;
 }
 
@@ -30,9 +32,12 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       employee: null,
+      accessToken: null,
+      refreshToken: null,
       isAuthenticated: false,
-      setAuth: (employee) => set({ employee, isAuthenticated: true }),
-      clearAuth: () => set({ employee: null, isAuthenticated: false }),
+      setAuth: (employee, accessToken, refreshToken) => 
+        set({ employee, accessToken, refreshToken, isAuthenticated: true }),
+      clearAuth: () => set({ employee: null, accessToken: null, refreshToken: null, isAuthenticated: false }),
     }),
     {
       name: 'auth-storage',

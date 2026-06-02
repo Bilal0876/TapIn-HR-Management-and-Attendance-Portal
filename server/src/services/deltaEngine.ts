@@ -67,7 +67,9 @@ export function calculateDelta(
   expectedCheckin.setHours(expectedCheckinHour, expectedCheckinMinute, 0, 0);
 
   const minutesPastExpected = differenceInMinutes(localCheckin, expectedCheckin);
-  const lateMinutes = isNaN(minutesPastExpected) ? 0 : Math.max(0, minutesPastExpected - gracePeriodMinutes);
+  const rawLateMinutes = isNaN(minutesPastExpected)
+    ? 0
+    : Math.max(0, minutesPastExpected - gracePeriodMinutes);
 
   const totalOnSiteMinutes = differenceInMinutes(checkoutTime, checkinTime);
 
@@ -79,6 +81,10 @@ export function calculateDelta(
   const totalWorkMinutes = totalOnSiteMinutes - totalBreakMinutes;
 
   const workDeltaMinutes = totalWorkMinutes - workMinutesPerDay;
+
+  // If the employee completed required work minutes (or exceeded),
+  // do not count late arrival as a penalty.
+  const lateMinutes = workDeltaMinutes >= 0 ? 0 : rawLateMinutes;
 
   let breakDeltaMinutes = breakMinutesAllocated - totalBreakMinutes;
   

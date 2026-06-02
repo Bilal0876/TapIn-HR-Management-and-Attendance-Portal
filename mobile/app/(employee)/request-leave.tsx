@@ -79,11 +79,23 @@ function RequestLeaveScreen() {
             <Ionicons name="calendar-outline" size={20} color={C.accent} />
             <Text style={s.dateValue}>{format(startDate, 'PPP')}</Text>
           </TouchableOpacity>
-          {showStart && (
+          {showStart && DateTimePicker && (
             <DateTimePicker
               value={startDate}
               mode="date"
-              onChange={(e, date) => { setShowStart(false); if (date) setStartDate(date); }}
+              onChange={(e: any, date?: Date) => { setShowStart(false); if (date) setStartDate(date); }}
+            />
+          )}
+          {showStart && !DateTimePicker && (
+            <TextInput
+              style={s.manualDateInput}
+              placeholder="YYYY-MM-DD"
+              onSubmitEditing={(e) => {
+                const d = new Date(e.nativeEvent.text);
+                if (!isNaN(d.getTime())) setStartDate(d);
+                setShowStart(false);
+              }}
+              autoFocus
             />
           )}
         </View>
@@ -94,11 +106,23 @@ function RequestLeaveScreen() {
             <Ionicons name="calendar-outline" size={20} color={C.accent} />
             <Text style={s.dateValue}>{format(endDate, 'PPP')}</Text>
           </TouchableOpacity>
-          {showEnd && (
+          {showEnd && DateTimePicker && (
             <DateTimePicker
               value={endDate}
               mode="date"
-              onChange={(e, date) => { setShowEnd(false); if (date) setEndDate(date); }}
+               onChange={(e: any, date?: Date) => { setShowEnd(false); if (date) setEndDate(date); }}
+            />
+          )}
+          {showEnd && !DateTimePicker && (
+            <TextInput
+              style={s.manualDateInput}
+              placeholder="YYYY-MM-DD"
+              onSubmitEditing={(e) => {
+                const d = new Date(e.nativeEvent.text);
+                if (!isNaN(d.getTime())) setEndDate(d);
+                setShowEnd(false);
+              }}
+              autoFocus
             />
           )}
         </View>
@@ -143,6 +167,7 @@ const s = StyleSheet.create({
   typeTextActive: { color: C.white },
   datePicker: { padding: 16, backgroundColor: C.bg, borderRadius: 12, flexDirection: 'row', alignItems: 'center', gap: 12, borderWidth: 1, borderColor: C.border },
   dateValue: { fontSize: 16, color: C.navy, fontWeight: '600' },
+  manualDateInput: { padding: 12, backgroundColor: '#FEF2F2', borderRadius: 10, marginTop: 8, fontSize: 16, fontWeight: '700', color: C.accent, borderWidth: 1, borderColor: '#FECACA' },
   input: { padding: 16, backgroundColor: C.bg, borderRadius: 12, minHeight: 120, fontSize: 15, color: C.navy, textAlignVertical: 'top', borderWidth: 1, borderColor: C.border },
   submitBtn: { backgroundColor: C.accent, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 10 },
   submitText: { color: C.white, fontSize: 16, fontWeight: '800' }

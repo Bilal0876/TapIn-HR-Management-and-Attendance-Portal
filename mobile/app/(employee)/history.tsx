@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { 
   View, 
   Text, 
@@ -7,14 +7,18 @@ import {
   TouchableOpacity, 
   ActivityIndicator, 
   StatusBar,
-  RefreshControl
+  RefreshControl,
+  Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { attendanceApi } from '@/features/attendance/api';
+import { reportsApi } from '@/features/reports/api';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { format, parseISO } from 'date-fns';
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system/legacy';
 
 const C = {
   navy: '#0F1D3A',
@@ -31,6 +35,23 @@ export default function HistoryScreen() {
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [downloadingReport, setDownloadingReport] = useState(false);
+  const [reportUri, setReportUri] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<'ALL' | 'ISSUES'>('ALL');
+  const currentMonth = new Date().getMonth() + 1;
+  const currentYear = new Date().getFullYear();
+
+  const ensureShareableFileUri = async (uri: string) => {
+    if (uri.startsWith('file://')) return uri;
+    if (uri.startsWith('content://')) {
+      const baseDir = FileSystem.cacheDirectory || FileSystem.documentDirectory;
+      if (!baseDir) throw new Error('No writable directory available for sharing.');
+      const targetUri = `${baseDir}my-report-${currentYear}-${currentMonth}-${Date.now()}.pdf`;
+      await FileSystem.copyAsync({ from: uri, to: targetUri });
+      return targetUri;
+    }
+    throw new Error(`Unsupported URI scheme for sharing: ${uri}`);
+  };
 
   const loadData = useCallback(async () => {
     try {
@@ -50,6 +71,47 @@ export default function HistoryScreen() {
     setRefreshing(true);
     loadData();
   };
+
+  const handleDownloadReport = async () => {
+    setDownloadingReport(true);
+    setReportUri(null);
+    try {
+      const uri = await reportsApi.downloadMyMonthlyPDF(currentYear, currentMonth);
+      setReportUri(uri);
+    } catch (e) {
+      console.error(e);
+      Alert.alert('Download failed', 'Could not download your monthly PDF right now.');
+    } finally {
+      setDownloadingReport(false);
+    }
+  };
+
+  const handleOpenReport = async () => {
+    if (!reportUri) return;
+    try {
+      const shareableUri = await ensureShareableFileUri(reportUri);
+      await Sharing.shareAsync(shareableUri, {
+        mimeType: 'application/pdf',
+        dialogTitle: 'My Monthly Attendance PDF',
+        UTI: 'com.adobe.pdf',
+      });
+    } catch (e) {
+      console.error(e);
+      Alert.alert('Open failed', 'Could not open the downloaded PDF.');
+    }
+  };
+
+  const issueCount = useMemo(
+    () => history.filter((item) => !item.checkoutTime || (item.dailySummary?.lateMinutes ?? 0) > 0).length,
+    [history]
+  );
+
+  const visibleHistory = useMemo(() => {
+    if (activeFilter === 'ISSUES') {
+      return history.filter((item) => !item.checkoutTime || (item.dailySummary?.lateMinutes ?? 0) > 0);
+    }
+    return history;
+  }, [activeFilter, history]);
 
   const renderItem = ({ item }: { item: any }) => {
     const hasIssue = !item.checkoutTime || item.dailySummary?.lateMinutes > 0;
@@ -116,7 +178,54 @@ export default function HistoryScreen() {
       <StatusBar barStyle="dark-content" />
       <View style={s.header}>
         <Text style={s.headerTitle}>Attendance History</Text>
-        <Text style={s.headerSub}>Review and manage your logs</Text>
+        <Text style={s.headerSub}>Review logs and request corrections quickly</Text>
+      </View>
+
+      <View style={s.quickStatsRow}>
+        <View style={s.quickStatCard}>
+          <Text style={s.quickStatLabel}>TOTAL LOGS</Text>
+          <Text style={s.quickStatValue}>{history.length}</Text>
+        </View>
+        <View style={s.quickStatCard}>
+          <Text style={s.quickStatLabel}>NEEDS REVIEW</Text>
+          <Text style={[s.quickStatValue, issueCount > 0 && { color: C.warning }]}>{issueCount}</Text>
+        </View>
+      </View>
+
+      <View style={s.reportCard}>
+        <View style={s.reportInfo}>
+          <Ionicons name="document-text-outline" size={20} color={C.accent} />
+          <Text style={s.reportText}>Monthly PDF ({format(new Date(currentYear, currentMonth - 1, 1), 'MMM yyyy')})</Text>
+        </View>
+        <TouchableOpacity
+          style={s.reportBtn}
+          onPress={reportUri ? handleOpenReport : handleDownloadReport}
+          disabled={downloadingReport}
+        >
+          {downloadingReport ? (
+            <ActivityIndicator color={C.white} size="small" />
+          ) : (
+            <>
+              <Ionicons name={reportUri ? 'open-outline' : 'download-outline'} size={16} color={C.white} />
+              <Text style={s.reportBtnText}>{reportUri ? 'Open PDF' : 'Download PDF'}</Text>
+            </>
+          )}
+        </TouchableOpacity>
+      </View>
+
+      <View style={s.filterRow}>
+        <TouchableOpacity
+          style={[s.filterChip, activeFilter === 'ALL' && s.filterChipActive]}
+          onPress={() => setActiveFilter('ALL')}
+        >
+          <Text style={[s.filterText, activeFilter === 'ALL' && s.filterTextActive]}>All Records</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[s.filterChip, activeFilter === 'ISSUES' && s.filterChipActive]}
+          onPress={() => setActiveFilter('ISSUES')}
+        >
+          <Text style={[s.filterText, activeFilter === 'ISSUES' && s.filterTextActive]}>Needs Review</Text>
+        </TouchableOpacity>
       </View>
 
       {loading ? (
@@ -125,7 +234,7 @@ export default function HistoryScreen() {
         </View>
       ) : (
         <FlatList
-          data={history}
+          data={visibleHistory}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           contentContainerStyle={s.list}
@@ -135,7 +244,9 @@ export default function HistoryScreen() {
           ListEmptyComponent={
             <View style={s.empty}>
               <Ionicons name="calendar-outline" size={60} color="#E2E8F0" />
-              <Text style={s.emptyText}>No logs found yet</Text>
+              <Text style={s.emptyText}>
+                {activeFilter === 'ISSUES' ? 'No records need review.' : 'No logs found yet.'}
+              </Text>
             </View>
           }
         />
@@ -149,7 +260,54 @@ const s = StyleSheet.create({
   header: { padding: 24, paddingBottom: 16 },
   headerTitle: { fontSize: 28, fontWeight: '800', color: C.navy, letterSpacing: -0.5 },
   headerSub: { fontSize: 14, color: C.subtle, marginTop: 4, fontWeight: '500' },
+  quickStatsRow: { flexDirection: 'row', gap: 10, marginHorizontal: 20, marginBottom: 12 },
+  quickStatCard: {
+    flex: 1,
+    backgroundColor: C.white,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+  },
+  quickStatLabel: { fontSize: 10, fontWeight: '700', color: C.subtle, letterSpacing: 0.6 },
+  quickStatValue: { marginTop: 4, fontSize: 22, fontWeight: '800', color: C.navy },
   list: { paddingHorizontal: 20, paddingBottom: 120 },
+  reportCard: {
+    marginHorizontal: 20,
+    marginBottom: 12,
+    backgroundColor: C.white,
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  reportInfo: { flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 },
+  reportText: { fontSize: 12, color: C.navy, fontWeight: '700' },
+  reportBtn: {
+    backgroundColor: C.accent,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  reportBtnText: { color: C.white, fontSize: 12, fontWeight: '700' },
+  filterRow: { flexDirection: 'row', gap: 8, marginHorizontal: 20, marginBottom: 12 },
+  filterChip: {
+    backgroundColor: '#EEF2F7',
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  filterChipActive: { backgroundColor: C.navy },
+  filterText: { color: C.navy, fontSize: 12, fontWeight: '700' },
+  filterTextActive: { color: C.white },
   card: { 
     backgroundColor: C.white, 
     borderRadius: 24, 
@@ -172,7 +330,7 @@ const s = StyleSheet.create({
   footer: { flexDirection: 'row', alignItems: 'center', paddingTop: 16, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
   footerItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   footerText: { fontSize: 13, fontWeight: '600', color: '#64748B' },
-  correctionAction: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, backgroundColor: '#F8FAFC', padding: 12, borderRadius: 12 },
+  correctionAction: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, backgroundColor: '#F8FAFC', padding: 12, borderRadius: 12, borderWidth: 1, borderColor: '#E5EAF2' },
   correctionLabel: { fontSize: 13, color: '#64748B', fontWeight: '500' },
   correctionBtn: { fontSize: 13, color: C.accent, fontWeight: '700' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
