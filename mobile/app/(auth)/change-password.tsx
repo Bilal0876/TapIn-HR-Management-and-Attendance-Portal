@@ -1,16 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-  Dimensions,
-  Animated,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
+  View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Dimensions, Animated, KeyboardAvoidingView,
+  Platform, StatusBar,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -119,7 +110,7 @@ function FloatInput({
 // ── Main screen ───────────────────────────────────────────────────────────────
 export default function ChangePasswordScreen() {
   const [apiError, setApiError] = useState<string | null>(null);
-  const { employee, setAuth } = useAuthStore();
+  const { employee, accessToken, refreshToken, setAuth } = useAuthStore();
 
   const fadeIn = useRef(new Animated.Value(0)).current;
   const slideUp = useRef(new Animated.Value(40)).current;
@@ -140,7 +131,7 @@ export default function ChangePasswordScreen() {
       setApiError(null);
       await authApi.changePassword(data);
       if (employee) {
-        setAuth({ ...employee, mustChangePassword: false });
+        setAuth({ ...employee, mustChangePassword: false }, accessToken!, refreshToken!);
         router.replace(employee.role === 'EMPLOYEE' ? '/(employee)/' : '/(admin)/');
       }
     } catch (e: any) {
@@ -177,8 +168,8 @@ export default function ChangePasswordScreen() {
         <Animated.View style={[styles.card, { opacity: fadeIn, transform: [{ translateY: slideUp }] }]}>
           <Text style={styles.cardTitle}>Set New Password</Text>
           <Text style={styles.cardSubtitle}>
-            {isForceReset 
-              ? "You must change your initial password to continue." 
+            {isForceReset
+              ? "You must change your initial password to continue."
               : "Update your password below."}
           </Text>
 
@@ -211,7 +202,7 @@ export default function ChangePasswordScreen() {
           <Controller
             control={control}
             name="newPassword"
-            rules={{ 
+            rules={{
               required: 'New password is required',
               minLength: { value: 8, message: 'Must be at least 8 characters' }
             }}

@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
-import { correctionService } from './correction.service';
+import { Request, Response, NextFunction } from 'express';
+import { CorrectionService } from './correction.service';
 
-export const correctionController = {
-  async requestCorrection(req: Request, res: Response) {
+export class CorrectionController {
+  static async requestCorrection(req: Request, res: Response, next: NextFunction) {
     try {
       const { recordId, requestedCheckin, requestedCheckout, reason } = req.body;
-      const result = await correctionService.createRequest(
+      const result = await CorrectionService.createRequest(
         (req as any).employee.id, 
         recordId, 
         { 
@@ -16,36 +16,36 @@ export const correctionController = {
       );
       res.json(result);
     } catch (e: any) {
-      res.status(400).json({ message: e.message });
+      next(e);
     }
-  },
+  }
 
-  async getMyRequests(req: Request, res: Response) {
+  static async getMyRequests(req: Request, res: Response, next: NextFunction) {
     try {
-      const results = await correctionService.listUserRequests((req as any).employee.id);
+      const results = await CorrectionService.listUserRequests((req as any).employee.id);
       res.json(results);
     } catch (e: any) {
-      res.status(500).json({ message: e.message });
+      next(e);
     }
-  },
+  }
 
-  async getPendingRequests(req: Request, res: Response) {
+  static async getPendingRequests(req: Request, res: Response, next: NextFunction) {
     try {
-      const results = await correctionService.listPendingRequests();
+      const results = await CorrectionService.listPendingRequests();
       res.json(results);
     } catch (e: any) {
-      res.status(500).json({ message: e.message });
+      next(e);
     }
-  },
+  }
 
-  async reviewRequest(req: Request, res: Response) {
+  static async reviewRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       const { status, reviewNote } = req.body;
-      const result = await correctionService.reviewRequest(id, (req as any).employee.id, status, reviewNote);
+      const result = await CorrectionService.reviewRequest(id, (req as any).employee.id, status, reviewNote);
       res.json(result);
     } catch (e: any) {
-      res.status(400).json({ message: e.message });
+      next(e);
     }
   }
-};
+}

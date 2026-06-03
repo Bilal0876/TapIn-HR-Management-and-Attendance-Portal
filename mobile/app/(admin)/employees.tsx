@@ -1,21 +1,14 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  FlatList, 
-  TouchableOpacity, 
-  ActivityIndicator, 
-  StatusBar,
-  Animated,
-  TextInput,
-  Alert
+import React from 'react';
+import {
+  View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, StatusBar, Animated, TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { employeeApi } from '@/features/employees/api';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+
+// Hooks
+import { useEmployees } from '@/hooks/useEmployees';
 
 const C = {
   navy: '#0F1D3A',
@@ -27,69 +20,19 @@ const C = {
 };
 
 export default function EmployeesScreen() {
-  const [employees, setEmployees] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [query, setQuery] = useState('');
+  const {
+    filteredEmployees,
+    loading,
+    error,
+    query,
+    setQuery,
+    loadData,
+    handleDeactivate
+  } = useEmployees();
+
   const scrollY = React.useRef(new Animated.Value(0)).current;
 
-  const loadData = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await employeeApi.list();
-      setEmployees(data);
-    } catch (e) {
-      console.error(e);
-      setError('Could not load employees.');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { loadData(); }, [loadData]);
-
-  const filteredEmployees = employees.filter((item) => {
-    const q = query.trim().toLowerCase();
-    if (!q) return true;
-    return (
-      item.name?.toLowerCase().includes(q) ||
-      item.email?.toLowerCase().includes(q) ||
-      item.profile?.department?.toLowerCase().includes(q) ||
-      item.profile?.designation?.toLowerCase().includes(q) ||
-      item.profile?.employeeCode?.toLowerCase().includes(q)
-    );
-  });
-
   const renderItem = ({ item, index }: { item: any, index: number }) => {
-    // Subtle entry animation for list items
-    const opacity = scrollY.interpolate({
-      inputRange: [-1, 0, index * 100, (index + 2) * 100],
-      outputRange: [1, 1, 1, 0],
-    });
-
-    const handleDeactivate = () => {
-      Alert.alert(
-        'Remove Employee?',
-        `This will deactivate ${item.name} and remove them from active lists.`,
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Remove',
-            style: 'destructive',
-            onPress: async () => {
-              try {
-                await employeeApi.deactivate(item.id);
-                await loadData();
-              } catch (e: any) {
-                Alert.alert('Error', e?.response?.data?.message || 'Failed to remove employee.');
-              }
-            },
-          },
-        ]
-      );
-    };
-
     return (
       <View style={s.cardContainer}>
         <View style={s.card}>
@@ -101,7 +44,14 @@ export default function EmployeesScreen() {
           </LinearGradient>
 
           <View style={s.info}>
-            <Text style={s.name}>{item.name}</Text>
+            <View style={s.nameRow}>
+              <Text style={s.name}>{item.name}</Text>
+              {item.role !== 'EMPLOYEE' && (
+                <View style={s.roleBadge}>
+                  <Text style={s.roleBadgeText}>{item.role.replace('_', ' ')}</Text>
+                </View>
+              )}
+            </View>
             <View style={s.tagRow}>
               <View style={[s.tag, { backgroundColor: '#E0F2FE' }]}>
                 <Text style={[s.tagText, { color: '#0369A1' }]}>
@@ -117,10 +67,9 @@ export default function EmployeesScreen() {
             </View>
           </View>
 
-          <TouchableOpacity style={s.removeBtn} onPress={handleDeactivate}>
+          <TouchableOpacity style={s.removeBtn} onPress={() => handleDeactivate(item)}>
             <Ionicons name="trash-outline" size={16} color="#EF4444" />
           </TouchableOpacity>
-
         </View>
       </View>
     );
@@ -129,14 +78,14 @@ export default function EmployeesScreen() {
   return (
     <SafeAreaView style={s.root}>
       <StatusBar barStyle="dark-content" />
-      
+
       {/* ── Header ── */}
       <View style={s.header}>
         <View>
           <Text style={s.headerTitle}>Team Directory</Text>
           <Text style={s.headerSub}>{filteredEmployees.length} Active Members</Text>
         </View>
-        <TouchableOpacity 
+        <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => router.push('/(admin)/create-employee')}
         >
@@ -214,21 +163,21 @@ export default function EmployeesScreen() {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  header: { 
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    alignItems: 'center', 
-    paddingHorizontal: 24, 
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 24,
     paddingTop: 12,
     paddingBottom: 20
   },
   headerTitle: { fontSize: 28, fontWeight: '800', color: C.navy, letterSpacing: -0.5 },
   headerSub: { fontSize: 14, color: C.subtle, marginTop: 2, fontWeight: '500' },
-  addBtn: { 
-    width: 48, 
-    height: 48, 
-    borderRadius: 16, 
-    justifyContent: 'center', 
+  addBtn: {
+    width: 48,
+    height: 48,
+    borderRadius: 16,
+    justifyContent: 'center',
     alignItems: 'center',
     shadowColor: C.accent,
     shadowOffset: { width: 0, height: 4 },
@@ -266,11 +215,11 @@ const s = StyleSheet.create({
   searchInput: { flex: 1, color: C.navy, fontSize: 14, fontWeight: '500' },
   list: { paddingHorizontal: 24, paddingBottom: 120 },
   cardContainer: { marginBottom: 12 },
-  card: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: C.white, 
-    padding: 16, 
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: C.white,
+    padding: 16,
     borderRadius: 20,
     shadowColor: '#64748B',
     shadowOffset: { width: 0, height: 2 },
@@ -278,11 +227,11 @@ const s = StyleSheet.create({
     shadowRadius: 10,
     elevation: 3
   },
-  avatarContainer: { 
-    width: 60, 
-    height: 60, 
-    borderRadius: 18, 
-    justifyContent: 'center', 
+  avatarContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 18,
+    justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
     borderWidth: 1,
@@ -298,6 +247,9 @@ const s = StyleSheet.create({
   deptText: { fontSize: 12, color: C.subtle, fontWeight: '500' },
   emailRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 6 },
   email: { fontSize: 12, color: '#94A3B8' },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 },
+  roleBadge: { backgroundColor: '#F1F5F9', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
+  roleBadgeText: { fontSize: 9, fontWeight: '800', color: C.accent, textTransform: 'uppercase' },
   removeBtn: {
     width: 34,
     height: 34,

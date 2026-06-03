@@ -1,5 +1,6 @@
 export interface Employee {
   id: string;
+  companyId: string;
   email: string;
   name: string;
   role: 'EMPLOYEE' | 'ADMIN' | 'SUPER_ADMIN';

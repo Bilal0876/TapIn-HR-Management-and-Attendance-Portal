@@ -3,7 +3,7 @@ import { EmployeesController } from './employees.controller';
 import { authenticate } from '../../middleware/authenticate';
 import { requireAdmin } from '../../middleware/requireAdmin';
 import { validate } from '../../middleware/validate';
-import { CreateEmployeeSchema } from '../../schemas/employee.schemas';
+import { CreateEmployeeSchema } from './employees.dto';
 
 const router = Router();
 

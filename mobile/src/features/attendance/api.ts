@@ -72,4 +72,28 @@ export const attendanceApi = {
     const res = await apiClient.get('/corrections/my-requests');
     return res.data;
   },
+  getCompanyPulse: async () => {
+    const res = await apiClient.get('/attendance/stats/company-pulse');
+    return res.data as Array<{
+      name: string;
+      action: string;
+      time: string;
+      icon: string;
+      color: string;
+    }>;
+  },
+  getDailyLogs: async (date: Date) => {
+    const res = await apiClient.get('/attendance/logs/daily', {
+      params: { date: date.toISOString() }
+    });
+    return res.data as Array<{
+      id: string;
+      name: string;
+      designation: string;
+      status: string;
+      checkin: string;
+      checkout: string;
+      color: string;
+    }>;
+  },
 }

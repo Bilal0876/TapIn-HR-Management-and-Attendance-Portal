@@ -4,7 +4,7 @@ import { Role } from '@prisma/client';
 import { prisma } from '../../lib/prisma';
 import { createError } from '../../lib/errors';
 import { issueAccessToken, issueRefreshToken, verifyRefreshToken } from '../../services/tokenService';
-import { RegisterCompanyInput } from '../../schemas/auth.schemas';
+import { RegisterCompanyInput } from './auth.dto';
 
 export class AuthService {
   static async registerCompany(data: RegisterCompanyInput) {

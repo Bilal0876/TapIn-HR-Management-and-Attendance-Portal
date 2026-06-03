@@ -1,15 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-  Animated,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
+  View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Animated, KeyboardAvoidingView,
+  Platform, StatusBar,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -215,7 +207,7 @@ export default function RegisterScreen() {
       setApiError(null);
       const res = await authApi.registerCompany(data);
       await secureStorage.setTokens(res.accessToken, res.refreshToken);
-      setAuth(res.employee);
+      setAuth(res.employee, res.accessToken, res.refreshToken);
       router.replace('/(admin)/');
     } catch (e: any) {
       setApiError(e.response?.data?.message || 'Failed to register. Please try again.');

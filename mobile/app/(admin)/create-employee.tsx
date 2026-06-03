@@ -208,6 +208,30 @@ export default function CreateEmployeeScreen() {
                 />
               )}
             />
+
+            <View style={s.inputGroup}>
+              <Text style={s.label}>Account Permission Level</Text>
+              <Controller
+                control={control}
+                name="role"
+                render={({ field: { onChange, value } }) => (
+                  <View style={s.rolePicker}>
+                    {['EMPLOYEE', 'ADMIN', 'SUPER_ADMIN'].map((r) => (
+                      <TouchableOpacity
+                        key={r}
+                        style={[s.rolePill, value === r && s.rolePillActive]}
+                        onPress={() => onChange(r)}
+                        activeOpacity={0.7}
+                      >
+                        <Text style={[s.roleText, value === r && s.roleTextActive]}>
+                          {r.replace('_', ' ')}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              />
+            </View>
           </View>
 
           <TouchableOpacity style={s.submitBtn} onPress={handleSubmit(onSubmit)} disabled={loading} activeOpacity={0.85}>
@@ -276,5 +300,38 @@ const s = StyleSheet.create({
   gradientBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 18, gap: 10 },
   submitText: { color: C.white, fontSize: 16, fontWeight: '800' },
   errorBanner: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FEF2F2', padding: 14, borderRadius: 16, marginBottom: 20, gap: 10, borderWidth: 1, borderColor: '#FEE2E2' },
-  errorBannerText: { color: '#EF4444', fontSize: 13, fontWeight: '600', flex: 1 }
+  errorBannerText: { color: '#EF4444', fontSize: 13, fontWeight: '600', flex: 1 },
+  rolePicker: { 
+    flexDirection: 'row', 
+    backgroundColor: '#F8FAFC', 
+    borderRadius: 16, 
+    padding: 6,
+    gap: 4,
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+  },
+  rolePill: { 
+    flex: 1, 
+    paddingVertical: 10, 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    borderRadius: 12,
+  },
+  rolePillActive: { 
+    backgroundColor: C.white,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  roleText: { 
+    fontSize: 11, 
+    fontWeight: '700', 
+    color: C.label,
+    textTransform: 'uppercase'
+  },
+  roleTextActive: { 
+    color: C.accent 
+  },
 });

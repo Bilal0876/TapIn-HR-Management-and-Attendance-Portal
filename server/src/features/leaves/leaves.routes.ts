@@ -3,7 +3,7 @@ import { LeaveController } from './leaves.controller';
 import { authenticate } from '../../middleware/authenticate';
 import { requireAdmin } from '../../middleware/requireAdmin';
 import { validate } from '../../middleware/validate';
-import { CreateLeaveRequestSchema, ReviewLeaveRequestSchema } from '../../schemas/leave.schemas';
+import { CreateLeaveRequestSchema, ReviewLeaveRequestSchema } from './leaves.dto';
 
 const router = Router();
 

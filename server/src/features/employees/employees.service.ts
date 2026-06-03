@@ -2,7 +2,7 @@ import { Role } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { prisma } from '../../lib/prisma';
 import { createError } from '../../lib/errors';
-import { CreateEmployeeInput } from '../../schemas/employee.schemas';
+import { CreateEmployeeInput } from './employees.dto';
 
 export class EmployeeService {
   private static normalizeSegment(input?: string, fallback: string = 'GEN') {

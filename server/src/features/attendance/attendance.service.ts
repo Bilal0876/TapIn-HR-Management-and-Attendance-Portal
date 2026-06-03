@@ -3,8 +3,75 @@ import { prisma } from '../../lib/prisma';
 import { createError } from '../../lib/errors';
 import { calculateDelta, resolveConfig } from '../../services/deltaEngine';
 import { toZonedTime } from 'date-fns-tz';
+import { emitToCompany } from '../../lib/socket';
+import { UpdateShiftSettingsInput } from './attendance.dto';
 
 export class AttendanceService {
+  /**
+   * Get formatted company shift settings
+   */
+  static async getCompanyShiftSettings(companyId: string) {
+    const company = await prisma.company.findUnique({ where: { id: companyId } });
+    if (!company) throw createError.NotFound('Company not found');
+
+    const shiftStart = `${String(company.expectedCheckinHour).padStart(2, '0')}:${String(
+      company.expectedCheckinMinute
+    ).padStart(2, '0')}`;
+    const totalShiftMinutes = company.workMinutesPerDay + company.breakMinutesAllocated;
+    const endMinutes = company.expectedCheckinHour * 60 + company.expectedCheckinMinute + totalShiftMinutes;
+    const endHour = Math.floor((endMinutes % (24 * 60)) / 60);
+    const endMinute = endMinutes % 60;
+    const shiftEnd = `${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}`;
+
+    return {
+      shiftStart,
+      shiftEnd,
+      breakMinutesAllocated: company.breakMinutesAllocated,
+      gracePeriodMinutes: company.gracePeriodMinutes,
+      workMinutesPerDay: company.workMinutesPerDay,
+    };
+  }
+
+  /**
+   * Update company shift settings
+   */
+  static async updateCompanyShiftSettings(companyId: string, input: UpdateShiftSettingsInput) {
+    const parseTime = (value: string) => {
+      const match = /^([01]?\d|2[0-3]):([0-5]\d)$/.exec(value || '');
+      if (!match) return null;
+      return { hour: Number(match[1]), minute: Number(match[2]) };
+    };
+
+    const start = parseTime(input.shiftStart);
+    const end = parseTime(input.shiftEnd);
+    if (!start || !end) {
+      throw createError.BadRequest('Shift start/end must be in HH:mm format');
+    }
+
+    const breakMins = Math.max(0, Number(input.breakMinutesAllocated ?? 60));
+    const graceMins = Math.max(0, Number(input.gracePeriodMinutes ?? 10));
+
+    const startTotal = start.hour * 60 + start.minute;
+    let endTotal = end.hour * 60 + end.minute;
+    if (endTotal <= startTotal) endTotal += 24 * 60;
+    const totalShiftMinutes = endTotal - startTotal;
+    const workMinutesPerDay = totalShiftMinutes - breakMins;
+    if (workMinutesPerDay <= 0) {
+      throw createError.BadRequest('Shift duration must be greater than break minutes');
+    }
+
+    return prisma.company.update({
+      where: { id: companyId },
+      data: {
+        expectedCheckinHour: start.hour,
+        expectedCheckinMinute: start.minute,
+        workMinutesPerDay,
+        breakMinutesAllocated: breakMins,
+        gracePeriodMinutes: graceMins,
+      },
+    });
+  }
+
   static async checkin(employeeId: string, time?: Date) {
     const checkinTime = time || new Date();
     
@@ -21,14 +88,25 @@ export class AttendanceService {
       throw createError.Conflict('Already checked in today', 'ALREADY_CHECKED_IN');
     }
 
-    return prisma.attendanceRecord.create({
+    const record = await prisma.attendanceRecord.create({
       data: {
         employeeId,
         date,
         checkinTime,
         status: AttendanceStatus.PENDING,
       },
+      include: { employee: true }
     });
+
+    emitToCompany(record.employee.companyId, 'activity:pulse', {
+      name: record.employee.name,
+      action: 'Checked-in',
+      time: 'Just now',
+      icon: 'enter-outline',
+      color: '#1DB8A0'
+    });
+
+    return record;
   }
 
   static async checkout(employeeId: string, time?: Date) {
@@ -105,7 +183,17 @@ export class AttendanceService {
         },
       });
 
-      return { record: updatedRecord, summary: dailySummary };
+      const result = { record: updatedRecord, summary: dailySummary };
+
+      emitToCompany(record.employee.companyId, 'activity:pulse', {
+        name: record.employee.name,
+        action: 'Checked-out',
+        time: 'Just now',
+        icon: 'exit-outline',
+        color: '#6366F1'
+      });
+
+      return result;
     });
   }
 
@@ -212,13 +300,24 @@ export class AttendanceService {
       throw createError.Conflict('You already have an active break', 'BREAK_STILL_ACTIVE');
     }
 
-    return prisma.breakSession.create({
+    const breakSess = await prisma.breakSession.create({
       data: {
         attendanceRecordId: record.id,
         employeeId: employeeId,
         startTime: new Date(),
       },
+      include: { employee: true }
     });
+
+    emitToCompany(breakSess.employee.companyId, 'activity:pulse', {
+      name: breakSess.employee.name,
+      action: 'Took a break',
+      time: 'Just now',
+      icon: 'cafe-outline',
+      color: '#F59E0B'
+    });
+
+    return breakSess;
   }
 
   static async endBreak(employeeId: string) {
@@ -244,13 +343,24 @@ export class AttendanceService {
       (endTime.getTime() - activeBreak.startTime.getTime()) / (1000 * 60)
     );
 
-    return prisma.breakSession.update({
+    const updatedBreak = await prisma.breakSession.update({
       where: { id: activeBreak.id },
       data: {
         endTime,
         durationMinutes,
       },
+      include: { employee: true }
     });
+
+    emitToCompany(updatedBreak.employee.companyId, 'activity:pulse', {
+      name: updatedBreak.employee.name,
+      action: 'Back from break',
+      time: 'Just now',
+      icon: 'walk-outline',
+      color: '#10B981'
+    });
+
+    return updatedBreak;
   }
 
   static async getHistory(employeeId: string, limit: number = 30) {

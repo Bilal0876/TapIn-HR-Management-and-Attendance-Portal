@@ -1,16 +1,18 @@
 import { Router } from 'express';
-import { correctionController } from './correction.controller';
+import { CorrectionController } from './correction.controller';
 import { authenticate } from '../../middleware/authenticate';
 import { requireAdmin } from '../../middleware/requireAdmin';
+import { validate } from '../../middleware/validate';
+import { RequestCorrectionSchema, ReviewCorrectionSchema } from './correction.dto';
 
 const router = Router();
 
 // Employee routes
-router.post('/request', authenticate, correctionController.requestCorrection);
-router.get('/my-requests', authenticate, correctionController.getMyRequests);
+router.post('/request', authenticate, validate({ body: RequestCorrectionSchema }), CorrectionController.requestCorrection);
+router.get('/my-requests', authenticate, CorrectionController.getMyRequests);
 
 // Admin routes
-router.get('/pending', authenticate, requireAdmin, correctionController.getPendingRequests);
-router.patch('/:id/review', authenticate, requireAdmin, correctionController.reviewRequest);
+router.get('/pending', authenticate, requireAdmin, CorrectionController.getPendingRequests);
+router.patch('/:id/review', authenticate, requireAdmin, validate({ body: ReviewCorrectionSchema }), CorrectionController.reviewRequest);
 
 export default router;

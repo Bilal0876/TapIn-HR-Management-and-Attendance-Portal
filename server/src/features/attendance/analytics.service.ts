@@ -1,5 +1,5 @@
 import { prisma } from '../../lib/prisma';
-import { startOfMonth, endOfMonth, subDays, startOfDay, endOfDay, eachDayOfInterval, format } from 'date-fns';
+import { startOfMonth, endOfMonth, subDays, startOfDay, endOfDay, eachDayOfInterval, format, formatDistanceToNow } from 'date-fns';
 import { AttendanceStatus } from '@prisma/client';
 
 export class AnalyticsService {
@@ -161,5 +161,108 @@ export class AnalyticsService {
        totalHours: (totalMinutes / 60).toFixed(1),
        daysPresent: totalDays,
     };
+  }
+
+  /**
+   * Get detailed daily logs for specific date
+   */
+  static async getDailyLogs(companyId: string, date: Date) {
+    const dayStart = startOfDay(date);
+    const dayEnd = endOfDay(date);
+
+    const [employees, records] = await Promise.all([
+      prisma.employee.findMany({
+        where: { companyId, isActive: true },
+        select: { id: true, name: true, profile: { select: { designation: true } } }
+      }),
+      prisma.attendanceRecord.findMany({
+        where: {
+          employee: { companyId },
+          date: dayStart
+        },
+        include: {
+          dailySummary: true
+        }
+      })
+    ]);
+
+    return employees.map(emp => {
+      const record = records.find(r => r.employeeId === emp.id);
+      let status = 'ABSENT';
+      let checkin = '--:--';
+      let checkout = '--:--';
+      let color = '#94A3B8';
+
+      if (record) {
+        checkin = record.checkinTime ? format(record.checkinTime, 'hh:mm a') : '--:--';
+        checkout = record.checkoutTime ? format(record.checkoutTime, 'hh:mm a') : '--:--';
+        
+        if (record.status === 'PENDING') {
+          status = 'PRESENT';
+          color = '#1DB8A0';
+        } else if (record.dailySummary && record.dailySummary.lateMinutes > 0) {
+          status = 'LATE';
+          color = '#F59E0B';
+        } else if (record.status === 'COMPLETE') {
+          status = 'ON-TIME';
+          color = '#10B981';
+        }
+      }
+
+      return {
+        id: emp.id,
+        name: emp.name,
+        designation: emp.profile?.designation || 'Staff',
+        status,
+        checkin,
+        checkout,
+        color
+      };
+    });
+  }
+
+  /**
+   * Get recent activity for admin pulse feed
+   */
+  static async getCompanyPulse(companyId: string) {
+    const today = startOfDay(new Date());
+
+    const records = await prisma.attendanceRecord.findMany({
+      where: { 
+        employee: { companyId },
+        updatedAt: { gte: today }
+      },
+      include: { employee: true },
+      orderBy: { updatedAt: 'desc' },
+      take: 15
+    });
+
+    return records.map(r => {
+      let action = 'Activity';
+      let icon = 'eye-outline';
+      let color = '#64748B';
+
+      if (r.status === AttendanceStatus.PENDING) {
+        action = 'Checked-in';
+        icon = 'enter-outline';
+        color = '#1DB8A0';
+      } else if (r.status === AttendanceStatus.COMPLETE) {
+        action = 'Checked-out';
+        icon = 'exit-outline';
+        color = '#6366F1';
+      } else if (r.status === AttendanceStatus.FLAGGED) {
+        action = 'System Flagged';
+        icon = 'warning-outline';
+        color = '#EF4444';
+      }
+
+      return {
+        name: r.employee.name,
+        action,
+        time: format(r.updatedAt, 'hh:mm a'),
+        icon,
+        color
+      };
+    });
   }
 }

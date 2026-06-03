@@ -1,14 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  FlatList, 
-  TouchableOpacity, 
-  ActivityIndicator, 
-  StatusBar,
-  RefreshControl,
-  Alert
+import {
+  View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, StatusBar, RefreshControl, Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { correctionApi } from '@/features/corrections/api';
@@ -54,8 +46,8 @@ export default function AdminCorrectionsScreen() {
       'Do you want to confirm this review?',
       [
         { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Confirm', 
+        {
+          text: 'Confirm',
           onPress: async () => {
             try {
               setReviewing(true);
@@ -109,17 +101,17 @@ export default function AdminCorrectionsScreen() {
       </View>
 
       <View style={s.actions}>
-        <TouchableOpacity 
-          style={[s.actionBtn, s.rejectBtn, reviewing && s.disabledBtn]} 
+        <TouchableOpacity
+          style={[s.actionBtn, s.rejectBtn, reviewing && s.disabledBtn]}
           onPress={() => handleReview(item.id, 'REJECTED')}
           disabled={reviewing}
         >
           <Ionicons name="close" size={20} color={C.danger} />
           <Text style={s.rejectText}>Reject</Text>
         </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={[s.actionBtn, s.approveBtn, reviewing && s.disabledBtn]} 
+
+        <TouchableOpacity
+          style={[s.actionBtn, s.approveBtn, reviewing && s.disabledBtn]}
           onPress={() => handleReview(item.id, 'APPROVED')}
           disabled={reviewing}
         >

@@ -3,8 +3,8 @@ import { CorrectionStatus } from '@prisma/client';
 import { NotificationService } from '../../services/notificationService';
 import { format } from 'date-fns';
 
-export const correctionService = {
-  async createRequest(employeeId: string, recordId: string, data: { requestedCheckin?: Date, requestedCheckout?: Date, reason: string }) {
+export class CorrectionService {
+  static async createRequest(employeeId: string, recordId: string, data: { requestedCheckin?: Date, requestedCheckout?: Date, reason: string }) {
     // Basic check: Record must belong to employee
     const record = await prisma.attendanceRecord.findFirst({
       where: { id: recordId, employeeId }
@@ -24,17 +24,17 @@ export const correctionService = {
         status: CorrectionStatus.PENDING
       }
     });
-  },
+  }
 
-  async listUserRequests(employeeId: string) {
+  static async listUserRequests(employeeId: string) {
     return prisma.correctionRequest.findMany({
       where: { employeeId },
       include: { attendanceRecord: true },
       orderBy: { createdAt: 'desc' }
     });
-  },
+  }
 
-  async listPendingRequests() {
+  static async listPendingRequests() {
     return prisma.correctionRequest.findMany({
       where: { status: CorrectionStatus.PENDING },
       include: { 
@@ -45,9 +45,9 @@ export const correctionService = {
       },
       orderBy: { createdAt: 'asc' }
     });
-  },
+  }
 
-  async reviewRequest(requestId: string, adminId: string, status: CorrectionStatus, reviewNote?: string) {
+  static async reviewRequest(requestId: string, adminId: string, status: CorrectionStatus, reviewNote?: string) {
     const request = await prisma.correctionRequest.findUnique({
       where: { id: requestId },
       include: { attendanceRecord: true }
@@ -91,4 +91,4 @@ export const correctionService = {
 
     return result;
   }
-};
+}
