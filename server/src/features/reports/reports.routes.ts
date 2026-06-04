@@ -17,5 +17,3 @@ router.get('/monthly', validate({ query: DownloadReportSchema }), ReportsControl
 router.get('/monthly-pdf', validate({ query: DownloadReportSchema }), ReportsController.downloadMonthlyPDF);
 
 export default router;
-
-export default router;
