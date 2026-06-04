@@ -18,6 +18,7 @@ const COLORS = {
   navyMid: '#1E293B',
   accent: '#6366F1',
   teal: '#10B981',
+  orange: '#F59E0B',
   rose: '#F43F5E',
   bg: '#F8FAFC',
   subtle: '#64748B',
@@ -217,7 +218,7 @@ const s = StyleSheet.create({
   headerSubText: { fontSize: 13, color: 'rgba(255,255,255,0.5)', marginTop: 4, fontWeight: '600' },
   statsGrid: { flexDirection: 'row', gap: 12 },
 
-  content: { paddingBottom: 120 },
+  content: { paddingBottom: 130 },
   section: { marginTop: 32, paddingHorizontal: 24 },
   sectionTitle: { fontSize: 18, fontWeight: '800', color: COLORS.navy, marginBottom: 16 },
 

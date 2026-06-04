@@ -1,8 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { employeeApi } from '../features/employees/api';
+import { useAuthStore } from '../features/auth/store';
 import { Alert } from 'react-native';
 
 export const useEmployees = () => {
+  const currentEmployee = useAuthStore((s) => s.employee);
   const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +27,13 @@ export const useEmployees = () => {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  // Real-time synchronization
+  const { useSocket } = require('./useSocket');
+  useSocket('staff:updated', () => {
+    console.log('Real-time staff update received');
+    loadData();
+  });
 
   const filteredEmployees = employees.filter((item) => {
     const q = query.trim().toLowerCase();
@@ -68,6 +77,7 @@ export const useEmployees = () => {
     query,
     setQuery,
     loadData,
-    handleDeactivate
+    handleDeactivate,
+    currentEmployee
   };
 };

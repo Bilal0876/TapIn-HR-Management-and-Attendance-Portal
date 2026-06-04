@@ -10,6 +10,7 @@ import { authApi } from '@/features/auth/api';
 import { useAuthStore } from '@/features/auth/store';
 import { secureStorage } from '@/lib/secureStorage';
 import { router } from 'expo-router';
+import { TimezoneSelector } from '@/components/ui/TimezoneSelector';
 
 // ── Design tokens (identical to login) ───────────────────────────────────────
 const C = {
@@ -190,7 +191,7 @@ export default function RegisterScreen() {
   };
 
   const { control, handleSubmit, trigger, formState: { isSubmitting } } = useForm<any>({
-    defaultValues: { companyName: '', timezone: 'UTC', adminName: '', adminEmail: '', adminPassword: '' },
+    defaultValues: { companyName: '', timezone: 'Asia/Karachi', adminName: '', adminEmail: '', adminPassword: '' },
   });
 
   const handleNext = async () => {
@@ -324,8 +325,13 @@ export default function RegisterScreen() {
                   control={control}
                   name="timezone"
                   rules={{ required: 'Timezone is required' }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <FloatInput label="Timezone (e.g. UTC, America/New_York)" icon="globe-outline" value={value} onChangeText={onChange} onBlur={onBlur} error={error?.message} />
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <TimezoneSelector
+                      value={value}
+                      onChange={onChange}
+                      error={error?.message}
+                      label="Company Timezone"
+                    />
                   )}
                 />
               </>

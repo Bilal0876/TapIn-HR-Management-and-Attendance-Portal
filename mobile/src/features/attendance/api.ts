@@ -96,4 +96,8 @@ export const attendanceApi = {
       color: string;
     }>;
   },
+  adminUpdateRecord: async (id: string, data: { checkinTime?: string, checkoutTime?: string, status?: string }) => {
+    const res = await apiClient.patch(`/attendance/records/${id}`, data);
+    return res.data;
+  },
 }

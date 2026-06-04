@@ -5,7 +5,7 @@ import { authenticate } from '../../middleware/authenticate';
 import { requirePasswordChanged } from '../../middleware/requirePasswordChanged';
 import { requireAdmin } from '../../middleware/requireAdmin';
 import { requireSuperAdmin } from '../../middleware/requireSuperAdmin';
-import { CheckinSchema, CheckoutSchema, UpdateShiftSettingsSchema } from './attendance.dto';
+import { CheckinSchema, CheckoutSchema, UpdateShiftSettingsSchema, AdminUpdateRecordSchema } from './attendance.dto';
 
 const router = Router();
 
@@ -22,6 +22,7 @@ router.put('/settings/company-shift', requireSuperAdmin, validate({ body: Update
 router.get('/stats/company-trend', AttendanceController.getCompanyTrend);
 router.get('/stats/company-pulse', requireAdmin, AttendanceController.getCompanyPulse);
 router.get('/logs/daily', requireAdmin, AttendanceController.getDailyLogs);
+router.patch('/records/:id', requireAdmin, validate({ body: AdminUpdateRecordSchema }), AttendanceController.adminUpdateRecord);
 
 router.post('/breaks/start', AttendanceController.startBreak);
 router.post('/breaks/end', AttendanceController.endBreak);

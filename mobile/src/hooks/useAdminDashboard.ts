@@ -41,7 +41,7 @@ export const useAdminDashboard = () => {
         overallAttendance: data.overallAttendance ?? 0,
         present: data.present ?? 0,
         total: data.total ?? 0,
-        absent: (data.total ?? 0) - (data.present ?? 0),
+        absent: data.absent ?? Math.max(0, (data.total ?? 0) - (data.present ?? 0)),
         avgWorkHours: data.avgWorkHours ?? 0,
       });
     } catch (e) {
@@ -64,10 +64,15 @@ export const useAdminDashboard = () => {
     setLoading(false);
   }, [fetchStats, fetchPulse]);
 
-  // Real-time pulse updates
-  useSocket('activity_pulse', (activity: PulseActivity) => {
-    setPulse(prev => [activity, ...prev].slice(0, 15));
-    fetchStats(); // Update stats in real-time when activity happens
+  // Real-time synchronization
+  useSocket('stats:update', () => {
+    console.log('Real-time stats refresh triggered');
+    fetchStats();
+  });
+
+  useSocket('activity:pulse', () => {
+    console.log('Real-time pulse update triggered');
+    fetchPulse();
   });
 
   useEffect(() => {
@@ -76,11 +81,11 @@ export const useAdminDashboard = () => {
     }
   }, [employee, init]);
 
-  const onRefresh = async () => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await init();
     setRefreshing(false);
-  };
+  }, [init]);
 
   return {
     stats,

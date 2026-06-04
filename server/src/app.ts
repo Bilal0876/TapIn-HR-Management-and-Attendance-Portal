@@ -8,6 +8,7 @@ import employeeRoutes from './features/employees/employees.routes';
 import correctionRoutes from './features/corrections/correction.routes';
 import reportsRoutes from './features/reports/reports.routes';
 import leaveRoutes from './features/leaves/leaves.routes';
+import shiftRoutes from './features/shifts/shifts.routes';
 import { errorHandler } from './middleware/errorHandler';
 
 export function createApp() {
@@ -26,6 +27,7 @@ export function createApp() {
   app.use('/api/v1/corrections', correctionRoutes);
   app.use('/api/v1/reports', reportsRoutes);
   app.use('/api/v1/leaves', leaveRoutes);
+  app.use('/api/v1/shifts', shiftRoutes);
 
   app.use(errorHandler);
 

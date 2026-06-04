@@ -10,19 +10,41 @@ datasource db {
 // ─── Company ───────────────────────────────────────────────────────────────
 
 model Company {
-  id                    String     @id @default(cuid())
+  id                    String         @id @default(cuid())
   name                  String
-  timezone              String     @default("Asia/Karachi")
+  timezone              String         @default("Asia/Karachi")
+  workMinutesPerDay     Int            @default(480)
+  breakMinutesAllocated Int            @default(60)
+  gracePeriodMinutes    Int            @default(10)
+  expectedCheckinHour   Int            @default(9)
+  expectedCheckinMinute Int            @default(0)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  employees             Employee[]
+  shiftProfiles         ShiftProfile[]
+
+  @@map("companies")
+}
+
+// ─── Shift Profile ─────────────────────────────────────────────────────────
+
+model ShiftProfile {
+  id                    String     @id @default(cuid())
+  companyId             String
+  name                  String     // e.g. "Morning Shift", "Night Shift"
   workMinutesPerDay     Int        @default(480)
   breakMinutesAllocated Int        @default(60)
   gracePeriodMinutes    Int        @default(10)
   expectedCheckinHour   Int        @default(9)
   expectedCheckinMinute Int        @default(0)
+  isDefault             Boolean    @default(false)
   createdAt             DateTime   @default(now())
   updatedAt             DateTime   @updatedAt
+  company               Company    @relation(fields: [companyId], references: [id])
   employees             Employee[]
 
-  @@map("companies")
+  @@index([companyId])
+  @@map("shift_profiles")
 }
 
 // ─── Employee ──────────────────────────────────────────────────────────────
@@ -30,6 +52,7 @@ model Company {
 model Employee {
   id                 String               @id @default(cuid())
   companyId          String
+  shiftProfileId     String?              // Optional: assigned shift profile
   name               String
   email              String               @unique
   passwordHash       String
@@ -40,6 +63,7 @@ model Employee {
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   company            Company              @relation(fields: [companyId], references: [id])
+  shiftProfile       ShiftProfile?        @relation(fields: [shiftProfileId], references: [id])
   profile            EmployeeProfile?
   attendanceRecords  AttendanceRecord[]
   breakSessions      BreakSession[]
@@ -48,7 +72,6 @@ model Employee {
   refreshTokens      RefreshToken[]
   passwordResetTokens PasswordResetToken[]
   leaveRequests      LeaveRequest[]
-
 
   @@map("employees")
 }

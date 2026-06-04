@@ -260,7 +260,8 @@ const s = StyleSheet.create({
 
   header: {
     paddingHorizontal: H_PAD,
-    paddingBottom: 24,
+    paddingTop: 12,
+    paddingBottom: 28,
     borderBottomLeftRadius: 26,
     borderBottomRightRadius: 26,
   },
@@ -287,7 +288,7 @@ const s = StyleSheet.create({
 
   content: {
     paddingTop: 20,
-    paddingBottom: TAB_BAR_HEIGHT + 16,
+    paddingBottom: 130,
   },
   section: {
     marginBottom: 22,

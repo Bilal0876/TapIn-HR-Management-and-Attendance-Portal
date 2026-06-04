@@ -106,6 +106,8 @@ export class AttendanceService {
       color: '#1DB8A0'
     });
 
+    emitToCompany(record.employee.companyId, 'stats:update', {});
+
     return record;
   }
 
@@ -122,9 +124,10 @@ export class AttendanceService {
           include: {
             company: true,
             profile: true,
+            shiftProfile: true,
           },
         },
-      },
+      } as any,
     });
 
     if (!record) {
@@ -135,23 +138,23 @@ export class AttendanceService {
       throw createError.Conflict('Already checked out today', 'ALREADY_CHECKED_OUT');
     }
 
-    const openBreak = record.breakSessions.find((b) => b.endTime === null);
+    const openBreak = (record as any).breakSessions.find((b: any) => b.endTime === null);
     if (openBreak) {
       throw createError.Conflict('You have an active break. End it before checking out.', 'BREAK_STILL_ACTIVE');
     }
 
     const companyConfig = {
-      timezone: record.employee.company.timezone,
-      workMinutesPerDay: record.employee.company.workMinutesPerDay ?? undefined,
-      breakMinutesAllocated: record.employee.company.breakMinutesAllocated ?? undefined,
-      gracePeriodMinutes: record.employee.company.gracePeriodMinutes ?? undefined,
-      expectedCheckinHour: record.employee.company.expectedCheckinHour ?? undefined,
-      expectedCheckinMinute: record.employee.company.expectedCheckinMinute ?? undefined,
+      timezone: (record as any).employee.company.timezone,
+      workMinutesPerDay: (record as any).employee.company.workMinutesPerDay ?? undefined,
+      breakMinutesAllocated: (record as any).employee.company.breakMinutesAllocated ?? undefined,
+      gracePeriodMinutes: (record as any).employee.company.gracePeriodMinutes ?? undefined,
+      expectedCheckinHour: (record as any).employee.company.expectedCheckinHour ?? undefined,
+      expectedCheckinMinute: (record as any).employee.company.expectedCheckinMinute ?? undefined,
     };
 
-    const finalConfig = resolveConfig(companyConfig, (record.employee.profile as any) || {});
+    const finalConfig = resolveConfig(companyConfig, ((record as any).employee.shiftProfile as any) || {});
 
-    const breaks = record.breakSessions.map((b) => ({
+    const breaks = (record as any).breakSessions.map((b: any) => ({
       startTime: b.startTime,
       endTime: b.endTime!,
     }));
@@ -185,13 +188,15 @@ export class AttendanceService {
 
       const result = { record: updatedRecord, summary: dailySummary };
 
-      emitToCompany(record.employee.companyId, 'activity:pulse', {
-        name: record.employee.name,
+      emitToCompany((record as any).employee.companyId, 'activity:pulse', {
+        name: (record as any).employee.name,
         action: 'Checked-out',
         time: 'Just now',
         icon: 'exit-outline',
         color: '#6366F1'
       });
+
+      emitToCompany((record as any).employee.companyId, 'stats:update', {});
 
       return result;
     });
@@ -317,6 +322,8 @@ export class AttendanceService {
       color: '#F59E0B'
     });
 
+    emitToCompany(breakSess.employee.companyId, 'stats:update', {});
+
     return breakSess;
   }
 
@@ -360,6 +367,8 @@ export class AttendanceService {
       color: '#10B981'
     });
 
+    emitToCompany(updatedBreak.employee.companyId, 'stats:update', {});
+
     return updatedBreak;
   }
 
@@ -372,6 +381,76 @@ export class AttendanceService {
       },
       orderBy: { date: 'desc' },
       take: limit,
+    });
+  }
+
+  static async adminUpdateRecord(companyId: string, recordId: string, data: { checkinTime?: Date, checkoutTime?: Date, status?: AttendanceStatus }) {
+    const record = await prisma.attendanceRecord.findFirst({
+      where: { id: recordId, employee: { companyId } },
+      include: {
+        breakSessions: true,
+        employee: {
+          include: {
+            company: true,
+            shiftProfile: true,
+          },
+        },
+      } as any,
+    });
+
+    if (!record) throw createError.NotFound('Attendance record not found');
+
+    const updateData: any = { ...data };
+    
+    // If times are changing, we need to recalculate metrics
+    const newCheckin = data.checkinTime || record.checkinTime;
+    const newCheckout = data.checkoutTime || record.checkoutTime;
+
+    return prisma.$transaction(async (tx) => {
+      const updatedRecord = await tx.attendanceRecord.update({
+        where: { id: recordId },
+        data: updateData,
+      });
+
+      if (newCheckin && newCheckout) {
+        const companyConfig = {
+          timezone: (record as any).employee.company.timezone,
+          workMinutesPerDay: (record as any).employee.company.workMinutesPerDay ?? undefined,
+          breakMinutesAllocated: (record as any).employee.company.breakMinutesAllocated ?? undefined,
+          gracePeriodMinutes: (record as any).employee.company.gracePeriodMinutes ?? undefined,
+          expectedCheckinHour: (record as any).employee.company.expectedCheckinHour ?? undefined,
+          expectedCheckinMinute: (record as any).employee.company.expectedCheckinMinute ?? undefined,
+        };
+
+        const finalConfig = resolveConfig(companyConfig, ((record as any).employee.shiftProfile as any) || {});
+        
+        const breaks = (record as any).breakSessions.map((b: any) => ({
+          startTime: b.startTime,
+          endTime: b.endTime || new Date(),
+        }));
+
+        const delta = calculateDelta(newCheckin, newCheckout, breaks, finalConfig);
+
+        await tx.dailySummary.upsert({
+          where: { attendanceRecordId: recordId },
+          create: {
+            attendanceRecordId: recordId,
+            employeeId: record.employeeId,
+            date: record.date,
+            checkinTime: newCheckin,
+            checkoutTime: newCheckout,
+            ...delta,
+          },
+          update: {
+            checkinTime: newCheckin,
+            checkoutTime: newCheckout,
+            ...delta,
+          },
+        });
+      }
+
+      emitToCompany(companyId, 'stats:update', {});
+      return updatedRecord;
     });
   }
 }

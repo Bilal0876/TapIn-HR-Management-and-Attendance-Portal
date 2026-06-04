@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity, 
-  ActivityIndicator, 
-  KeyboardAvoidingView, 
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  KeyboardAvoidingView,
   Platform,
   StatusBar
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm, Controller } from 'react-hook-form';
 import { employeeApi } from '@/features/employees/api';
+import { shiftsApi, ShiftProfile } from '@/features/shifts/api';
+import { useShifts } from '@/hooks/useShifts';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -35,12 +37,12 @@ function StyledInput({ label, icon, value, onChangeText, placeholder, error, ...
     <View style={s.inputGroup}>
       <Text style={s.label}>{label}</Text>
       <View style={[
-        s.inputBox, 
+        s.inputBox,
         focused && s.inputBoxFocused,
         error && s.inputBoxError
       ]}>
         <Ionicons name={icon} size={18} color={focused ? C.accent : C.label} style={s.inputIcon} />
-        <TextInput 
+        <TextInput
           style={s.input}
           value={value}
           onChangeText={onChangeText}
@@ -57,8 +59,9 @@ function StyledInput({ label, icon, value, onChangeText, placeholder, error, ...
 }
 
 export default function CreateEmployeeScreen() {
-  const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const { shifts, loading: shiftsLoading } = useShifts();
 
   const { control, handleSubmit, formState: { errors }, watch, setValue } = useForm({
     defaultValues: {
@@ -68,7 +71,8 @@ export default function CreateEmployeeScreen() {
       designation: '',
       department: '',
       joiningDate: '',
-      role: 'EMPLOYEE'
+      role: 'EMPLOYEE',
+      shiftProfileId: ''
     }
   });
 
@@ -95,7 +99,7 @@ export default function CreateEmployeeScreen() {
   }, [watchedDepartment, watchedDesignation, setValue]);
 
   const onSubmit = async (data: any) => {
-    setLoading(true);
+    setLoadingSubmit(true);
     setApiError(null);
     try {
       const payload = {
@@ -109,15 +113,19 @@ export default function CreateEmployeeScreen() {
     } catch (e: any) {
       setApiError(e.response?.data?.message || 'Failed to create employee');
     } finally {
-      setLoading(false);
+      setLoadingSubmit(false);
     }
   };
 
   return (
     <SafeAreaView style={s.root}>
       <StatusBar barStyle="dark-content" />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+      >
+
         {/* ── Header ── */}
         <View style={s.header}>
           <TouchableOpacity onPress={() => router.back()} style={s.backBtn}>
@@ -129,7 +137,13 @@ export default function CreateEmployeeScreen() {
           </View>
         </View>
 
-        <ScrollView style={s.scroll} contentContainerStyle={s.scrollContent} showsVerticalScrollIndicator={false}>
+        <ScrollView 
+          style={s.scroll} 
+          contentContainerStyle={s.scrollContent} 
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+        >
           {apiError && (
             <View style={s.errorBanner}>
               <Ionicons name="alert-circle" size={16} color="#EF4444" />
@@ -180,7 +194,7 @@ export default function CreateEmployeeScreen() {
                   label="Employee ID (Auto)"
                   icon="finger-print-outline"
                   value={value}
-                  onChangeText={() => {}}
+                  onChangeText={() => { }}
                   placeholder="Auto-generated from department/designation"
                   editable={false}
                 />
@@ -232,16 +246,87 @@ export default function CreateEmployeeScreen() {
                 )}
               />
             </View>
+
+            <View style={s.inputGroup}>
+              <View style={s.labelRow}>
+                <Text style={s.label}>Assigned Work Schedule</Text>
+                {shiftsLoading && <ActivityIndicator size="small" color={C.accent} />}
+              </View>
+              
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false} 
+                contentContainerStyle={s.shiftScroll}
+              >
+                {/* Default Option */}
+                <TouchableOpacity
+                  style={[s.shiftCard, !watch('shiftProfileId') && s.shiftCardActive]}
+                  onPress={() => setValue('shiftProfileId', '')}
+                  activeOpacity={0.7}
+                >
+                  <View style={s.shiftCardHeader}>
+                    <Ionicons 
+                      name="business" 
+                      size={20} 
+                      color={!watch('shiftProfileId') ? C.accent : C.subtle} 
+                    />
+                    <Text style={[s.shiftCardTitle, !watch('shiftProfileId') && s.shiftCardTitleActive]}>
+                      Default Rules
+                    </Text>
+                  </View>
+                  <Text style={s.shiftCardSubtext}>Company base policy</Text>
+                </TouchableOpacity>
+
+                {/* Dynamic Shifts */}
+                {shifts.map((shift: ShiftProfile) => {
+                  const checkin = `${String(shift.expectedCheckinHour).padStart(2, '0')}:${String(shift.expectedCheckinMinute).padStart(2, '0')}`;
+                  const durationH = Math.floor(shift.workMinutesPerDay / 60);
+                  const durationM = shift.workMinutesPerDay % 60;
+                  
+                  return (
+                    <TouchableOpacity
+                      key={shift.id}
+                      style={[s.shiftCard, watch('shiftProfileId') === shift.id && s.shiftCardActive]}
+                      onPress={() => setValue('shiftProfileId', shift.id)}
+                      activeOpacity={0.7}
+                    >
+                      <View style={s.shiftCardHeader}>
+                        <Ionicons 
+                          name="time" 
+                          size={20} 
+                          color={watch('shiftProfileId') === shift.id ? C.accent : C.subtle} 
+                        />
+                        <Text style={[s.shiftCardTitle, watch('shiftProfileId') === shift.id && s.shiftCardTitleActive]}>
+                          {shift.name}
+                        </Text>
+                      </View>
+                      <View style={s.shiftMeta}>
+                        <Text style={s.shiftTime}>{checkin}</Text>
+                        <View style={s.dot} />
+                        <Text style={s.shiftDuration}>{durationH}h {durationM}m</Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+
+                {shifts.length === 0 && !shiftsLoading && (
+                  <View style={s.emptyShifts}>
+                    <Text style={s.emptyShiftsText}>No custom shifts defined</Text>
+                  </View>
+                )}
+              </ScrollView>
+              {errors.shiftProfileId && <Text style={s.errorText}>{errors.shiftProfileId.message}</Text>}
+            </View>
           </View>
 
-          <TouchableOpacity style={s.submitBtn} onPress={handleSubmit(onSubmit)} disabled={loading} activeOpacity={0.85}>
+          <TouchableOpacity style={s.submitBtn} onPress={handleSubmit(onSubmit)} disabled={loadingSubmit} activeOpacity={0.85}>
             <LinearGradient
               colors={[C.accent, '#3B82F6']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={s.gradientBtn}
             >
-              {loading ? (
+              {loadingSubmit ? (
                 <ActivityIndicator color={C.white} />
               ) : (
                 <>
@@ -260,12 +345,12 @@ export default function CreateEmployeeScreen() {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   header: { flexDirection: 'row', alignItems: 'center', padding: 24, paddingTop: 10 },
-  backBtn: { 
-    width: 44, 
-    height: 44, 
-    borderRadius: 12, 
-    backgroundColor: C.white, 
-    justifyContent: 'center', 
+  backBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: C.white,
+    justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
     shadowColor: '#000',
@@ -277,19 +362,19 @@ const s = StyleSheet.create({
   title: { fontSize: 24, fontWeight: '800', color: C.navy, letterSpacing: -0.5 },
   headerSubtext: { fontSize: 13, color: C.subtle, marginTop: 2 },
   scroll: { flex: 1 },
-  scrollContent: { padding: 24 },
+  scrollContent: { padding: 24, paddingBottom: 140 },
   card: { backgroundColor: C.white, borderRadius: 24, padding: 20, shadowColor: C.navy, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.04, shadowRadius: 12, elevation: 4 },
   inputGroup: { marginBottom: 20 },
   label: { fontSize: 13, fontWeight: '700', color: C.navy, marginBottom: 8, marginLeft: 4 },
-  inputBox: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: '#F8FAFC', 
-    borderWidth: 1.5, 
-    borderColor: '#E2E8F0', 
-    borderRadius: 16, 
-    paddingHorizontal: 16, 
-    minHeight: 56 
+  inputBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    minHeight: 56
   },
   inputBoxFocused: { borderColor: C.accent, backgroundColor: C.white },
   inputBoxError: { borderColor: '#FECACA' },
@@ -301,23 +386,23 @@ const s = StyleSheet.create({
   submitText: { color: C.white, fontSize: 16, fontWeight: '800' },
   errorBanner: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FEF2F2', padding: 14, borderRadius: 16, marginBottom: 20, gap: 10, borderWidth: 1, borderColor: '#FEE2E2' },
   errorBannerText: { color: '#EF4444', fontSize: 13, fontWeight: '600', flex: 1 },
-  rolePicker: { 
-    flexDirection: 'row', 
-    backgroundColor: '#F8FAFC', 
-    borderRadius: 16, 
+  rolePicker: {
+    flexDirection: 'row',
+    backgroundColor: '#F8FAFC',
+    borderRadius: 16,
     padding: 6,
     gap: 4,
     borderWidth: 1.5,
     borderColor: '#E2E8F0',
   },
-  rolePill: { 
-    flex: 1, 
-    paddingVertical: 10, 
-    alignItems: 'center', 
+  rolePill: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 12,
   },
-  rolePillActive: { 
+  rolePillActive: {
     backgroundColor: C.white,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -325,13 +410,42 @@ const s = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  roleText: { 
-    fontSize: 11, 
-    fontWeight: '700', 
+  roleText: {
+    fontSize: 11,
+    fontWeight: '700',
     color: C.label,
     textTransform: 'uppercase'
   },
   roleTextActive: { 
     color: C.accent 
   },
+  labelRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8, paddingRight: 4 },
+  shiftScroll: { gap: 12, paddingBottom: 4 },
+  shiftCard: { 
+    width: 160, 
+    backgroundColor: '#F8FAFC', 
+    borderRadius: 16, 
+    padding: 16, 
+    borderWidth: 1.5, 
+    borderColor: '#E2E8F0' 
+  },
+  shiftCardActive: { 
+    backgroundColor: C.white, 
+    borderColor: C.accent,
+    shadowColor: C.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3
+  },
+  shiftCardHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
+  shiftCardTitle: { fontSize: 13, fontWeight: '700', color: C.label },
+  shiftCardTitleActive: { color: C.navy },
+  shiftCardSubtext: { fontSize: 11, color: C.subtle, fontWeight: '500' },
+  shiftMeta: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  shiftTime: { fontSize: 12, fontWeight: '700', color: C.accent },
+  dot: { width: 3, height: 3, borderRadius: 2, backgroundColor: '#CBD5E1' },
+  shiftDuration: { fontSize: 11, fontWeight: '600', color: C.subtle },
+  emptyShifts: { padding: 20, backgroundColor: '#F1F5F9', borderRadius: 12, minWidth: 200, alignItems: 'center' },
+  emptyShiftsText: { color: C.subtle, fontSize: 12, fontWeight: '600' },
 });

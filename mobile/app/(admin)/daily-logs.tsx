@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,10 @@ import {
   ActivityIndicator,
   StatusBar,
   Platform,
+  Modal,
+  TextInput,
+  Alert,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,6 +31,7 @@ const COLORS = {
   rose: '#F43F5E',
   bg: '#F8FAFC',
   subtle: '#64748B',
+  white: '#FFFFFF',
 };
 
 export default function DailyLogsScreen() {
@@ -38,12 +43,42 @@ export default function DailyLogsScreen() {
     loading,
     refreshing,
     logs,
-    onRefresh
+    onRefresh,
+    correctRecord
   } = useDailyLogs();
+
+  const [editingLog, setEditingLog] = useState<any>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [checkin, setCheckin] = useState('');
+  const [checkout, setCheckout] = useState('');
 
   const onDateChange = (_: any, selectedDate?: Date) => {
     setShowPicker(Platform.OS === 'ios');
     if (selectedDate) setDate(selectedDate);
+  };
+
+  const openCorrection = (item: any) => {
+    setEditingLog(item);
+    // Assuming checkin/checkout are ISO strings or similar in the 'logs' array from backend
+    // But previous view of daily-logs.tsx showed item.checkin as "09:00" etc.
+    // In actual production, we need full date strings.
+    // Let's use what's available or set current date time.
+    setCheckin(item.checkinAt || ''); 
+    setCheckout(item.checkoutAt || '');
+    setModalVisible(true);
+  };
+
+  const handleSaveCorrection = async () => {
+    try {
+      await correctRecord(editingLog.id, {
+        checkinTime: checkin || undefined,
+        checkoutTime: checkout || undefined,
+      });
+      setModalVisible(false);
+      Alert.alert('Success', 'Attendance record updated');
+    } catch (e) {
+      Alert.alert('Error', 'Failed to update record');
+    }
   };
 
   const renderItem = ({ item }: { item: any }) => (
@@ -57,6 +92,9 @@ export default function DailyLogsScreen() {
         <View style={s.statusBadge}>
            <Text style={[s.statusText, { color: item.color || COLORS.accent }]}>{item.status}</Text>
         </View>
+        <TouchableOpacity style={s.editBtn} onPress={() => openCorrection(item)}>
+          <Ionicons name="create-outline" size={18} color={COLORS.subtle} />
+        </TouchableOpacity>
       </View>
       
       <View style={s.timeRow}>
@@ -135,6 +173,45 @@ export default function DailyLogsScreen() {
           }
         />
       )}
+
+      <Modal visible={modalVisible} transparent animationType="slide">
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={s.modalOverlay}>
+          <View style={s.modalContent}>
+            <View style={s.modalHeader}>
+              <Text style={s.modalTitle}>Manual Correction</Text>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Ionicons name="close" size={24} color={COLORS.navy} />
+              </TouchableOpacity>
+            </View>
+            
+            <Text style={s.modalSub}>Editing record for {editingLog?.name}</Text>
+
+            <View style={s.inputGroup}>
+              <Text style={s.label}>Check-in Time (ISO)</Text>
+              <TextInput 
+                style={s.input} 
+                value={checkin} 
+                onChangeText={setCheckin} 
+                placeholder="e.g. 2024-03-20T09:00:00Z"
+              />
+            </View>
+
+            <View style={s.inputGroup}>
+              <Text style={s.label}>Check-out Time (ISO)</Text>
+              <TextInput 
+                style={s.input} 
+                value={checkout} 
+                onChangeText={setCheckout} 
+                placeholder="e.g. 2024-03-20T18:00:00Z"
+              />
+            </View>
+
+            <TouchableOpacity style={s.saveBtn} onPress={handleSaveCorrection}>
+              <Text style={s.saveText}>Save Correction</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   );
 }
@@ -201,4 +278,19 @@ const s = StyleSheet.create({
   loadingText: { marginTop: 12, color: COLORS.subtle, fontWeight: '600' },
   empty: { alignItems: 'center', marginTop: 80, opacity: 0.8 },
   emptyText: { marginTop: 16, color: COLORS.subtle, fontSize: 14, fontWeight: '600' },
+
+  editBtn: { marginLeft: 12, width: 34, height: 34, borderRadius: 10, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
+  
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
+  modalContent: { backgroundColor: '#FFF', borderTopLeftRadius: 32, borderTopRightRadius: 32, padding: 24, paddingBottom: 40 },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  modalTitle: { fontSize: 20, fontWeight: '800', color: COLORS.navy },
+  modalSub: { fontSize: 14, color: COLORS.subtle, marginBottom: 24, fontWeight: '500' },
+  
+  inputGroup: { marginBottom: 20 },
+  label: { fontSize: 13, fontWeight: '700', color: COLORS.navy, marginBottom: 8, marginLeft: 4 },
+  input: { backgroundColor: '#f8fafc', borderRadius: 16, padding: 16, fontSize: 15, color: COLORS.navy, borderWidth: 1, borderColor: '#e2e8f0' },
+  
+  saveBtn: { backgroundColor: COLORS.accent, borderRadius: 18, padding: 18, alignItems: 'center', marginTop: 12, shadowColor: COLORS.accent, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 4 },
+  saveText: { color: '#FFF', fontSize: 16, fontWeight: '700' },
 });

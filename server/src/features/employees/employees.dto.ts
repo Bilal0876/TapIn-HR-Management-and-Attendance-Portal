@@ -9,6 +9,7 @@ export const CreateEmployeeSchema = z.object({
   department: z.string().optional(),
   employeeCode: z.string().min(2).optional(),
   joiningDate: z.string().datetime().optional(), // Or string date
+  shiftProfileId: z.string().optional(),
 });
 
 export const UpdateEmployeeSchema = CreateEmployeeSchema.partial();

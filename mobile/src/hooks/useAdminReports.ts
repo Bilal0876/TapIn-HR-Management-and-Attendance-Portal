@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { attendanceApi } from '../features/attendance/api';
 import { reportsApi } from '../features/reports/api';
+import { useSocket } from './useSocket';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system/legacy';
 
@@ -53,6 +54,11 @@ export const useAdminReports = () => {
   useEffect(() => {
     fetchDashboard();
   }, [fetchDashboard]);
+
+  // Real-time synchronization
+  useSocket('stats:update', () => {
+    fetchDashboard();
+  });
 
   const ensureShareableFileUri = async (uri: string, extension: '.xlsx' | '.pdf') => {
     if (uri.startsWith('file://')) return uri;

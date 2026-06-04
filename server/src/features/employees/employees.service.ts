@@ -71,12 +71,13 @@ export class EmployeeService {
     // Default password is 'Password123!' (must change on first login)
     const passwordHash = await bcrypt.hash('Password123!', 12);
 
-    return prisma.employee.create({
+    const employee = await prisma.employee.create({
       data: {
         companyId: admin.companyId,
         email: data.email,
         name: data.name,
         role: data.role,
+        shiftProfileId: data.shiftProfileId || null,
         passwordHash,
         mustChangePassword: true,
         profile: {
@@ -87,9 +88,18 @@ export class EmployeeService {
             joiningDate: data.joiningDate ? new Date(data.joiningDate) : new Date(),
           }
         }
-      },
+      } as any,
       include: { profile: true }
     });
+
+    // Broadcast update to all connected clients in the company
+    const { emitToCompany } = require('../../lib/socket');
+    emitToCompany(admin.companyId, 'staff:updated', { 
+      type: 'CREATED', 
+      employee: { id: employee.id, name: employee.name } 
+    });
+
+    return employee;
   }
 
   static async getAllEmployees(companyId: string) {

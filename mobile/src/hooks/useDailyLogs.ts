@@ -26,9 +26,26 @@ export const useDailyLogs = () => {
     setRefreshing(false);
   }, [date, fetchLogs]);
 
+  const correctRecord = async (recordId: string, data: any) => {
+    try {
+      await attendanceApi.adminUpdateRecord(recordId, data);
+      await fetchLogs(date);
+    } catch (e) {
+      console.error('Correct record error:', e);
+      throw e;
+    }
+  };
+
   useEffect(() => {
     fetchLogs(date);
   }, [date, fetchLogs]);
+
+  // Real-time synchronization
+  const { useSocket } = require('./useSocket');
+  useSocket('stats:update', () => {
+    console.log('Real-time logs refresh triggered');
+    fetchLogs(date);
+  });
 
   return {
     date,
@@ -38,6 +55,7 @@ export const useDailyLogs = () => {
     loading,
     refreshing,
     logs,
-    onRefresh
+    onRefresh,
+    correctRecord
   };
 };

@@ -140,4 +140,22 @@ export class AttendanceController {
       next(e);
     }
   }
+
+  static async adminUpdateRecord(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { companyId } = (req as any).employee;
+      const { id } = req.params;
+      const { checkinTime, checkoutTime, status } = req.body;
+
+      const result = await AttendanceService.adminUpdateRecord(companyId, id, {
+        checkinTime: checkinTime ? new Date(checkinTime) : undefined,
+        checkoutTime: checkoutTime ? new Date(checkoutTime) : undefined,
+        status,
+      });
+
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
 }

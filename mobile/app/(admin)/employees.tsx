@@ -27,7 +27,8 @@ export default function EmployeesScreen() {
     query,
     setQuery,
     loadData,
-    handleDeactivate
+    handleDeactivate,
+    currentEmployee
   } = useEmployees();
 
   const scrollY = React.useRef(new Animated.Value(0)).current;
@@ -67,9 +68,11 @@ export default function EmployeesScreen() {
             </View>
           </View>
 
-          <TouchableOpacity style={s.removeBtn} onPress={() => handleDeactivate(item)}>
-            <Ionicons name="trash-outline" size={16} color="#EF4444" />
-          </TouchableOpacity>
+          {item.id !== currentEmployee?.id && (
+            <TouchableOpacity style={s.removeBtn} onPress={() => handleDeactivate(item)}>
+              <Ionicons name="trash-outline" size={16} color="#EF4444" />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     );
@@ -213,7 +216,7 @@ const s = StyleSheet.create({
   retryBtn: { backgroundColor: C.white, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
   retryText: { color: C.navy, fontSize: 12, fontWeight: '700' },
   searchInput: { flex: 1, color: C.navy, fontSize: 14, fontWeight: '500' },
-  list: { paddingHorizontal: 24, paddingBottom: 120 },
+  list: { paddingHorizontal: 24, paddingTop: 24, paddingBottom: 130 },
   cardContainer: { marginBottom: 12 },
   card: {
     flexDirection: 'row',

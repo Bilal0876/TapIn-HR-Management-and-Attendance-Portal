@@ -1,30 +1,61 @@
 import { prisma } from '../../lib/prisma';
 import { startOfMonth, endOfMonth, subDays, startOfDay, endOfDay, eachDayOfInterval, format, formatDistanceToNow } from 'date-fns';
+import { toZonedTime, formatInTimeZone } from 'date-fns-tz';
 import { AttendanceStatus } from '@prisma/client';
 
 export class AnalyticsService {
-  /**
-   * Get company-wide stats for admin dashboard
-   */
   static async getCompanyStats(companyId: string) {
-    const today = startOfDay(new Date());
-    const sevenDaysAgo = subDays(today, 7);
+    const company = await prisma.company.findUnique({
+       where: { id: companyId },
+       select: { timezone: true }
+    });
+    
+    if (!company) return { overallAttendance: 0, present: 0, total: 0, absent: 0, late: 0, avgWorkHours: 0 };
+
+    const now = new Date();
+    const tz = company.timezone || 'Asia/Karachi';
+    let todayStr: string;
+    try {
+      todayStr = formatInTimeZone(now, tz, 'yyyy-MM-dd');
+    } catch (e) {
+      todayStr = now.toISOString().split('T')[0];
+    }
+    // Build an exact Date object by parsing the local date string (no time component)
+    // This avoids any UTC/local shift that would cause Prisma to match wrong rows
+    const todayDate = new Date(todayStr);
+    const sevenDaysAgo = subDays(todayDate, 7);
 
     const [
       totalEmployees,
       todayRecords,
       weeklySummaries
     ] = await Promise.all([
-      prisma.employee.count({ where: { companyId, isActive: true } }),
+      prisma.employee.count({ 
+        where: { 
+          companyId, 
+          isActive: true,
+          role: { not: 'SUPER_ADMIN' }
+        } 
+      }),
       prisma.attendanceRecord.findMany({
         where: { 
-          employee: { companyId },
-          date: today
-        }
+          employee: { 
+            companyId,
+            role: { not: 'SUPER_ADMIN' }
+          },
+          // Use explicit string comparison to bypass any Prisma date interpretation issue
+          date: { equals: todayDate }
+        },
+        include: { dailySummary: true }
       }),
       prisma.dailySummary.findMany({
         where: {
-          attendanceRecord: { employee: { companyId } },
+          attendanceRecord: { 
+            employee: { 
+              companyId,
+              role: { not: 'SUPER_ADMIN' }
+            } 
+          },
           date: { gte: sevenDaysAgo }
         }
       })
@@ -32,10 +63,14 @@ export class AnalyticsService {
 
     // Calculate status distribution for today
     const presentCount = todayRecords.length;
+    const lateCount = todayRecords.filter(r => r.dailySummary && r.dailySummary.lateMinutes > 0).length;
+    
     const stats = {
-      overallAttendance: totalEmployees > 0 ? (presentCount / totalEmployees) * 100 : 0,
+      overallAttendance: totalEmployees > 0 ? Math.round((presentCount / totalEmployees) * 100) : 0,
       present: presentCount,
       total: totalEmployees,
+      absent: Math.max(0, totalEmployees - presentCount),
+      late: lateCount,
       avgWorkHours: weeklySummaries.length > 0 
         ? (weeklySummaries.reduce((acc, s) => acc + s.totalWorkMinutes, 0) / (weeklySummaries.length * 60)).toFixed(1)
         : 0
@@ -45,23 +80,48 @@ export class AnalyticsService {
   }
 
   static async getCompanyTrend(companyId: string, days: number = 7) {
+    const company = await prisma.company.findUnique({ where: { id: companyId }, select: { timezone: true } });
+    if (!company) return { trend: [], latestOnTimeRate: 0, onTimeDelta: 0 };
+
     const safeDays = Math.max(1, Math.min(days, 31));
-    const today = startOfDay(new Date());
+    const now = new Date();
+    const tz = company.timezone || 'Asia/Karachi';
+    let today: Date;
+    try {
+      const localDateStr = formatInTimeZone(now, tz, 'yyyy-MM-dd');
+      today = new Date(`${localDateStr}T00:00:00Z`);
+    } catch (e) {
+      today = startOfDay(now);
+    }
     const startDate = startOfDay(subDays(today, safeDays - 1));
     const endDate = endOfDay(today);
 
     const [totalEmployees, records, summaries] = await Promise.all([
-      prisma.employee.count({ where: { companyId, isActive: true } }),
+      prisma.employee.count({ 
+        where: { 
+          companyId, 
+          isActive: true,
+          role: { not: 'SUPER_ADMIN' }
+        } 
+      }),
       prisma.attendanceRecord.findMany({
         where: {
-          employee: { companyId },
+          employee: { 
+            companyId,
+            role: { not: 'SUPER_ADMIN' }
+          },
           date: { gte: startDate, lte: endDate },
         },
         select: { date: true },
       }),
       prisma.dailySummary.findMany({
         where: {
-          attendanceRecord: { employee: { companyId } },
+          attendanceRecord: { 
+            employee: { 
+              companyId,
+              role: { not: 'SUPER_ADMIN' }
+            } 
+          },
           date: { gte: startDate, lte: endDate },
         },
         select: { date: true, lateMinutes: true, totalWorkMinutes: true },
@@ -167,18 +227,29 @@ export class AnalyticsService {
    * Get detailed daily logs for specific date
    */
   static async getDailyLogs(companyId: string, date: Date) {
-    const dayStart = startOfDay(date);
-    const dayEnd = endOfDay(date);
+    const company = await prisma.company.findUnique({ where: { id: companyId }, select: { timezone: true } });
+    const tz = company?.timezone || 'Asia/Karachi';
+    
+    // Exact date matching: match only the DATE part
+    const dateStr = formatInTimeZone(date, tz, 'yyyy-MM-dd');
+    const startOfTargetDay = new Date(dateStr);
 
     const [employees, records] = await Promise.all([
       prisma.employee.findMany({
-        where: { companyId, isActive: true },
+        where: { 
+          companyId, 
+          isActive: true,
+          role: { not: 'SUPER_ADMIN' }
+        },
         select: { id: true, name: true, profile: { select: { designation: true } } }
       }),
       prisma.attendanceRecord.findMany({
         where: {
-          employee: { companyId },
-          date: dayStart
+          employee: { 
+            companyId,
+            role: { not: 'SUPER_ADMIN' }
+          },
+          date: startOfTargetDay
         },
         include: {
           dailySummary: true
@@ -191,11 +262,15 @@ export class AnalyticsService {
       let status = 'ABSENT';
       let checkin = '--:--';
       let checkout = '--:--';
+      let checkinAt = '';
+      let checkoutAt = '';
       let color = '#94A3B8';
 
       if (record) {
         checkin = record.checkinTime ? format(record.checkinTime, 'hh:mm a') : '--:--';
         checkout = record.checkoutTime ? format(record.checkoutTime, 'hh:mm a') : '--:--';
+        checkinAt = record.checkinTime?.toISOString() || '';
+        checkoutAt = record.checkoutTime?.toISOString() || '';
         
         if (record.status === 'PENDING') {
           status = 'PRESENT';
@@ -216,6 +291,8 @@ export class AnalyticsService {
         status,
         checkin,
         checkout,
+        checkinAt,
+        checkoutAt,
         color
       };
     });
@@ -225,7 +302,17 @@ export class AnalyticsService {
    * Get recent activity for admin pulse feed
    */
   static async getCompanyPulse(companyId: string) {
-    const today = startOfDay(new Date());
+    const company = await prisma.company.findUnique({ where: { id: companyId }, select: { timezone: true } });
+    if (!company) return [];
+
+    const now = new Date();
+    let today: Date;
+    try {
+      const localDateStr = formatInTimeZone(now, company.timezone || 'Asia/Karachi', 'yyyy-MM-dd');
+      today = new Date(`${localDateStr}T00:00:00Z`);
+    } catch (e) {
+      today = startOfDay(now);
+    }
 
     const records = await prisma.attendanceRecord.findMany({
       where: { 
