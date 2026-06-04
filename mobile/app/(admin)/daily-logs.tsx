@@ -63,7 +63,7 @@ export default function DailyLogsScreen() {
     // But previous view of daily-logs.tsx showed item.checkin as "09:00" etc.
     // In actual production, we need full date strings.
     // Let's use what's available or set current date time.
-    setCheckin(item.checkinAt || ''); 
+    setCheckin(item.checkinAt || '');
     setCheckout(item.checkoutAt || '');
     setModalVisible(true);
   };
@@ -90,13 +90,13 @@ export default function DailyLogsScreen() {
           <Text style={s.empRole}>{item.designation}</Text>
         </View>
         <View style={s.statusBadge}>
-           <Text style={[s.statusText, { color: item.color || COLORS.accent }]}>{item.status}</Text>
+          <Text style={[s.statusText, { color: item.color || COLORS.accent }]}>{item.status}</Text>
         </View>
         <TouchableOpacity style={s.editBtn} onPress={() => openCorrection(item)}>
           <Ionicons name="create-outline" size={18} color={COLORS.subtle} />
         </TouchableOpacity>
       </View>
-      
+
       <View style={s.timeRow}>
         <View style={s.timeItem}>
           <Ionicons name="enter-outline" size={14} color={COLORS.subtle} />
@@ -116,12 +116,12 @@ export default function DailyLogsScreen() {
   return (
     <View style={s.root}>
       <StatusBar barStyle="light-content" />
-      
+
       <LinearGradient colors={[COLORS.navy, COLORS.navyMid]} style={s.header}>
         <SafeAreaView>
           <View style={s.headerContent}>
             <TouchableOpacity onPress={() => router.back()} style={s.backBtn}>
-               <Ionicons name="arrow-back" size={24} color="#FFF" />
+              <Ionicons name="arrow-back" size={24} color="#FFF" />
             </TouchableOpacity>
             <View>
               <Text style={s.headerTitle}>Daily Logs</Text>
@@ -129,8 +129,8 @@ export default function DailyLogsScreen() {
             </View>
           </View>
 
-          <TouchableOpacity 
-            style={s.datePickerBtn} 
+          <TouchableOpacity
+            style={s.datePickerBtn}
             onPress={() => setShowPicker(true)}
             activeOpacity={0.8}
           >
@@ -183,25 +183,25 @@ export default function DailyLogsScreen() {
                 <Ionicons name="close" size={24} color={COLORS.navy} />
               </TouchableOpacity>
             </View>
-            
+
             <Text style={s.modalSub}>Editing record for {editingLog?.name}</Text>
 
             <View style={s.inputGroup}>
               <Text style={s.label}>Check-in Time (ISO)</Text>
-              <TextInput 
-                style={s.input} 
-                value={checkin} 
-                onChangeText={setCheckin} 
+              <TextInput
+                style={s.input}
+                value={checkin}
+                onChangeText={setCheckin}
                 placeholder="e.g. 2024-03-20T09:00:00Z"
               />
             </View>
 
             <View style={s.inputGroup}>
               <Text style={s.label}>Check-out Time (ISO)</Text>
-              <TextInput 
-                style={s.input} 
-                value={checkout} 
-                onChangeText={setCheckout} 
+              <TextInput
+                style={s.input}
+                value={checkout}
+                onChangeText={setCheckout}
                 placeholder="e.g. 2024-03-20T18:00:00Z"
               />
             </View>
@@ -223,13 +223,13 @@ const s = StyleSheet.create({
   backBtn: { width: 44, height: 44, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.1)', alignItems: 'center', justifyContent: 'center' },
   headerTitle: { fontSize: 22, fontWeight: '800', color: '#FFF' },
   headerSub: { fontSize: 13, color: 'rgba(255,255,255,0.6)', fontWeight: '500', marginTop: 2 },
-  
-  datePickerBtn: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: '#FFF', 
-    marginTop: 24, 
-    padding: 16, 
+
+  datePickerBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    marginTop: 24,
+    padding: 16,
     borderRadius: 20,
     gap: 12,
     shadowColor: '#000',
@@ -239,12 +239,12 @@ const s = StyleSheet.create({
     elevation: 4
   },
   dateLabel: { flex: 1, fontSize: 15, fontWeight: '700', color: COLORS.navy },
-  
+
   list: { padding: 20, paddingBottom: 60 },
-  card: { 
-    backgroundColor: '#FFF', 
-    borderRadius: 24, 
-    marginBottom: 16, 
+  card: {
+    backgroundColor: '#FFF',
+    borderRadius: 24,
+    marginBottom: 16,
     padding: 16,
     borderWidth: 1,
     borderColor: '#f1f5f9',
@@ -261,36 +261,36 @@ const s = StyleSheet.create({
   empRole: { fontSize: 12, color: COLORS.subtle, marginTop: 2, fontWeight: '500' },
   statusBadge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10, backgroundColor: '#f8fafc' },
   statusText: { fontSize: 11, fontWeight: '800', textTransform: 'uppercase' },
-  
-  timeRow: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: '#f8fafc', 
-    borderRadius: 16, 
-    padding: 12 
+
+  timeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f8fafc',
+    borderRadius: 16,
+    padding: 12
   },
   timeItem: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
   divider: { width: 1, height: 20, backgroundColor: '#e2e8f0' },
   timeLabel: { fontSize: 12, color: COLORS.subtle, fontWeight: '500' },
   timeVal: { fontSize: 14, fontWeight: '700', color: COLORS.navy },
-  
+
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   loadingText: { marginTop: 12, color: COLORS.subtle, fontWeight: '600' },
   empty: { alignItems: 'center', marginTop: 80, opacity: 0.8 },
   emptyText: { marginTop: 16, color: COLORS.subtle, fontSize: 14, fontWeight: '600' },
 
   editBtn: { marginLeft: 12, width: 34, height: 34, borderRadius: 10, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
-  
+
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
   modalContent: { backgroundColor: '#FFF', borderTopLeftRadius: 32, borderTopRightRadius: 32, padding: 24, paddingBottom: 40 },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   modalTitle: { fontSize: 20, fontWeight: '800', color: COLORS.navy },
   modalSub: { fontSize: 14, color: COLORS.subtle, marginBottom: 24, fontWeight: '500' },
-  
+
   inputGroup: { marginBottom: 20 },
   label: { fontSize: 13, fontWeight: '700', color: COLORS.navy, marginBottom: 8, marginLeft: 4 },
   input: { backgroundColor: '#f8fafc', borderRadius: 16, padding: 16, fontSize: 15, color: COLORS.navy, borderWidth: 1, borderColor: '#e2e8f0' },
-  
+
   saveBtn: { backgroundColor: COLORS.accent, borderRadius: 18, padding: 18, alignItems: 'center', marginTop: 12, shadowColor: COLORS.accent, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 4 },
   saveText: { color: '#FFF', fontSize: 16, fontWeight: '700' },
 });

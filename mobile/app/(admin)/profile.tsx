@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuthStore } from '@/features/auth/store';
 import { secureStorage } from '@/lib/secureStorage';
 import { router } from 'expo-router';
@@ -21,16 +21,17 @@ function SettingRow({ icon, label, color = C.navy, onPress }: any) {
   return (
     <TouchableOpacity style={s.row} onPress={onPress}>
       <View style={[s.rowIcon, { backgroundColor: `${color}10` }]}>
-        <Ionicons name={icon} size={20} color={color} />
+        <Ionicons name={icon} size={18} color={color} />
       </View>
       <Text style={s.rowLabel}>{label}</Text>
-      <Ionicons name="chevron-forward" size={18} color={C.subtle} style={{ marginLeft: 'auto' }} />
+      <Ionicons name="chevron-forward" size={14} color={C.subtle} style={{ marginLeft: 'auto' }} />
     </TouchableOpacity>
   );
 }
 
 export default function AdminProfileScreen() {
   const { employee, clearAuth } = useAuthStore();
+  const insets = useSafeAreaInsets();
   const avatarLetter = employee?.name?.[0]?.toUpperCase() || 'A';
 
   const handleLogout = async () => {
@@ -39,30 +40,29 @@ export default function AdminProfileScreen() {
     router.replace('/(auth)/login');
   };
 
-  return (
-    <View style={s.root}>
-      <StatusBar barStyle="light-content" />
-      <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
 
+
+
+  return (
+    <SafeAreaView style={s.root} edges={['bottom']}>
+      <StatusBar barStyle="light-content" />
+      <ScrollView
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 114 + insets.bottom + 16 }}
+      >
         {/* ── Header ── */}
-        <LinearGradient
-          colors={[C.navy, '#1E293B']}
-          style={s.header}
-        >
+        <LinearGradient colors={[C.navy, '#1E293B']} style={s.header}>
           <SafeAreaView>
             <View style={s.headerContent}>
               <View style={s.avatarContainer}>
-                <LinearGradient
-                  colors={['#818CF8', '#4F46E5']}
-                  style={s.avatarGradient}
-                >
+                <LinearGradient colors={['#818CF8', '#4F46E5']} style={s.avatarGradient}>
                   <Text style={s.avatarText}>{avatarLetter}</Text>
                 </LinearGradient>
                 <View style={s.adminBadge}>
-                  <Ionicons name="shield-checkmark" size={12} color={C.white} />
+                  <Ionicons name="shield-checkmark" size={11} color={C.white} />
                 </View>
               </View>
-
               <Text style={s.name}>{employee?.name || 'Administrator'}</Text>
               <View style={s.badge}>
                 <Text style={s.badgeText}>{employee?.role || 'ADMIN'}</Text>
@@ -73,6 +73,8 @@ export default function AdminProfileScreen() {
 
         {/* ── Content ── */}
         <View style={s.content}>
+
+          {/* Account info */}
           <View style={s.section}>
             <Text style={s.sectionTitle}>Account</Text>
             <View style={s.card}>
@@ -93,6 +95,7 @@ export default function AdminProfileScreen() {
             </View>
           </View>
 
+          {/* Quick Actions */}
           <View style={s.section}>
             <Text style={s.sectionTitle}>Quick Actions</Text>
             <View style={s.card}>
@@ -110,83 +113,108 @@ export default function AdminProfileScreen() {
             </View>
           </View>
 
+          {/* Logout */}
           <TouchableOpacity style={s.logoutBtn} onPress={handleLogout}>
-            <LinearGradient
-              colors={['#FFF1F1', '#FFF1F1']}
-              style={s.logoutGradient}
-            >
-              <Ionicons name="log-out-outline" size={20} color={C.danger} />
+            <View style={s.logoutInner}>
+              <Ionicons name="log-out-outline" size={18} color={C.danger} />
               <Text style={s.logoutText}>Log Out from Admin Console</Text>
-            </LinearGradient>
+            </View>
           </TouchableOpacity>
 
           <Text style={s.version}>AttendX Admin v1.0.0 • Secure Session</Text>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
+
+  // ── Header ──────────────────────────────────────────────────
   header: {
-    paddingBottom: 120,
-    borderBottomLeftRadius: 32,
-    borderBottomRightRadius: 32,
+    paddingBottom: 32,           // was 120 — unnecessarily tall
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
   },
-  headerContent: { alignItems: 'center', paddingTop: 20 },
-  avatarContainer: { position: 'relative', marginBottom: 16 },
+  headerContent: { alignItems: 'center', paddingTop: 16 },
+  avatarContainer: { position: 'relative', marginBottom: 12 },
   avatarGradient: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 80,                   // was 100 — more proportional
+    height: 80,
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 4,
-    borderColor: 'rgba(255,255,255,0.2)'
+    borderWidth: 3,
+    borderColor: 'rgba(255,255,255,0.2)',
   },
-  avatarText: { fontSize: 40, fontWeight: '800', color: C.white },
+  avatarText: { fontSize: 32, fontWeight: '800', color: C.white },
   adminBadge: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     backgroundColor: C.teal,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 3,
-    borderColor: C.navy
+    borderWidth: 2,
+    borderColor: C.navy,
   },
-  name: { fontSize: 24, fontWeight: '800', color: C.white, marginBottom: 8 },
-  badge: { backgroundColor: 'rgba(255,255,255,0.1)', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 8 },
+  name: { fontSize: 20, fontWeight: '800', color: C.white, marginBottom: 6 },
+  badge: { backgroundColor: 'rgba(255,255,255,0.1)', paddingHorizontal: 10, paddingVertical: 3, borderRadius: 8 },
   badgeText: { fontSize: 10, fontWeight: '800', color: C.white, letterSpacing: 1 },
 
-  content: { paddingHorizontal: 24, paddingBottom: 120 },
-  section: { marginTop: 32 },
-  sectionTitle: { fontSize: 16, fontWeight: '700', color: C.navy, marginBottom: 12, paddingLeft: 4 },
-  card: { backgroundColor: C.white, borderRadius: 24, padding: 16, shadowColor: C.navy, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.04, shadowRadius: 12, elevation: 4 },
+  // ── Body ────────────────────────────────────────────────────
+  content: { paddingHorizontal: 20 },   // no paddingBottom — handled by ScrollView
 
-  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14 },
-  rowIcon: { width: 42, height: 42, borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginRight: 16 },
-  rowLabel: { fontSize: 15, color: C.navy, fontWeight: '700' },
-  divider: { height: 1, backgroundColor: '#F8FAFC' },
-  infoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 14 },
-  infoLabel: { fontSize: 13, color: C.subtle, fontWeight: '600' },
-  infoValue: { fontSize: 14, color: C.navy, fontWeight: '700' },
+  section: { marginTop: 24 },
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: C.subtle,
+    textTransform: 'uppercase',
+    letterSpacing: 0.6,
+    marginBottom: 10,
+    paddingLeft: 2,
+  },
+  card: {
+    backgroundColor: C.white,
+    borderRadius: 18,
+    paddingHorizontal: 16,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#E8ECF4',
+    shadowColor: C.navy,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    elevation: 2,
+  },
 
-  logoutBtn: { marginTop: 40 },
-  logoutGradient: {
+  // ── Rows ────────────────────────────────────────────────────
+  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12 },
+  rowIcon: { width: 36, height: 36, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginRight: 12 },
+  rowLabel: { fontSize: 14, color: C.navy, fontWeight: '600' },
+  divider: { height: StyleSheet.hairlineWidth, backgroundColor: '#F1F5F9' },
+  infoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12 },
+  infoLabel: { fontSize: 12, color: C.subtle, fontWeight: '600' },
+  infoValue: { fontSize: 13, color: C.navy, fontWeight: '700' },
+
+  // ── Logout ──────────────────────────────────────────────────
+  logoutBtn: { marginTop: 28 },
+  logoutInner: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
-    borderRadius: 18,
-    gap: 10,
-    borderWidth: 1,
-    borderColor: '#FFE4E4'
+    paddingVertical: 14,
+    borderRadius: 14,
+    gap: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#FFD5D5',
+    backgroundColor: '#FFF5F5',
   },
-  logoutText: { color: C.danger, fontSize: 16, fontWeight: '700' },
-  version: { textAlign: 'center', marginTop: 24, color: '#CBD5E1', fontSize: 11, fontWeight: '500' }
+  logoutText: { color: C.danger, fontSize: 14, fontWeight: '700' },
+
+  version: { textAlign: 'center', marginTop: 20, color: '#CBD5E1', fontSize: 11, fontWeight: '500' },
 });
