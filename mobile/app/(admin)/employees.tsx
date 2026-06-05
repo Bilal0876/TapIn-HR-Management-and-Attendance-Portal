@@ -6,65 +6,120 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-
 import { useEmployees } from '@/hooks/useEmployees';
 
 const C = {
-  navy: '#0F1D3A',
-  accent: '#5BA3F5',
-  teal: '#1DB8A0',
-  white: '#FFFFFF',
-  subtle: '#8A9BB5',
-  muted: '#94A3B8',
-  border: '#E8ECF4',
-  bg: '#F2F4F8',
+  navy: '#0B0F17',
+  bg: '#F3F4F8',
+  card: '#FFFFFF',
+  border: '#E5E9F2',
+  text: '#1C2840',
+  sub: '#96A0B5',
+  muted: '#B0BCCF',
+  blue: '#3D52D5',
+  blueLight: '#ECEFFE',
+  blueIcon: '#5B6EF5',
 };
 
-// Deterministic avatar color from name
-const AVATAR_COLORS = ['#6366F1', '#0DBF97', '#F59E0B', '#F04E6A', '#8B5CF6', '#5BA3F5'];
-function avatarColor(name: string) {
-  const i = name.charCodeAt(0) % AVATAR_COLORS.length;
-  return AVATAR_COLORS[i];
+const AVATAR_PALETTE = [
+  { bg: '#ECEFFE', text: '#5B6EF5' },
+  { bg: '#E0F7F1', text: '#0D9E7A' },
+  { bg: '#FEF6E4', text: '#D97706' },
+  { bg: '#F4EFFE', text: '#8B5CF6' },
+  { bg: '#FEE9ED', text: '#E8405A' },
+  { bg: '#E0F0FF', text: '#2563EB' },
+];
+
+function avatarColors(name: string) {
+  const i = (name.charCodeAt(0) + (name.charCodeAt(1) || 0)) % AVATAR_PALETTE.length;
+  return AVATAR_PALETTE[i];
 }
 
 function EmployeeCard({ item, currentEmployee, onDeactivate }: any) {
-  const color = avatarColor(item.name);
+  const av = avatarColors(item.name);
   const isAdmin = item.role !== 'EMPLOYEE';
+  const isSelf = item.id === currentEmployee?.id;
 
   return (
-    <View style={c.card}>
-      {/* Avatar */}
-      <View style={[c.avatar, { backgroundColor: `${color}18` }]}>
-        <Text style={[c.avatarText, { color }]}>{item.name[0].toUpperCase()}</Text>
+    <View style={card.wrap}>
+      <View style={[card.avatar, { backgroundColor: av.bg }]}>
+        <Text style={[card.avatarText, { color: av.text }]}>
+          {item.name[0].toUpperCase()}
+        </Text>
       </View>
 
-      {/* Info */}
-      <View style={c.info}>
-        <View style={c.nameRow}>
-          <Text style={c.name} numberOfLines={1}>{item.name}</Text>
+      <View style={card.info}>
+        <View style={card.nameRow}>
+          <Text style={card.name} numberOfLines={1}>{item.name}</Text>
           {isAdmin && (
-            <View style={[c.rolePill, { backgroundColor: `${color}15` }]}>
-              <Text style={[c.roleText, { color }]}>{item.role.replace('_', ' ')}</Text>
+            <View style={[card.pill, { backgroundColor: av.bg }]}>
+              <Text style={[card.pillText, { color: av.text }]}>
+                {item.role.replace('_', ' ')}
+              </Text>
             </View>
           )}
         </View>
-        <Text style={c.meta} numberOfLines={1}>
-          {item.profile?.designation || 'Member'}
-          {item.profile?.department ? `  ·  ${item.profile.department}` : ''}
-        </Text>
-        <Text style={c.email} numberOfLines={1}>{item.email}</Text>
+        {(item.profile?.designation || item.profile?.department) && (
+          <Text style={card.meta} numberOfLines={1}>
+            {[item.profile?.designation, item.profile?.department].filter(Boolean).join('  ·  ')}
+          </Text>
+        )}
+        <Text style={card.email} numberOfLines={1}>{item.email}</Text>
       </View>
 
-      {/* Delete */}
-      {item.id !== currentEmployee?.id && (
-        <TouchableOpacity style={c.deleteBtn} onPress={() => onDeactivate(item)}>
-          <Ionicons name="trash-outline" size={15} color="#EF4444" />
+      {!isSelf && (
+        <TouchableOpacity style={card.delBtn} onPress={() => onDeactivate(item)} activeOpacity={0.7}>
+          <Ionicons name="trash-outline" size={16} color="#EF4444" />
         </TouchableOpacity>
       )}
     </View>
   );
 }
+
+const card = StyleSheet.create({
+  wrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: C.card,
+    borderRadius: 14,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: C.border,
+    paddingVertical: 14,
+    paddingHorizontal: 15,
+    gap: 13,
+  },
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 13,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  },
+  avatarText: { fontSize: 18, fontWeight: '500' },
+  info: { flex: 1, minWidth: 0 },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 7, marginBottom: 3 },
+  name: { fontSize: 15, fontWeight: '600', color: C.text, flexShrink: 1 },
+  pill: {
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  pillText: { fontSize: 9, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.3 },
+  meta: { fontSize: 12, color: C.sub, marginBottom: 2 },
+  email: { fontSize: 11, color: C.muted },
+  delBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 9,
+    backgroundColor: '#FEF2F2',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#FECACA',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  },
+});
 
 export default function EmployeesScreen() {
   const {
@@ -74,208 +129,223 @@ export default function EmployeesScreen() {
   } = useEmployees();
 
   const insets = useSafeAreaInsets();
-  const bottomPad = insets.bottom + 80 + 16;
 
   return (
-    <SafeAreaView style={s.root}>
-      <StatusBar barStyle="dark-content" />
+    <View style={s.root}>
+      <StatusBar barStyle="light-content" />
 
-      {/* ── Header ── */}
-      <View style={s.header}>
-        <View>
-          <Text style={s.title}>Team Directory</Text>
-          <Text style={s.sub}>{filteredEmployees.length} active members</Text>
-        </View>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => router.push('/(admin)/create-employee')}
-        >
-          <LinearGradient
-            colors={[C.accent, '#3B82F6']}
+      {/* HEADER */}
+      <SafeAreaView style={s.header}>
+        <View style={s.topRow}>
+          <View>
+            <Text style={s.adminTag}>Admin</Text>
+            <Text style={s.title}>Team Directory</Text>
+            <Text style={s.sub}>{filteredEmployees.length} active members</Text>
+          </View>
+          <TouchableOpacity
             style={s.addBtn}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+            activeOpacity={0.8}
+            onPress={() => router.push('/(admin)/create-employee')}
           >
-            <Ionicons name="person-add" size={17} color={C.white} />
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
-
-      {/* ── Search ── */}
-      <View style={s.searchWrap}>
-        <Ionicons name="search" size={16} color={C.muted} />
-        <TextInput
-          value={query}
-          onChangeText={setQuery}
-          placeholder="Search name, email, department…"
-          placeholderTextColor={C.muted}
-          style={s.searchInput}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        {query.length > 0 && (
-          <TouchableOpacity onPress={() => setQuery('')}>
-            <Ionicons name="close-circle" size={16} color={C.muted} />
+            <Ionicons name="person-add-outline" size={16} color="#fff" />
           </TouchableOpacity>
+        </View>
+
+        {/* Search */}
+        <View style={s.searchWrap}>
+          <Ionicons name="search-outline" size={16} color="rgba(255,255,255,0.3)" />
+          <TextInput
+            value={query}
+            onChangeText={setQuery}
+            placeholder="Search name, email, department…"
+            placeholderTextColor="rgba(255,255,255,0.25)"
+            style={s.searchInput}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          {query.length > 0 && (
+            <TouchableOpacity onPress={() => setQuery('')}>
+              <Ionicons name="close-circle" size={16} color="rgba(255,255,255,0.3)" />
+            </TouchableOpacity>
+          )}
+        </View>
+      </SafeAreaView>
+
+      {/* BODY */}
+      <View style={s.body}>
+
+        {error && (
+          <View style={s.errorCard}>
+            <Ionicons name="alert-circle-outline" size={14} color="#EF4444" />
+            <Text style={s.errorText}>{error}</Text>
+            <TouchableOpacity style={s.retryBtn} onPress={loadData}>
+              <Text style={s.retryText}>Retry</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {loading ? (
+          <View style={s.loader}>
+            <ActivityIndicator size="large" color={C.blue} />
+            <Text style={s.loaderText}>Syncing team…</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={filteredEmployees}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <EmployeeCard
+                item={item}
+                currentEmployee={currentEmployee}
+                onDeactivate={handleDeactivate}
+              />
+            )}
+            contentContainerStyle={[
+              s.list,
+              { paddingBottom: insets.bottom + 90 },
+            ]}
+            showsVerticalScrollIndicator={false}
+            onRefresh={loadData}
+            refreshing={loading}
+            ItemSeparatorComponent={() => <View style={{ height: 9 }} />}
+            ListHeaderComponent={
+              <View style={s.listHeader}>
+                <Text style={s.secLabel}>All members</Text>
+                <View style={s.countBadge}>
+                  <Text style={s.countText}>{filteredEmployees.length} total</Text>
+                </View>
+              </View>
+            }
+            ListEmptyComponent={
+              <View style={s.empty}>
+                <Ionicons name="people-outline" size={38} color="#CBD5E1" />
+                <Text style={s.emptyText}>
+                  {query.trim() ? 'No employees match your search.' : 'No active employees yet.'}
+                </Text>
+              </View>
+            }
+          />
         )}
       </View>
-
-      {/* ── Error ── */}
-      {error && (
-        <View style={s.errorCard}>
-          <Ionicons name="alert-circle-outline" size={15} color="#EF4444" />
-          <Text style={s.errorText}>{error}</Text>
-          <TouchableOpacity style={s.retryBtn} onPress={loadData}>
-            <Text style={s.retryText}>Retry</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {/* ── List ── */}
-      {loading ? (
-        <View style={s.loader}>
-          <ActivityIndicator size="large" color={C.accent} />
-          <Text style={s.loaderText}>Syncing team…</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={filteredEmployees}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <EmployeeCard
-              item={item}
-              currentEmployee={currentEmployee}
-              onDeactivate={handleDeactivate}
-            />
-          )}
-          contentContainerStyle={[s.list, { paddingBottom: bottomPad }]}
-          showsVerticalScrollIndicator={false}
-          onRefresh={loadData}
-          refreshing={loading}
-          ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-          ListEmptyComponent={
-            <View style={s.empty}>
-              <Ionicons name="people-outline" size={40} color="#CBD5E1" />
-              <Text style={s.emptyText}>
-                {query.trim() ? 'No employees match your search.' : 'No active employees yet.'}
-              </Text>
-            </View>
-          }
-        />
-      )}
-    </SafeAreaView>
+    </View>
   );
 }
 
-// ── Card styles ───────────────────────────────────────────────
-const c = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderRadius: 16,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#E8ECF4',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 6,
-    elevation: 1,
-  },
-  avatar: {
-    width: 42,
-    height: 42,
-    borderRadius: 13,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  avatarText: { fontSize: 17, fontWeight: '800' },
-  info: { flex: 1, minWidth: 0 },
-  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 2 },
-  name: { fontSize: 14, fontWeight: '700', color: '#0F1D3A', flexShrink: 1 },
-  rolePill: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
-  roleText: { fontSize: 9, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 0.3 },
-  meta: { fontSize: 12, color: '#8A9BB5', fontWeight: '500', marginBottom: 2 },
-  email: { fontSize: 11, color: '#94A3B8' },
-  deleteBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 9,
-    backgroundColor: '#FEF2F2',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#FECACA',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 8,
-  },
-});
-
-// ── Screen styles ─────────────────────────────────────────────
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
 
   header: {
+    backgroundColor: C.navy,
+    paddingHorizontal: 18,
+    paddingTop: 4,
+    paddingBottom: 18,
+  },
+  topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 16,
+    alignItems: 'flex-start',
+    marginBottom: 16,
+    marginTop: 8,
   },
-  title: { fontSize: 24, fontWeight: '800', color: C.navy, letterSpacing: -0.4 },
-  sub: { fontSize: 12, color: C.muted, marginTop: 2 },
+  adminTag: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.3)',
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+    marginBottom: 3,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: '600',
+    color: '#fff',
+    letterSpacing: -0.5,
+  },
+  sub: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.28)',
+    marginTop: 3,
+  },
   addBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 13,
-    justifyContent: 'center',
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: C.blue,
     alignItems: 'center',
-    shadowColor: C.accent,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    elevation: 4,
+    justifyContent: 'center',
+    marginTop: 4,
   },
 
   searchWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: C.white,
-    marginHorizontal: 20,
-    marginBottom: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 13,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: C.border,
-    gap: 8,
+    backgroundColor: 'rgba(255,255,255,0.07)',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 11,
+    paddingHorizontal: 13,
+    paddingVertical: 11,
+    gap: 9,
   },
-  searchInput: { flex: 1, color: C.navy, fontSize: 13, fontWeight: '500' },
+  searchInput: {
+    flex: 1,
+    fontSize: 13,
+    color: '#fff',
+    padding: 0,
+  },
+
+  body: { flex: 1 },
 
   errorCard: {
-    marginHorizontal: 20,
-    marginBottom: 10,
+    marginHorizontal: 18,
+    marginTop: 14,
     backgroundColor: '#FEF2F2',
     borderColor: '#FECACA',
     borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 12,
-    padding: 10,
+    borderRadius: 10,
+    padding: 11,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 7,
   },
-  errorText: { flex: 1, color: '#991B1B', fontSize: 12, fontWeight: '600' },
-  retryBtn: { backgroundColor: C.white, borderRadius: 8, paddingHorizontal: 10, paddingVertical: 5 },
-  retryText: { color: C.navy, fontSize: 12, fontWeight: '700' },
+  errorText: { flex: 1, color: '#991B1B', fontSize: 12, fontWeight: '500' },
+  retryBtn: {
+    backgroundColor: C.card,
+    borderRadius: 7,
+    paddingHorizontal: 11,
+    paddingVertical: 5,
+  },
+  retryText: { color: C.text, fontSize: 12, fontWeight: '600' },
 
-  list: { paddingHorizontal: 20, paddingTop: 4 },
+  list: { paddingHorizontal: 18, paddingTop: 16 },
+
+  listHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  secLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: C.sub,
+    textTransform: 'uppercase',
+    letterSpacing: 0.9,
+  },
+  countBadge: {
+    backgroundColor: C.blueLight,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+  },
+  countText: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: C.blueIcon,
+  },
 
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  loaderText: { marginTop: 10, color: C.subtle, fontSize: 13 },
+  loaderText: { marginTop: 12, color: C.sub, fontSize: 13 },
 
   empty: { alignItems: 'center', marginTop: 60 },
-  emptyText: { marginTop: 10, color: C.subtle, fontSize: 13, fontWeight: '600', textAlign: 'center' },
+  emptyText: { marginTop: 12, color: C.sub, fontSize: 13, textAlign: 'center' },
 });

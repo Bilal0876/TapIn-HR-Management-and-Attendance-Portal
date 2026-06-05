@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  StatusBar,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CheckInButton } from '@/features/attendance/components/CheckInButton';
 import { BreakButton } from '@/features/attendance/components/BreakButton';
@@ -49,7 +41,7 @@ export default function EmployeeHome() {
   // Dynamic Shift Info
   const expectedCheckinStr = record?.config?.expectedCheckin || '09:00';
   const workMinutes = record?.config?.expectedWorkMinutes || 480;
-  
+
   // Calculate approximate checkout time
   const [h, m] = expectedCheckinStr.split(':').map(Number);
   const shiftStart = new Date();
@@ -81,8 +73,8 @@ export default function EmployeeHome() {
               status={record?.status || 'IDLE'}
               checkinTime={record?.checkinTime ? format(parseISO(record.checkinTime), 'hh:mm a') : null}
               checkoutTime={record?.checkoutTime ? format(parseISO(record.checkoutTime), 'hh:mm a') : null}
-              workingHours={record?.dailySummary?.totalWorkMinutes ? 
-                `${Math.floor(record.dailySummary.totalWorkMinutes / 60)}h ${record.dailySummary.totalWorkMinutes % 60}m` 
+              workingHours={record?.dailySummary?.totalWorkMinutes ?
+                `${Math.floor(record.dailySummary.totalWorkMinutes / 60)}h ${record.dailySummary.totalWorkMinutes % 60}m`
                 : null
               }
               onRefresh={refetch}

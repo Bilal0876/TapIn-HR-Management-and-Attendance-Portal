@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TouchableOpacity, 
-  TextInput, 
-  ScrollView, 
-  KeyboardAvoidingView, 
-  Platform,
-  ActivityIndicator,
-  StatusBar,
-  Alert
+import {
+  View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Platform,
+  ActivityIndicator, StatusBar, Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, router } from 'expo-router';
@@ -33,14 +24,14 @@ export default function RequestCorrectionScreen() {
   const { recordId, date } = useLocalSearchParams();
   const [loading, setLoading] = useState(false);
   const [reason, setReason] = useState('');
-  
+
   // Custom time inputs (HH:MM)
   const [inTime, setInTime] = useState('09:00');
   const [outTime, setOutTime] = useState('18:00');
 
   const handleSubmit = async () => {
     if (!reason.trim()) return Alert.alert('Error', 'Please provide a reason');
-    
+
     setLoading(true);
     try {
       // Merge date from search params with the requested time
@@ -81,13 +72,13 @@ export default function RequestCorrectionScreen() {
         <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
           <View style={s.card}>
             <Text style={s.sectionTitle}>Requested Times</Text>
-            
+
             <View style={s.timeRow}>
               <View style={s.timeInputGroup}>
                 <Text style={s.label}>CHECK-IN</Text>
-                <TextInput 
-                  style={s.digitalInput} 
-                  value={inTime} 
+                <TextInput
+                  style={s.digitalInput}
+                  value={inTime}
                   onChangeText={setInTime}
                   placeholder="09:00"
                   keyboardType="numbers-and-punctuation"
@@ -99,9 +90,9 @@ export default function RequestCorrectionScreen() {
               </View>
               <View style={s.timeInputGroup}>
                 <Text style={s.label}>CHECK-OUT</Text>
-                <TextInput 
-                  style={s.digitalInput} 
-                  value={outTime} 
+                <TextInput
+                  style={s.digitalInput}
+                  value={outTime}
                   onChangeText={setOutTime}
                   placeholder="18:00"
                   keyboardType="numbers-and-punctuation"
@@ -163,29 +154,29 @@ const s = StyleSheet.create({
   label: { fontSize: 11, fontWeight: '700', color: C.label, marginBottom: 8, letterSpacing: 0.5 },
   timeRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 12 },
   timeInputGroup: { flex: 1 },
-  digitalInput: { 
-    backgroundColor: '#F8FAFC', 
-    borderWidth: 1.5, 
-    borderColor: '#E2E8F0', 
-    borderRadius: 16, 
-    padding: 16, 
-    fontSize: 22, 
-    fontWeight: '800', 
+  digitalInput: {
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    borderRadius: 16,
+    padding: 16,
+    fontSize: 22,
+    fontWeight: '800',
     color: C.navy,
     textAlign: 'center'
   },
   timeDivider: { paddingBottom: 16 },
   infobox: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 16, backgroundColor: '#EFF6FF', padding: 12, borderRadius: 12 },
   infoText: { fontSize: 12, color: '#3B82F6', fontWeight: '600' },
-  textArea: { 
-    backgroundColor: '#F8FAFC', 
-    borderWidth: 1.5, 
-    borderColor: '#E2E8F0', 
-    borderRadius: 16, 
-    padding: 16, 
-    fontSize: 15, 
-    color: C.navy, 
-    minHeight: 120 
+  textArea: {
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    borderRadius: 16,
+    padding: 16,
+    fontSize: 15,
+    color: C.navy,
+    minHeight: 120
   },
   submitBtn: { borderRadius: 18, overflow: 'hidden', elevation: 4 },
   gradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 18, gap: 10 },

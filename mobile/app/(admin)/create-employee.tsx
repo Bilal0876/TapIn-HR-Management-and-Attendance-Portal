@@ -25,7 +25,7 @@ const C = {
   border: '#E8ECF4',
 };
 
-// ── Styled Input ──────────────────────────────────────────────
+// ── Styled Input 
 function StyledInput({ label, icon, value, onChangeText, placeholder, error, ...props }: any) {
   const [focused, setFocused] = useState(false);
   return (
@@ -69,7 +69,7 @@ const f = StyleSheet.create({
   error: { color: '#EF4444', fontSize: 11, marginTop: 4, marginLeft: 2, fontWeight: '600' },
 });
 
-// ── Main Screen ───────────────────────────────────────────────
+// ── Main Screen
 export default function CreateEmployeeScreen() {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -310,7 +310,7 @@ export default function CreateEmployeeScreen() {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
 
-  // ── Header ──────────────────────────────────────────────────
+  // ── Header
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -332,11 +332,11 @@ const s = StyleSheet.create({
   title: { fontSize: 20, fontWeight: '800', color: C.navy, letterSpacing: -0.3 },
   subtitle: { fontSize: 12, color: C.muted, marginTop: 1 },
 
-  // ── Scroll ──────────────────────────────────────────────────
+  // ── Scroll 
   scroll: { flex: 1 },
   scrollContent: { paddingHorizontal: 20, paddingTop: 4 },
 
-  // ── Card ────────────────────────────────────────────────────
+  // ── Card 
   card: {
     backgroundColor: C.card,
     borderRadius: 20,
@@ -364,7 +364,7 @@ const s = StyleSheet.create({
     marginVertical: 16,
   },
 
-  // ── Role picker ─────────────────────────────────────────────
+  // ── Role picker 
   labelRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 },
   rolePicker: {
     flexDirection: 'row',
@@ -392,7 +392,7 @@ const s = StyleSheet.create({
   roleText: { fontSize: 10, fontWeight: '700', color: C.muted, textTransform: 'uppercase', letterSpacing: 0.3 },
   roleTextActive: { color: C.accent },
 
-  // ── Shift cards ─────────────────────────────────────────────
+  // ── Shift cards
   shiftRow: { gap: 10, paddingBottom: 2 },
   shiftCard: {
     width: 130,
@@ -419,7 +419,7 @@ const s = StyleSheet.create({
   emptyShift: { padding: 16, backgroundColor: C.bg, borderRadius: 12, minWidth: 160, alignItems: 'center', justifyContent: 'center' },
   emptyShiftText: { color: C.muted, fontSize: 12 },
 
-  // ── Submit button ────────────────────────────────────────────
+  // ── Submit button
   submitBtn: {
     borderRadius: 14,
     overflow: 'hidden',
@@ -438,7 +438,7 @@ const s = StyleSheet.create({
   },
   submitText: { color: C.white, fontSize: 15, fontWeight: '800' },
 
-  // ── Error banner ─────────────────────────────────────────────
+  // ── Error banner
   errorBanner: {
     flexDirection: 'row',
     alignItems: 'center',

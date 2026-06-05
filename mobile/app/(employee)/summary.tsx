@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  ActivityIndicator, 
-  StatusBar,
-  Dimensions
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, StatusBar, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { attendanceApi } from '@/features/attendance/api';
 import { Ionicons } from '@expo/vector-icons';
@@ -54,15 +46,15 @@ export default function EmployeeSummaryScreen() {
     <View style={s.root}>
       <StatusBar barStyle="light-content" />
       <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
-        
+
         {/* ── Header ── */}
         <LinearGradient colors={[C.navy, '#1E293B']} style={s.header}>
           <SafeAreaView>
             <View style={s.headerContent}>
               <View style={s.streakCircle}>
-                 <Text style={s.streakNum}>{stats.streak}</Text>
-                 <Text style={s.streakLbl}>DAYS STREAK</Text>
-                 <Ionicons name="flame" size={32} color="#FF9F43" style={s.flame} />
+                <Text style={s.streakNum}>{stats.streak}</Text>
+                <Text style={s.streakLbl}>DAYS STREAK</Text>
+                <Ionicons name="flame" size={32} color="#FF9F43" style={s.flame} />
               </View>
               <Text style={s.headerTitle}>Monthly Milestone</Text>
               <Text style={s.headerSub}>You're doing great this month!</Text>
@@ -72,49 +64,49 @@ export default function EmployeeSummaryScreen() {
 
         {/* ── Content ── */}
         <View style={s.content}>
-           <View style={s.grid}>
-               <AchievementCard 
-                icon="time-outline" 
-                label="TOTAL HOURS" 
-                value={`${stats.totalHours}h`} 
-                color={C.accent} 
-              />
-              <AchievementCard 
-                icon="calendar-outline" 
-                label="DAYS PRESENT" 
-                value={stats.daysPresent} 
-                color={C.teal} 
-              />
-           </View>
+          <View style={s.grid}>
+            <AchievementCard
+              icon="time-outline"
+              label="TOTAL HOURS"
+              value={`${stats.totalHours}h`}
+              color={C.accent}
+            />
+            <AchievementCard
+              icon="calendar-outline"
+              label="DAYS PRESENT"
+              value={stats.daysPresent}
+              color={C.teal}
+            />
+          </View>
 
-           <View style={s.section}>
-              <Text style={s.sectionTitle}>Precision Score</Text>
-              <View style={s.scoreCard}>
-                 <View style={s.scoreInfo}>
-                    <Text style={s.scoreValue}>{stats.onTimeRate}%</Text>
-                    <Text style={s.scoreLabel}>On-Time Arrival</Text>
-                 </View>
-                 <View style={s.progressTrack}>
-                    <View style={[s.progressBar, { width: `${stats.onTimeRate}%` }]} />
-                 </View>
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>Precision Score</Text>
+            <View style={s.scoreCard}>
+              <View style={s.scoreInfo}>
+                <Text style={s.scoreValue}>{stats.onTimeRate}%</Text>
+                <Text style={s.scoreLabel}>On-Time Arrival</Text>
               </View>
-           </View>
+              <View style={s.progressTrack}>
+                <View style={[s.progressBar, { width: `${stats.onTimeRate}%` }]} />
+              </View>
+            </View>
+          </View>
 
-           <View style={s.section}>
-              <Text style={s.sectionTitle}>Engagement Goals</Text>
-              <View style={s.goalItem}>
-                 <Ionicons name="trophy-outline" size={20} color="#F59E0B" />
-                 <Text style={s.goalText}>Complete 20 check-ins this month</Text>
-                 <Text style={s.goalProgress}>{stats.daysPresent}/20</Text>
-              </View>
-              <View style={s.goalItem}>
-                 <Ionicons name="shield-checkmark-outline" size={20} color={C.teal} />
-                 <Text style={s.goalText}>Keep streak above 5 days</Text>
-                 <Text style={[s.goalProgress, { color: stats.streak >= 5 ? C.teal : C.subtle }]}>
-                    {stats.streak >= 5 ? 'Done' : 'In Progress'}
-                 </Text>
-              </View>
-           </View>
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>Engagement Goals</Text>
+            <View style={s.goalItem}>
+              <Ionicons name="trophy-outline" size={20} color="#F59E0B" />
+              <Text style={s.goalText}>Complete 20 check-ins this month</Text>
+              <Text style={s.goalProgress}>{stats.daysPresent}/20</Text>
+            </View>
+            <View style={s.goalItem}>
+              <Ionicons name="shield-checkmark-outline" size={20} color={C.teal} />
+              <Text style={s.goalText}>Keep streak above 5 days</Text>
+              <Text style={[s.goalProgress, { color: stats.streak >= 5 ? C.teal : C.subtle }]}>
+                {stats.streak >= 5 ? 'Done' : 'In Progress'}
+              </Text>
+            </View>
+          </View>
         </View>
 
       </ScrollView>
@@ -125,18 +117,18 @@ export default function EmployeeSummaryScreen() {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  header: { 
-    paddingBottom: 120, 
-    borderBottomLeftRadius: 40, 
-    borderBottomRightRadius: 40 
+  header: {
+    paddingBottom: 120,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40
   },
   headerContent: { alignItems: 'center', paddingTop: 20 },
-  streakCircle: { 
-    width: 140, 
-    height: 140, 
-    borderRadius: 70, 
-    backgroundColor: 'rgba(255,255,255,0.05)', 
-    borderWidth: 2, 
+  streakCircle: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderWidth: 2,
     borderColor: 'rgba(255,255,255,0.1)',
     justifyContent: 'center',
     alignItems: 'center',

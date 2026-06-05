@@ -1,14 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  StatusBar,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, StatusBar, RefreshControl, TouchableOpacity, } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -28,9 +19,9 @@ const C = {
 };
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; icon: string }> = {
-  PENDING:  { label: 'Pending',  color: '#D97706', bg: '#FFF7ED', icon: 'time-outline' },
-  APPROVED: { label: 'Approved', color: C.green,   bg: '#ECFDF5', icon: 'checkmark-circle-outline' },
-  REJECTED: { label: 'Rejected', color: C.danger,  bg: '#FFF0F0', icon: 'close-circle-outline' },
+  PENDING: { label: 'Pending', color: '#D97706', bg: '#FFF7ED', icon: 'time-outline' },
+  APPROVED: { label: 'Approved', color: C.green, bg: '#ECFDF5', icon: 'checkmark-circle-outline' },
+  REJECTED: { label: 'Rejected', color: C.danger, bg: '#FFF0F0', icon: 'close-circle-outline' },
 };
 
 export default function MyCorrectionsScreen() {

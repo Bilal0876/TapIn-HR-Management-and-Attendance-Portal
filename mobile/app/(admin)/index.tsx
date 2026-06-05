@@ -30,7 +30,7 @@ const C = {
   violet: '#8B5CF6',
 };
 
-// ── Compact stat card ─────────────────────────────────────────
+// ── Compact stat card
 function StatCard({ label, value, sub, trend, colors, icon }: {
   label: string; value: string; sub: string;
   trend?: string; colors: string[]; icon: string;
@@ -84,7 +84,7 @@ const sc = StyleSheet.create({
   sub: { fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 2 },
 });
 
-// ── Compact action box (3-col grid) ───────────────────────────
+// ── Compact action box (3-col grid)
 function ActionBox({ title, icon, color, onPress }: {
   title: string; icon: string; color: string; onPress: () => void;
 }) {
@@ -128,7 +128,7 @@ const ab = StyleSheet.create({
   },
 });
 
-// ── Pulse row ─────────────────────────────────────────────────
+// ── Pulse row 
 function PulseRow({ item, isLast }: { item: any; isLast: boolean }) {
   return (
     <View style={[pr.wrap, !isLast && pr.border]}>
@@ -151,7 +151,7 @@ const pr = StyleSheet.create({
   time: { fontSize: 11, fontWeight: '600', color: C.sub },
 });
 
-// ── Main ──────────────────────────────────────────────────────
+// ── Main
 export default function AdminHome() {
   const { stats, pulse, loading, refreshing, onRefresh, employee } = useAdminDashboard();
   const isSuperAdmin = employee?.role === 'SUPER_ADMIN';

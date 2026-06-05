@@ -1,15 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  FlatList, 
-  TouchableOpacity, 
-  ActivityIndicator, 
-  StatusBar,
-  RefreshControl,
-  Alert
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, StatusBar, RefreshControl, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { attendanceApi } from '@/features/attendance/api';
 import { reportsApi } from '@/features/reports/api';
@@ -115,10 +105,10 @@ export default function HistoryScreen() {
 
   const renderItem = ({ item }: { item: any }) => {
     const hasIssue = !item.checkoutTime || item.dailySummary?.lateMinutes > 0;
-    
+
     return (
-      <TouchableOpacity 
-        style={s.card} 
+      <TouchableOpacity
+        style={s.card}
         activeOpacity={0.7}
         onPress={() => router.push({
           pathname: '/(employee)/request-correction',
@@ -308,10 +298,10 @@ const s = StyleSheet.create({
   filterChipActive: { backgroundColor: C.navy },
   filterText: { color: C.navy, fontSize: 12, fontWeight: '700' },
   filterTextActive: { color: C.white },
-  card: { 
-    backgroundColor: C.white, 
-    borderRadius: 24, 
-    padding: 20, 
+  card: {
+    backgroundColor: C.white,
+    borderRadius: 24,
+    padding: 20,
     marginBottom: 16,
     shadowColor: '#64748B',
     shadowOffset: { width: 0, height: 4 },

@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator,
-  StatusBar,
-  Platform,
-  Modal,
-  TextInput,
-  Alert,
-  KeyboardAvoidingView,
+  View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator,
+  StatusBar, Platform, Modal, TextInput, Alert, KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,32 +9,55 @@ import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
-
-// Hooks
 import { useDailyLogs } from '@/hooks/useDailyLogs';
 
-const COLORS = {
-  navy: '#0F172A',
-  navyMid: '#1E293B',
+const C = {
+  navy: '#0D1B2A',
+  navyMid: '#1a2d42',
+  bg: '#F4F5F7',
+  card: '#FFFFFF',
+  border: '#E2E8F0',
+  borderLight: '#F1F5F9',
+  text: '#0D1B2A',
+  sub: '#64748B',
+  muted: '#94A3B8',
   accent: '#6366F1',
-  teal: '#10B981',
-  rose: '#F43F5E',
-  bg: '#F8FAFC',
-  subtle: '#64748B',
+  accentLight: '#EEF2FF',
+  green: '#16A34A',
+  greenLight: '#F0FDF4',
+  red: '#EF4444',
+  redLight: '#FEF2F2',
+  redText: '#B91C1C',
+  greenText: '#15803D',
   white: '#FFFFFF',
 };
 
+function getInitials(name: string) {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+}
+
+const AVATAR_PALETTES = [
+  { bg: '#EEF2FF', color: '#4F46E5' },
+  { bg: '#F0FDF4', color: '#15803D' },
+  { bg: '#FFF7ED', color: '#C2410C' },
+  { bg: '#FDF2F8', color: '#9D174D' },
+  { bg: '#ECFDF5', color: '#065F46' },
+];
+
+function getAvatarPalette(name: string) {
+  const idx = name.charCodeAt(0) % AVATAR_PALETTES.length;
+  return AVATAR_PALETTES[idx];
+}
+
 export default function DailyLogsScreen() {
   const {
-    date,
-    setDate,
-    showPicker,
-    setShowPicker,
-    loading,
-    refreshing,
-    logs,
-    onRefresh,
-    correctRecord
+    date, setDate, showPicker, setShowPicker,
+    loading, refreshing, logs, onRefresh, correctRecord,
   } = useDailyLogs();
 
   const [editingLog, setEditingLog] = useState<any>(null);
@@ -59,10 +72,6 @@ export default function DailyLogsScreen() {
 
   const openCorrection = (item: any) => {
     setEditingLog(item);
-    // Assuming checkin/checkout are ISO strings or similar in the 'logs' array from backend
-    // But previous view of daily-logs.tsx showed item.checkin as "09:00" etc.
-    // In actual production, we need full date strings.
-    // Let's use what's available or set current date time.
     setCheckin(item.checkinAt || '');
     setCheckout(item.checkoutAt || '');
     setModalVisible(true);
@@ -75,53 +84,73 @@ export default function DailyLogsScreen() {
         checkoutTime: checkout || undefined,
       });
       setModalVisible(false);
-      Alert.alert('Success', 'Attendance record updated');
-    } catch (e) {
-      Alert.alert('Error', 'Failed to update record');
+      Alert.alert('Updated', 'Attendance record has been corrected.');
+    } catch {
+      Alert.alert('Error', 'Failed to update record.');
     }
   };
 
-  const renderItem = ({ item }: { item: any }) => (
-    <View style={s.card}>
-      <View style={s.cardMain}>
-        <View style={[s.indicator, { backgroundColor: item.color || COLORS.accent }]} />
-        <View style={s.empInfo}>
-          <Text style={s.empName}>{item.name}</Text>
-          <Text style={s.empRole}>{item.designation}</Text>
-        </View>
-        <View style={s.statusBadge}>
-          <Text style={[s.statusText, { color: item.color || COLORS.accent }]}>{item.status}</Text>
-        </View>
-        <TouchableOpacity style={s.editBtn} onPress={() => openCorrection(item)}>
-          <Ionicons name="create-outline" size={18} color={COLORS.subtle} />
-        </TouchableOpacity>
-      </View>
+  const renderItem = ({ item }: { item: any }) => {
+    const palette = getAvatarPalette(item.name);
+    const isPresent = item.status?.toLowerCase() === 'present';
 
-      <View style={s.timeRow}>
-        <View style={s.timeItem}>
-          <Ionicons name="enter-outline" size={14} color={COLORS.subtle} />
-          <Text style={s.timeLabel}>In:</Text>
-          <Text style={s.timeVal}>{item.checkin}</Text>
+    return (
+      <View style={s.card}>
+        {/* Top row */}
+        <View style={s.cardTop}>
+          <View style={[s.avatar, { backgroundColor: palette.bg }]}>
+            <Text style={[s.avatarText, { color: palette.color }]}>{getInitials(item.name)}</Text>
+          </View>
+          <View style={s.empInfo}>
+            <Text style={s.empName}>{item.name}</Text>
+            <Text style={s.empRole}>{item.designation}</Text>
+          </View>
+          <View style={[s.statusBadge, { backgroundColor: isPresent ? C.greenLight : C.redLight }]}>
+            <View style={[s.statusDot, { backgroundColor: isPresent ? C.green : C.red }]} />
+            <Text style={[s.statusText, { color: isPresent ? C.greenText : C.redText }]}>
+              {item.status}
+            </Text>
+          </View>
+          <TouchableOpacity style={s.editBtn} onPress={() => openCorrection(item)}>
+            <Ionicons name="pencil-outline" size={15} color={C.sub} />
+          </TouchableOpacity>
         </View>
-        <View style={s.divider} />
-        <View style={s.timeItem}>
-          <Ionicons name="exit-outline" size={14} color={COLORS.subtle} />
-          <Text style={s.timeLabel}>Out:</Text>
-          <Text style={s.timeVal}>{item.checkout}</Text>
+
+        {/* Time footer */}
+        <View style={s.cardFooter}>
+          <View style={s.timeBlock}>
+            <View style={[s.timeIconWrap, { backgroundColor: C.accentLight }]}>
+              <Ionicons name="enter-outline" size={15} color={C.accent} />
+            </View>
+            <View style={s.timeTextCol}>
+              <Text style={s.timeLabel}>Check in</Text>
+              <Text style={s.timeVal}>{item.checkin || '--:--'}</Text>
+            </View>
+          </View>
+          <View style={s.timeDivider} />
+          <View style={s.timeBlock}>
+            <View style={[s.timeIconWrap, { backgroundColor: C.greenLight }]}>
+              <Ionicons name="exit-outline" size={15} color={C.green} />
+            </View>
+            <View style={s.timeTextCol}>
+              <Text style={s.timeLabel}>Check out</Text>
+              <Text style={s.timeVal}>{item.checkout || '--:--'}</Text>
+            </View>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <View style={s.root}>
       <StatusBar barStyle="light-content" />
 
-      <LinearGradient colors={[COLORS.navy, COLORS.navyMid]} style={s.header}>
-        <SafeAreaView>
-          <View style={s.headerContent}>
+      <LinearGradient colors={[C.navy, C.navyMid]} style={s.header}>
+        <SafeAreaView edges={['top']}>
+          <View style={s.headerRow}>
             <TouchableOpacity onPress={() => router.back()} style={s.backBtn}>
-              <Ionicons name="arrow-back" size={24} color="#FFF" />
+              <Ionicons name="chevron-back" size={20} color="#FFF" />
             </TouchableOpacity>
             <View>
               <Text style={s.headerTitle}>Daily Logs</Text>
@@ -129,14 +158,10 @@ export default function DailyLogsScreen() {
             </View>
           </View>
 
-          <TouchableOpacity
-            style={s.datePickerBtn}
-            onPress={() => setShowPicker(true)}
-            activeOpacity={0.8}
-          >
-            <Ionicons name="calendar-outline" size={20} color={COLORS.accent} />
-            <Text style={s.dateLabel}>{format(date, 'EEEE, dd MMMM yyyy')}</Text>
-            <Ionicons name="chevron-down" size={18} color={COLORS.subtle} />
+          <TouchableOpacity style={s.datePill} onPress={() => setShowPicker(true)} activeOpacity={0.8}>
+            <Ionicons name="calendar-outline" size={18} color={C.accent} />
+            <Text style={s.datePillText}>{format(date, 'EEEE, dd MMMM yyyy')}</Text>
+            <Ionicons name="chevron-down" size={16} color={C.muted} />
           </TouchableOpacity>
         </SafeAreaView>
       </LinearGradient>
@@ -153,7 +178,7 @@ export default function DailyLogsScreen() {
 
       {loading && !refreshing ? (
         <View style={s.center}>
-          <ActivityIndicator color={COLORS.accent} size="large" />
+          <ActivityIndicator color={C.accent} size="large" />
           <Text style={s.loadingText}>Syncing records...</Text>
         </View>
       ) : (
@@ -165,25 +190,39 @@ export default function DailyLogsScreen() {
           showsVerticalScrollIndicator={false}
           onRefresh={onRefresh}
           refreshing={refreshing}
+          ListHeaderComponent={
+            logs.length > 0 ? (
+              <View style={s.listHeader}>
+                <Text style={s.listHeaderLabel}>Today's Records</Text>
+                <View style={s.listHeaderCount}>
+                  <Text style={s.listHeaderCountText}>{logs.length} employees</Text>
+                </View>
+              </View>
+            ) : null
+          }
           ListEmptyComponent={
             <View style={s.empty}>
-              <Ionicons name="document-text-outline" size={64} color="#e2e8f0" />
-              <Text style={s.emptyText}>No records found for this date.</Text>
+              <View style={s.emptyIcon}>
+                <Ionicons name="document-text-outline" size={30} color={C.muted} />
+              </View>
+              <Text style={s.emptyTitle}>No records found</Text>
+              <Text style={s.emptySub}>No attendance data for this date</Text>
             </View>
           }
         />
       )}
 
+      {/* Correction Modal */}
       <Modal visible={modalVisible} transparent animationType="slide">
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={s.modalOverlay}>
           <View style={s.modalContent}>
+            <View style={s.modalHandle} />
             <View style={s.modalHeader}>
               <Text style={s.modalTitle}>Manual Correction</Text>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Ionicons name="close" size={24} color={COLORS.navy} />
+              <TouchableOpacity style={s.modalClose} onPress={() => setModalVisible(false)}>
+                <Ionicons name="close" size={18} color={C.sub} />
               </TouchableOpacity>
             </View>
-
             <Text style={s.modalSub}>Editing record for {editingLog?.name}</Text>
 
             <View style={s.inputGroup}>
@@ -193,9 +232,9 @@ export default function DailyLogsScreen() {
                 value={checkin}
                 onChangeText={setCheckin}
                 placeholder="e.g. 2024-03-20T09:00:00Z"
+                placeholderTextColor={C.muted}
               />
             </View>
-
             <View style={s.inputGroup}>
               <Text style={s.label}>Check-out Time (ISO)</Text>
               <TextInput
@@ -203,11 +242,12 @@ export default function DailyLogsScreen() {
                 value={checkout}
                 onChangeText={setCheckout}
                 placeholder="e.g. 2024-03-20T18:00:00Z"
+                placeholderTextColor={C.muted}
               />
             </View>
 
             <TouchableOpacity style={s.saveBtn} onPress={handleSaveCorrection}>
-              <Text style={s.saveText}>Save Correction</Text>
+              <Text style={s.saveBtnText}>Save Correction</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -217,80 +257,65 @@ export default function DailyLogsScreen() {
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: COLORS.bg },
-  header: { paddingBottom: 24, borderBottomLeftRadius: 32, borderBottomRightRadius: 32, paddingHorizontal: 20 },
-  headerContent: { flexDirection: 'row', alignItems: 'center', paddingTop: 12, gap: 16 },
-  backBtn: { width: 44, height: 44, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.1)', alignItems: 'center', justifyContent: 'center' },
-  headerTitle: { fontSize: 22, fontWeight: '800', color: '#FFF' },
-  headerSub: { fontSize: 13, color: 'rgba(255,255,255,0.6)', fontWeight: '500', marginTop: 2 },
+  root: { flex: 1, backgroundColor: C.bg },
 
-  datePickerBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
-    marginTop: 24,
-    padding: 16,
-    borderRadius: 20,
-    gap: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 4
-  },
-  dateLabel: { flex: 1, fontSize: 15, fontWeight: '700', color: COLORS.navy },
+  // Header
+  header: { paddingBottom: 20, paddingHorizontal: 20, borderBottomLeftRadius: 32, borderBottomRightRadius: 32 },
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 10 },
+  backBtn: { width: 38, height: 38, borderRadius: 19, backgroundColor: 'rgba(255,255,255,0.1)', borderWidth: 0.5, borderColor: 'rgba(255,255,255,0.15)', alignItems: 'center', justifyContent: 'center' },
+  headerTitle: { fontSize: 20, fontWeight: '700', color: '#FFF' },
+  headerSub: { fontSize: 12, color: 'rgba(255,255,255,0.45)', marginTop: 2, fontWeight: '500' },
+  datePill: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: C.white, borderRadius: 16, padding: 13, marginTop: 16 },
+  datePillText: { flex: 1, fontSize: 14, fontWeight: '700', color: C.navy },
 
-  list: { padding: 20, paddingBottom: 60 },
-  card: {
-    backgroundColor: '#FFF',
-    borderRadius: 24,
-    marginBottom: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#f1f5f9',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.03,
-    shadowRadius: 8,
-    elevation: 2
-  },
-  cardMain: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
-  indicator: { width: 4, height: 32, borderRadius: 2, marginRight: 12 },
+  // List
+  list: { padding: 14, paddingBottom: 80 },
+  listHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, paddingHorizontal: 2 },
+  listHeaderLabel: { fontSize: 11, fontWeight: '700', letterSpacing: 1.2, color: C.muted, textTransform: 'uppercase' },
+  listHeaderCount: { backgroundColor: C.accentLight, borderRadius: 20, paddingHorizontal: 10, paddingVertical: 3 },
+  listHeaderCountText: { fontSize: 11, fontWeight: '700', color: C.accent },
+
+  // Card
+  card: { backgroundColor: C.card, borderRadius: 20, marginBottom: 12, borderWidth: 0.5, borderColor: C.border, overflow: 'hidden' },
+  cardTop: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14 },
+  avatar: { width: 42, height: 42, borderRadius: 14, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
+  avatarText: { fontSize: 14, fontWeight: '700' },
   empInfo: { flex: 1 },
-  empName: { fontSize: 16, fontWeight: '700', color: COLORS.navy },
-  empRole: { fontSize: 12, color: COLORS.subtle, marginTop: 2, fontWeight: '500' },
-  statusBadge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10, backgroundColor: '#f8fafc' },
-  statusText: { fontSize: 11, fontWeight: '800', textTransform: 'uppercase' },
+  empName: { fontSize: 15, fontWeight: '700', color: C.text },
+  empRole: { fontSize: 11, color: C.muted, marginTop: 2, fontWeight: '500' },
+  statusBadge: { flexDirection: 'row', alignItems: 'center', gap: 5, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8 },
+  statusDot: { width: 6, height: 6, borderRadius: 3 },
+  statusText: { fontSize: 11, fontWeight: '700', letterSpacing: 0.3 },
+  editBtn: { width: 32, height: 32, borderRadius: 9, backgroundColor: '#F8FAFC', borderWidth: 0.5, borderColor: C.border, alignItems: 'center', justifyContent: 'center', marginLeft: 4 },
 
-  timeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f8fafc',
-    borderRadius: 16,
-    padding: 12
-  },
-  timeItem: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
-  divider: { width: 1, height: 20, backgroundColor: '#e2e8f0' },
-  timeLabel: { fontSize: 12, color: COLORS.subtle, fontWeight: '500' },
-  timeVal: { fontSize: 14, fontWeight: '700', color: COLORS.navy },
+  // Card footer
+  cardFooter: { borderTopWidth: 0.5, borderTopColor: C.borderLight, flexDirection: 'row' },
+  timeBlock: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14, paddingVertical: 12 },
+  timeDivider: { width: 0.5, backgroundColor: C.borderLight, marginVertical: 10 },
+  timeIconWrap: { width: 30, height: 30, borderRadius: 9, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
+  timeTextCol: { flexDirection: 'column' },
+  timeLabel: { fontSize: 10, fontWeight: '700', color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6 },
+  timeVal: { fontSize: 14, fontWeight: '700', color: C.text, fontVariant: ['tabular-nums'], marginTop: 2 },
 
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  loadingText: { marginTop: 12, color: COLORS.subtle, fontWeight: '600' },
-  empty: { alignItems: 'center', marginTop: 80, opacity: 0.8 },
-  emptyText: { marginTop: 16, color: COLORS.subtle, fontSize: 14, fontWeight: '600' },
+  // States
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  loadingText: { marginTop: 12, color: C.sub, fontWeight: '600', fontSize: 13 },
+  empty: { alignItems: 'center', marginTop: 80 },
+  emptyIcon: { width: 68, height: 68, borderRadius: 22, backgroundColor: '#F1F5F9', alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
+  emptyTitle: { fontSize: 15, fontWeight: '700', color: C.text, marginBottom: 5 },
+  emptySub: { fontSize: 13, color: C.sub },
 
-  editBtn: { marginLeft: 12, width: 34, height: 34, borderRadius: 10, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
-
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  modalContent: { backgroundColor: '#FFF', borderTopLeftRadius: 32, borderTopRightRadius: 32, padding: 24, paddingBottom: 40 },
-  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  modalTitle: { fontSize: 20, fontWeight: '800', color: COLORS.navy },
-  modalSub: { fontSize: 14, color: COLORS.subtle, marginBottom: 24, fontWeight: '500' },
-
-  inputGroup: { marginBottom: 20 },
-  label: { fontSize: 13, fontWeight: '700', color: COLORS.navy, marginBottom: 8, marginLeft: 4 },
-  input: { backgroundColor: '#f8fafc', borderRadius: 16, padding: 16, fontSize: 15, color: COLORS.navy, borderWidth: 1, borderColor: '#e2e8f0' },
-
-  saveBtn: { backgroundColor: COLORS.accent, borderRadius: 18, padding: 18, alignItems: 'center', marginTop: 12, shadowColor: COLORS.accent, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 4 },
-  saveText: { color: '#FFF', fontSize: 16, fontWeight: '700' },
+  // Modal
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'flex-end' },
+  modalContent: { backgroundColor: C.white, borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24, paddingBottom: 40 },
+  modalHandle: { width: 36, height: 4, borderRadius: 2, backgroundColor: C.border, alignSelf: 'center', marginBottom: 20 },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  modalTitle: { fontSize: 18, fontWeight: '700', color: C.text },
+  modalClose: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#F1F5F9', alignItems: 'center', justifyContent: 'center' },
+  modalSub: { fontSize: 13, color: C.sub, marginBottom: 24, fontWeight: '500' },
+  inputGroup: { marginBottom: 18 },
+  label: { fontSize: 12, fontWeight: '700', color: C.sub, marginBottom: 7 },
+  input: { backgroundColor: '#F8FAFC', borderRadius: 12, paddingHorizontal: 14, paddingVertical: 13, fontSize: 15, color: C.text, borderWidth: 0.5, borderColor: C.border },
+  saveBtn: { backgroundColor: C.accent, borderRadius: 14, padding: 16, alignItems: 'center', marginTop: 8 },
+  saveBtnText: { color: '#FFF', fontWeight: '800', fontSize: 15, letterSpacing: 0.3 },
 });
