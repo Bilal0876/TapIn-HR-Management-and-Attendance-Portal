@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  Animated,
+  Animated as RNAnimated,
   Easing,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -80,19 +80,19 @@ const CFG = {
 function RippleRing({
   size, delay, color, active,
 }: { size: number; delay: number; color: string; active: boolean }) {
-  const anim = useRef(new Animated.Value(0)).current;
+  const anim = useRef(new RNAnimated.Value(0)).current;
 
   useEffect(() => {
     if (!active) { anim.setValue(0); return; }
-    const loop = Animated.loop(
-      Animated.sequence([
-        Animated.delay(delay),
-        Animated.timing(anim, {
+    const loop = RNAnimated.loop(
+      RNAnimated.sequence([
+        RNAnimated.delay(delay),
+        RNAnimated.timing(anim, {
           toValue: 1, duration: 2000,
           easing: Easing.out(Easing.quad),
           useNativeDriver: true,
         }),
-        Animated.timing(anim, { toValue: 0, duration: 0, useNativeDriver: true }),
+        RNAnimated.timing(anim, { toValue: 0, duration: 0, useNativeDriver: true }),
       ]),
     );
     loop.start();
@@ -106,7 +106,7 @@ function RippleRing({
   const offset = (CANVAS - size) / 2;
 
   return (
-    <Animated.View
+    <RNAnimated.View
       pointerEvents="none"
       style={{
         position: 'absolute',
@@ -124,9 +124,9 @@ function RippleRing({
 
 // ── Press spring ──────────────────────────────────────────────────────────────
 function usePressShrink() {
-  const scale = useRef(new Animated.Value(1)).current;
-  const onPressIn = () => Animated.spring(scale, { toValue: 0.94, useNativeDriver: true, speed: 40 }).start();
-  const onPressOut = () => Animated.spring(scale, { toValue: 1, useNativeDriver: true, speed: 20 }).start();
+  const scale = useRef(new RNAnimated.Value(1)).current;
+  const onPressIn = () => RNAnimated.spring(scale, { toValue: 0.94, useNativeDriver: true, speed: 40 }).start();
+  const onPressOut = () => RNAnimated.spring(scale, { toValue: 1, useNativeDriver: true, speed: 20 }).start();
   return { scale, onPressIn, onPressOut };
 }
 
@@ -147,6 +147,11 @@ function StatPill({ icon, label, value, accent }: {
   );
 }
 
+import * as Haptics from 'expo-haptics';
+import Animated, {
+  FadeIn, FadeOut,
+} from 'react-native-reanimated';
+
 // ── Component ─────────────────────────────────────────────────────────────────
 export function CheckInButton({
   status, checkinTime, checkoutTime, workingHours,
@@ -155,25 +160,26 @@ export function CheckInButton({
   // Safe status lookup
   const normalized = (CFG[status as keyof typeof CFG] ? status : 'IDLE') as keyof typeof CFG;
   const cfg = CFG[normalized];
-  
+
   const isDisabled = normalized === 'ON_BREAK' || normalized === 'COMPLETE' || loading;
   const ringsOn = !isDisabled && !loading;
-  const { scale, onPressIn, onPressOut } = usePressShrink();
-
-  // Fade when status changes
-  const fade = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    fade.setValue(0);
-    Animated.timing(fade, { toValue: 1, duration: 380, useNativeDriver: true }).start();
-  }, [normalized]);
 
   const handlePress = useCallback(async () => {
     if (isDisabled) return;
+
+    // Haptic feedback
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
     try {
       if (normalized === 'PENDING') await attendanceApi.checkout();
       else if (normalized === 'IDLE') await attendanceApi.checkin();
+
+      // Success haptic
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       onRefresh();
-    } catch (_) { }
+    } catch (_) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    }
   }, [normalized, isDisabled, onRefresh]);
 
   // Center offset: button sits in the middle of the canvas
@@ -181,7 +187,7 @@ export function CheckInButton({
   const haloOffset = (CANVAS - HALO) / 2;
 
   return (
-    <Animated.View style={[s.root, { opacity: fade }]}>
+    <View style={s.root}>
 
       {/* ── Fixed canvas: rings + button all share the same coordinate space ── */}
       <View style={{ width: CANVAS, height: CANVAS }}>
@@ -198,37 +204,38 @@ export function CheckInButton({
         <RippleRing size={RING2} delay={600} color={cfg.ring} active={ringsOn} />
 
         {/* Button — absolutely centered in canvas */}
-        <Animated.View style={[s.btnWrap, {
-          top: btnOffset, left: btnOffset,
-          transform: [{ scale }],
-        }]}>
+        <View style={[s.btnWrap, { top: btnOffset, left: btnOffset }]}>
           <TouchableOpacity
-            activeOpacity={1}
+            activeOpacity={0.8}
             disabled={isDisabled}
             onPress={handlePress}
-            onPressIn={onPressIn}
-            onPressOut={onPressOut}
           >
-            <LinearGradient
-              colors={[cfg.ga, cfg.gb]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[s.circle, {
-                opacity: isDisabled && status !== 'COMPLETE' ? 0.72 : 1,
-              }]}
+            <Animated.View
+              key={normalized} // Force a clean cross-fade on status change
+              entering={FadeIn.duration(400)}
+              exiting={FadeOut.duration(300)}
             >
-              {loading ? (
-                <ActivityIndicator color={C.white} size="large" />
-              ) : (
-                <>
-                  <Ionicons name={cfg.icon} size={34} color={C.white} style={s.btnIcon} />
-                  <Text style={s.btnLabel}>{cfg.label}</Text>
-                  <Text style={s.btnSub}>{cfg.sublabel}</Text>
-                </>
-              )}
-            </LinearGradient>
+              <LinearGradient
+                colors={[cfg.ga, cfg.gb]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={[s.circle, {
+                  opacity: isDisabled && status !== 'COMPLETE' ? 0.72 : 1,
+                }]}
+              >
+                {loading ? (
+                  <ActivityIndicator color={C.white} size="large" />
+                ) : (
+                  <>
+                    <Ionicons name={cfg.icon} size={34} color={C.white} style={s.btnIcon} />
+                    <Text style={s.btnLabel}>{cfg.label}</Text>
+                    <Text style={s.btnSub}>{cfg.sublabel}</Text>
+                  </>
+                )}
+              </LinearGradient>
+            </Animated.View>
           </TouchableOpacity>
-        </Animated.View>
+        </View>
 
       </View>
 
@@ -241,7 +248,7 @@ export function CheckInButton({
         <StatPill icon="time-outline" label="Working" value={workingHours ?? '--:--'} accent={C.accentBright} />
       </View>
 
-    </Animated.View>
+    </View>
   );
 }
 

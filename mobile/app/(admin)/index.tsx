@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useAdminDashboard } from '@/hooks/useAdminDashboard';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const { width: SCREEN_W } = Dimensions.get('window');
 const TAB_BAR_HEIGHT = 80;
@@ -184,22 +185,32 @@ export default function AdminHome() {
           </View>
 
           <View style={s.statsRow}>
-            <StatCard
-              label="Present"
-              value={loading ? '--' : String(stats.present)}
-              sub={`${stats.total} total · ${stats.absent} away`}
-              trend={loading ? undefined : `${Math.round(stats.overallAttendance)}%`}
-              colors={['#5B6EF5', '#4254E8']}
-              icon="people"
-            />
-            <View style={{ width: 10 }} />
-            <StatCard
-              label="Avg. Hours"
-              value={loading ? '--' : String(stats.avgWorkHours)}
-              sub="Daily team average"
-              colors={['#0DBF97', '#0A9E7E']}
-              icon="time"
-            />
+            {loading ? (
+              <>
+                <Skeleton width="48%" height={110} borderRadius={12} />
+                <View style={{ width: 10 }} />
+                <Skeleton width="48%" height={110} borderRadius={12} />
+              </>
+            ) : (
+              <>
+                <StatCard
+                  label="Present"
+                  value={String(stats.present)}
+                  sub={`${stats.total} total · ${stats.absent} away`}
+                  trend={`${Math.round(stats.overallAttendance)}%`}
+                  colors={['#5B6EF5', '#4254E8']}
+                  icon="people"
+                />
+                <View style={{ width: 10 }} />
+                <StatCard
+                  label="Avg. Hours"
+                  value={String(stats.avgWorkHours)}
+                  sub="Daily team average"
+                  colors={['#0DBF97', '#0A9E7E']}
+                  icon="time"
+                />
+              </>
+            )}
           </View>
         </SafeAreaView>
       </LinearGradient>
@@ -237,7 +248,11 @@ export default function AdminHome() {
           </View>
           <View style={s.pulseCard}>
             {loading && !refreshing ? (
-              <ActivityIndicator color={C.accent} style={{ margin: 24 }} />
+              <View style={{ padding: 14, gap: 12 }}>
+                <Skeleton width="100%" height={40} />
+                <Skeleton width="100%" height={40} />
+                <Skeleton width="100%" height={40} />
+              </View>
             ) : pulse.length === 0 ? (
               <View style={s.empty}>
                 <Ionicons name="pulse-outline" size={28} color={C.border} />

@@ -60,6 +60,8 @@ model Employee {
   isActive           Boolean              @default(true)
   mustChangePassword Boolean              @default(true)
   pushToken          String?
+  failedLoginAttempts Int               @default(0)
+  lockoutUntil       DateTime?
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   company            Company              @relation(fields: [companyId], references: [id])

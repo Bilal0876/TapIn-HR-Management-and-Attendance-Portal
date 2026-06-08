@@ -72,6 +72,33 @@ export class AttendanceService {
     });
   }
 
+  /**
+   * Get public company profile
+   */
+  static async getCompanyProfile(companyId: string) {
+    const company = await prisma.company.findUnique({
+      where: { id: companyId },
+      select: {
+        id: true,
+        name: true,
+        timezone: true,
+        createdAt: true,
+      }
+    });
+    if (!company) throw createError.NotFound('Company not found');
+    return company;
+  }
+
+  /**
+   * Update core company profile info
+   */
+  static async updateCompanyProfile(companyId: string, name: string, timezone: string) {
+    return prisma.company.update({
+      where: { id: companyId },
+      data: { name, timezone }
+    });
+  }
+
   static async checkin(employeeId: string, time?: Date) {
     const checkinTime = time || new Date();
     

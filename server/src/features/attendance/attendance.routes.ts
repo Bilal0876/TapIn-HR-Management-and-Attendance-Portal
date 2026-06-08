@@ -7,18 +7,22 @@ import { requireAdmin } from '../../middleware/requireAdmin';
 import { requireSuperAdmin } from '../../middleware/requireSuperAdmin';
 import { CheckinSchema, CheckoutSchema, UpdateShiftSettingsSchema, AdminUpdateRecordSchema } from './attendance.dto';
 
+import { attendanceRateLimiter } from '../../middleware/rateLimiter';
+
 const router = Router();
 
 router.use(authenticate, requirePasswordChanged);
 
-router.post('/checkin', validate({ body: CheckinSchema }), AttendanceController.checkin);
-router.post('/checkout', validate({ body: CheckoutSchema }), AttendanceController.checkout);
+router.post('/checkin', attendanceRateLimiter, validate({ body: CheckinSchema }), AttendanceController.checkin);
+router.post('/checkout', attendanceRateLimiter, validate({ body: CheckoutSchema }), AttendanceController.checkout);
 router.get('/today', AttendanceController.getToday);
 router.get('/history', AttendanceController.getHistory);
 router.get('/stats/personal', AttendanceController.getPersonalStats);
 router.get('/stats/company', AttendanceController.getCompanyStats);
 router.get('/settings/company-shift', requireSuperAdmin, AttendanceController.getCompanyShiftSettings);
 router.put('/settings/company-shift', requireSuperAdmin, validate({ body: UpdateShiftSettingsSchema }), AttendanceController.updateCompanyShiftSettings);
+router.get('/settings/company-profile', requireSuperAdmin, AttendanceController.getCompanyProfile);
+router.put('/settings/company-profile', requireSuperAdmin, AttendanceController.updateCompanyProfile);
 router.get('/stats/company-trend', AttendanceController.getCompanyTrend);
 router.get('/stats/company-pulse', requireAdmin, AttendanceController.getCompanyPulse);
 router.get('/logs/daily', requireAdmin, AttendanceController.getDailyLogs);

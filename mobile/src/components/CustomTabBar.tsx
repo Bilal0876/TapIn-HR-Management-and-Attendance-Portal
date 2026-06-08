@@ -216,21 +216,21 @@ function TabItem({
 }
 
 // ── Main CustomTabBar ─────────────────────────────────────────────────────────
-export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+export function CustomTabBar({ state, descriptors, navigation }: any) {
   const insets = useSafeAreaInsets();
 
   // Filter to only primary tabs — sub-screens and hidden routes are excluded
   const HIDDEN_ROUTES = new Set([
     'leave-approvals', 'create-employee', 'request-correction', 'request-leave',
   ]);
-  const visibleRoutes = state.routes.filter((r) => {
+  const visibleRoutes = state.routes.filter((r: any) => {
     if (HIDDEN_ROUTES.has(r.name)) return false;
     const { options } = descriptors[r.key];
     return options.tabBarIcon !== undefined && (options as any).href !== null;
   });
 
   const focusedKey = state.routes[state.index]?.key;
-  const focusedIdx = visibleRoutes.findIndex((r) => r.key === focusedKey);
+  const focusedIdx = visibleRoutes.findIndex((r: any) => r.key === focusedKey);
   // When on a sub-screen, focusedIdx is -1. Track last valid tab for display.
   const lastValidIdx = useRef(0);
   if (focusedIdx !== -1) lastValidIdx.current = focusedIdx;
@@ -279,7 +279,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
           <AnimatedSvgBar notchX={notchX} />
 
           <View style={styles.tabsRow}>
-            {visibleRoutes.map((route, idx) => {
+            {visibleRoutes.map((route: any, idx: number) => {
               // Use displayIdx so the last active tab still looks focused on sub-screens
               const isFocused = displayIdx === idx;
               const onPress = () => {

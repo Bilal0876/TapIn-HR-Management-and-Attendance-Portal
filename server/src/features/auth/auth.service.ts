@@ -44,14 +44,41 @@ export class AuthService {
 
   static async login(email: string, passwordPlain: string) {
     const employee = await prisma.employee.findUnique({ where: { email } });
+    
     if (!employee || !employee.isActive) {
       throw createError.Unauthorized('Invalid email or password', 'INVALID_CREDENTIALS');
     }
 
+    // Check for lockout
+    const emp = employee as any;
+    if (emp.lockoutUntil && emp.lockoutUntil > new Date()) {
+      const waitMins = Math.ceil((emp.lockoutUntil.getTime() - Date.now()) / 60000);
+      throw createError.Forbidden(`Account locked due to too many failed attempts. Try again in ${waitMins} minutes.`, 'ACCOUNT_LOCKED');
+    }
+
     const isValid = await bcrypt.compare(passwordPlain, employee.passwordHash);
+    
     if (!isValid) {
+      const failedAttempts = (emp.failedLoginAttempts || 0) + 1;
+      let lockoutUntil: Date | null = null;
+      
+      if (failedAttempts >= 5) {
+        lockoutUntil = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes lockout
+      }
+
+      await prisma.employee.update({
+        where: { id: employee.id },
+        data: { failedLoginAttempts: failedAttempts, lockoutUntil } as any
+      });
+
       throw createError.Unauthorized('Invalid email or password', 'INVALID_CREDENTIALS');
     }
+
+    // Success - Reset lockout fields
+    await prisma.employee.update({
+      where: { id: employee.id },
+      data: { failedLoginAttempts: 0, lockoutUntil: null } as any
+    });
 
     const tokenPayload = crypto.randomBytes(32).toString('hex');
     const tokenHash = crypto.createHash('sha256').update(tokenPayload).digest('hex');

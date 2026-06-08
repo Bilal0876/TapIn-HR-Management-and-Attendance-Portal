@@ -8,7 +8,7 @@ export default function AdminLayout() {
   usePushNotifications();
   return (
     <Tabs
-      tabBar={(props) => <CustomTabBar {...props} />}
+      tabBar={(props) => <CustomTabBar {...(props as any)} />}
       screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' } }}
     >
       <Tabs.Screen

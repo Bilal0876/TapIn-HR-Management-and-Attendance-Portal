@@ -9,7 +9,8 @@
     "scheme": "attendance-app",
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "./plugins/withNinjaLongPaths"
     ],
     "ios": {
       "supportsTablet": true,

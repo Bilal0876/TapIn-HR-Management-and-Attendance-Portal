@@ -4,10 +4,12 @@ import { validate } from '../../middleware/validate';
 import { authenticate } from '../../middleware/authenticate';
 import { LoginSchema, RefreshSchema, ChangePasswordSchema, PushTokenSchema, RegisterCompanySchema } from './auth.dto';
 
+import { authRateLimiter } from '../../middleware/rateLimiter';
+
 const router = Router();
 
-router.post('/register-company', validate({ body: RegisterCompanySchema }), AuthController.registerCompany);
-router.post('/login', validate({ body: LoginSchema }), AuthController.login);
+router.post('/register-company', authRateLimiter, validate({ body: RegisterCompanySchema }), AuthController.registerCompany);
+router.post('/login', authRateLimiter, validate({ body: LoginSchema }), AuthController.login);
 router.post('/refresh', validate({ body: RefreshSchema }), AuthController.refresh);
 router.post('/logout', authenticate, validate({ body: RefreshSchema }), AuthController.logout);
 router.post('/change-password', authenticate, validate({ body: ChangePasswordSchema }), AuthController.changePassword);

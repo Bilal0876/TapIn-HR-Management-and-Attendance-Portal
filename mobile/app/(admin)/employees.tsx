@@ -192,8 +192,8 @@ export default function EmployeesScreen() {
         ) : (
           <FlatList
             data={filteredEmployees}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
+            keyExtractor={(item: any) => item.id}
+            renderItem={({ item }: { item: any }) => (
               <EmployeeCard
                 item={item}
                 currentEmployee={currentEmployee}

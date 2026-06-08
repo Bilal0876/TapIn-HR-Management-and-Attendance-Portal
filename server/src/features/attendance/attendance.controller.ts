@@ -15,6 +15,27 @@ export class AttendanceController {
     }
   }
 
+  static async getCompanyProfile(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { companyId } = (req as any).employee;
+      const result = await AttendanceService.getCompanyProfile(companyId);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async updateCompanyProfile(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { companyId } = (req as any).employee;
+      const { name, timezone } = req.body;
+      const result = await AttendanceService.updateCompanyProfile(companyId, name, timezone);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   static async updateCompanyShiftSettings(req: Request, res: Response, next: NextFunction) {
     try {
       const { companyId } = (req as any).employee;

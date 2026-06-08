@@ -147,7 +147,12 @@ export default function HistoryScreen() {
             {item.dailySummary.lateMinutes > 0 && (
               <View style={[s.footerItem, { marginLeft: 'auto' }]}>
                 <Ionicons name="alert-circle" size={14} color={C.danger} />
-                <Text style={[s.footerText, { color: C.danger }]}>{item.dailySummary.lateMinutes}m late</Text>
+                <Text style={[s.footerText, { color: C.danger }]}>
+                  {item.dailySummary.lateMinutes >= 60 
+                    ? `${Math.floor(item.dailySummary.lateMinutes / 60)}h ${item.dailySummary.lateMinutes % 60}m late`
+                    : `${item.dailySummary.lateMinutes}m late`
+                  }
+                </Text>
               </View>
             )}
           </View>

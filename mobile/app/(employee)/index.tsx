@@ -17,6 +17,7 @@ const C = {
 
 import { useTodayAttendance } from '@/features/attendance/hooks';
 import { format, parseISO, addMinutes } from 'date-fns';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function EmployeeHome() {
   const { employee } = useAuthStore();
@@ -24,9 +25,19 @@ export default function EmployeeHome() {
 
   if (isLoading) {
     return (
-      <View style={s.loader}>
-        <ActivityIndicator size="large" color={C.accent} />
-      </View>
+      <SafeAreaView style={s.root}>
+        <View style={{ padding: 24 }}>
+          <Skeleton width={180} height={32} borderRadius={8} style={{ marginBottom: 8 }} />
+          <Skeleton width={120} height={16} borderRadius={4} style={{ marginBottom: 32 }} />
+          
+          <View style={{ alignItems: 'center', marginBottom: 40 }}>
+            <Skeleton width={180} height={180} borderRadius={90} />
+          </View>
+
+          <Skeleton width="100%" height={80} borderRadius={24} style={{ marginBottom: 20 }} />
+          <Skeleton width="100%" height={120} borderRadius={24} />
+        </View>
+      </SafeAreaView>
     );
   }
 
@@ -42,8 +53,11 @@ export default function EmployeeHome() {
   const expectedCheckinStr = record?.config?.expectedCheckin || '09:00';
   const workMinutes = record?.config?.expectedWorkMinutes || 480;
 
-  // Calculate approximate checkout time
+  // Convert expected checkin to 12h
   const [h, m] = expectedCheckinStr.split(':').map(Number);
+  const checkin12h = format(new Date().setHours(h, m, 0, 0), 'hh:mm a');
+
+  // Calculate approximate checkout time
   const shiftStart = new Date();
   shiftStart.setHours(h, m, 0, 0);
   const shiftEnd = addMinutes(shiftStart, workMinutes + 60); // Assuming 1 hour break
@@ -58,7 +72,7 @@ export default function EmployeeHome() {
         <View style={s.header}>
           <View>
             <Text style={s.greeting}>Hello, {employee?.name?.split(' ')[0]}</Text>
-            <Text style={s.subtitle}>Shift: {expectedCheckinStr} — {checkoutTimeStr}</Text>
+            <Text style={s.subtitle}>Shift: {checkin12h} — {checkoutTimeStr}</Text>
           </View>
           <TouchableOpacity style={s.notifBtn}>
             <Ionicons name="notifications-outline" size={24} color={C.navy} />

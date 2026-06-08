@@ -22,4 +22,10 @@ export const AdminUpdateRecordSchema = z.object({
   status: z.nativeEnum(AttendanceStatus).optional(),
 });
 
+export const UpdateCompanyProfileSchema = z.object({
+  name: z.string().min(2, 'Company name too short'),
+  timezone: z.string().min(1, 'Timezone is required'),
+});
+
 export type UpdateShiftSettingsInput = z.infer<typeof UpdateShiftSettingsSchema>;
+export type UpdateCompanyProfileInput = z.infer<typeof UpdateCompanyProfileSchema>;
