@@ -1,22 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useMyLeaves } from '@/features/leaves/hooks';
 import { format } from 'date-fns';
 import { LeaveRequest } from '@/features/leaves/api';
-
-const C = {
-  bg: '#F8FAFC',
-  white: '#FFFFFF',
-  navy: '#1E293B',
-  gray: '#64748B',
-  accent: '#6366F1',
-  success: '#10B981',
-  warning: '#F59E0B',
-  danger: '#EF4444',
-  border: '#E2E8F0',
-};
 
 export default function LeavesScreen() {
   const router = useRouter();
@@ -24,86 +12,83 @@ export default function LeavesScreen() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'APPROVED': return C.success;
-      case 'REJECTED': return C.danger;
-      default: return C.warning;
+      case 'APPROVED': return { badge: 'bg-emerald-100', text: 'text-emerald-600' };
+      case 'REJECTED': return { badge: 'bg-rose-100', text: 'text-rose-500' };
+      default:         return { badge: 'bg-amber-100', text: 'text-amber-600' };
     }
   };
 
   return (
-    <View style={s.container}>
+    <View className="flex-1 bg-[#F3F4F8]">
       <Stack.Screen options={{ title: 'My Leaves', headerShown: true }} />
-      
-      <ScrollView 
-        contentContainerStyle={s.scroll}
+
+      <ScrollView
+        contentContainerStyle={{ padding: 20 }}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
       >
-        <View style={s.header}>
-          <Text style={s.title}>Leave History</Text>
-          <TouchableOpacity 
-            style={s.reqBtn} 
+        {/* Header */}
+        <View className="flex-row justify-between items-center mb-5">
+          <Text className="text-xl font-extrabold text-[#1C2840]">Leave History</Text>
+          <TouchableOpacity
+            className="bg-[#5B6EF5] px-4 py-2.5 rounded-xl flex-row items-center gap-1.5"
             onPress={() => router.push('/(employee)/request-leave')}
           >
-            <Ionicons name="add" size={20} color={C.white} />
-            <Text style={s.reqBtnText}>New Request</Text>
+            <Ionicons name="add" size={20} color="#fff" />
+            <Text className="text-white font-bold text-sm">New Request</Text>
           </TouchableOpacity>
         </View>
 
+        {/* Loading */}
         {isLoading ? (
-          <ActivityIndicator color={C.accent} style={{ marginTop: 40 }} />
+          <ActivityIndicator color="#5B6EF5" style={{ marginTop: 40 }} />
         ) : leaves?.length === 0 ? (
-          <View style={s.empty}>
-            <Ionicons name="airplane-outline" size={64} color={C.border} />
-            <Text style={s.emptyText}>No leave requests yet</Text>
+          /* Empty */
+          <View className="items-center mt-16 opacity-50">
+            <Ionicons name="airplane-outline" size={64} color="#E5E9F2" />
+            <Text className="mt-3 text-base text-[#96A0B5] font-semibold">No leave requests yet</Text>
           </View>
         ) : (
-          leaves?.map((leave: LeaveRequest) => (
-            <View key={leave.id} style={s.card}>
-              <View style={s.cardHeader}>
-                <View>
-                  <Text style={s.leaveType}>{leave.type}</Text>
-                  <Text style={s.leaveDates}>
-                    {format(new Date(leave.startDate), 'MMM dd')} - {format(new Date(leave.endDate), 'MMM dd, yyyy')}
-                  </Text>
+          /* Cards */
+          leaves?.map((leave: LeaveRequest) => {
+            const { badge, text } = getStatusColor(leave.status);
+            return (
+              <View
+                key={leave.id}
+                className="bg-white rounded-2xl p-4 mb-4 border border-[#E5E9F2]"
+              >
+                {/* Card header */}
+                <View className="flex-row justify-between items-start mb-3">
+                  <View>
+                    <Text className="text-base font-bold text-[#1C2840] mb-0.5">{leave.type}</Text>
+                    <Text className="text-[13px] text-[#96A0B5]">
+                      {format(new Date(leave.startDate), 'MMM dd')} -{' '}
+                      {format(new Date(leave.endDate), 'MMM dd, yyyy')}
+                    </Text>
+                  </View>
+                  <View className={`px-2.5 py-1 rounded-lg ${badge}`}>
+                    <Text className={`text-[11px] font-extrabold ${text}`}>{leave.status}</Text>
+                  </View>
                 </View>
-                <View style={[s.statusBadge, { backgroundColor: getStatusColor(leave.status) + '20' }]}>
-                  <Text style={[s.statusText, { color: getStatusColor(leave.status) }]}>{leave.status}</Text>
-                </View>
+
+                {/* Reason */}
+                <Text className="text-sm text-[#1C2840] leading-5" numberOfLines={2}>
+                  {leave.reason}
+                </Text>
+
+                {/* Admin note */}
+                {leave.reviewNote && (
+                  <View className="mt-3 p-3 bg-[#F3F4F8] rounded-lg">
+                    <Text className="text-[11px] font-extrabold text-[#96A0B5] mb-0.5 uppercase">
+                      Admin Note:
+                    </Text>
+                    <Text className="text-[13px] text-[#1C2840] italic">{leave.reviewNote}</Text>
+                  </View>
+                )}
               </View>
-              
-              <Text style={s.reason} numberOfLines={2}>{leave.reason}</Text>
-              
-              {leave.reviewNote && (
-                <View style={s.noteBox}>
-                  <Text style={s.noteTitle}>Admin Note:</Text>
-                  <Text style={s.noteText}>{leave.reviewNote}</Text>
-                </View>
-              )}
-            </View>
-          ))
+            );
+          })
         )}
       </ScrollView>
     </View>
   );
 }
-
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: C.bg },
-  scroll: { padding: 20 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  title: { fontSize: 20, fontWeight: '800', color: C.navy },
-  reqBtn: { backgroundColor: C.accent, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12, flexDirection: 'row', alignItems: 'center', gap: 6 },
-  reqBtnText: { color: C.white, fontWeight: '700', fontSize: 14 },
-  card: { backgroundColor: C.white, borderRadius: 16, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: C.border },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
-  leaveType: { fontSize: 16, fontWeight: '700', color: C.navy, marginBottom: 2 },
-  leaveDates: { fontSize: 13, color: C.gray },
-  statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  statusText: { fontSize: 11, fontWeight: '800' },
-  reason: { fontSize: 14, color: C.navy, lineHeight: 20 },
-  noteBox: { marginTop: 12, padding: 12, backgroundColor: C.bg, borderRadius: 8 },
-  noteTitle: { fontSize: 11, fontWeight: '800', color: C.gray, marginBottom: 2, textTransform: 'uppercase' },
-  noteText: { fontSize: 13, color: C.navy, fontStyle: 'italic' },
-  empty: { alignItems: 'center', marginTop: 60, opacity: 0.5 },
-  emptyText: { marginTop: 12, fontSize: 16, color: C.gray, fontWeight: '600' }
-});

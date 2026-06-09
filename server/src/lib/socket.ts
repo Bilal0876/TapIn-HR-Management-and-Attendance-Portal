@@ -15,6 +15,12 @@ export const initSocket = (server: HttpServer) => {
   io.on('connection', (socket) => {
     logger.info('A user connected to socket', { socketId: socket.id });
 
+    const companyId = socket.handshake.auth?.companyId;
+    if (companyId) {
+      socket.join(companyId);
+      logger.info('Socket joined company room', { socketId: socket.id, companyId });
+    }
+
     socket.on('disconnect', () => {
       logger.info('User disconnected from socket', { socketId: socket.id });
     });
@@ -32,8 +38,6 @@ export const getIO = () => {
 
 export const emitToCompany = (companyId: string, event: string, data: any) => {
   if (io) {
-    // In the future, we can use socket.join(companyId) to scope events
-    // For now, we broadcast to all but include companyId in data
-    io.emit(event, { ...data, companyId });
+    io.to(companyId).emit(event, data);
   }
 };

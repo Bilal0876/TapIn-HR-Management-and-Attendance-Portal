@@ -19,6 +19,14 @@ export function createApp() {
   app.use(express.json());
   app.use(morgan('dev'));
 
+  // Disable caching for all API responses
+  app.use('/api/v1', (req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    next();
+  });
+
   app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
   app.use('/api/v1/auth', authRoutes);

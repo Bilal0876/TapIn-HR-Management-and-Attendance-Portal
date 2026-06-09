@@ -1,14 +1,14 @@
-# TapIn HR Portal: Production-Grade Attendance Ecosystem 🏢🚀🛡️
+# TapIn: HR Portal & Attendance Ecosystem 
 
 TapIn is a high-performance, multi-platform HR and Attendance Management system designed for modern office environments. It combines a robust Node.js backend, a premium React Native mobile experience, and a data-rich Next.js administrative dashboard.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 The project is organized as a unified monorepo consisting of three core modules:
 
-### 1. 🛡️ Backend Server (`/server`)
+### 1. Backend Server (`/server`)
 - **Engine**: Node.js & Express (TypeScript).
 - **Database**: PostgreSQL with Prisma ORM.
 - **Security**: 
@@ -17,7 +17,7 @@ The project is organized as a unified monorepo consisting of three core modules:
   - Role-based Access Control (RBAC).
 - **Real-time**: Socket.io for live workforce status broadcasting.
 
-### 2. 📱 Mobile App (`/mobile`)
+### 2.  Mobile App (`/mobile`)
 - **Framework**: Expo / React Native (TypeScript).
 - **Styling**: Uniwind (Tailwind CSS v4) for high-performance, build-time styles.
 - **UX Features**:
@@ -26,14 +26,14 @@ The project is organized as a unified monorepo consisting of three core modules:
   - Custom Shimmer Skeletons for seamless data hydration.
 - **Hardware**: NFC/Biometric support ready.
 
-### 3. 🖥️ Admin Web Portal (`/web`)
+### 3.  Admin Web Portal (`/web`)
 - **Framework**: Next.js 16 (App Router) & Tailwind CSS.
 - **State**: Zustand for reactive authentication and UI state.
 - **Dashboard**: Real-time "Workforce Pulse" monitor for organization control.
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Node.js v18+
@@ -62,7 +62,7 @@ The project is organized as a unified monorepo consisting of three core modules:
 
 ---
 
-## 🛡️ Production Readiness Checklist
+##  Production Readiness Checklist
 
 - [x] **Rate Limiting**: Enabled on `/auth` and `/attendance` routes.
 - [x] **Brute Force Defense**: 5-attempt limit with automatic cooldown.
@@ -72,7 +72,7 @@ The project is organized as a unified monorepo consisting of three core modules:
 
 ---
 
-## 🛠️ Tech Stack & Key Libraries
+##  Tech Stack & Key Libraries
 - **Shared**: TypeScript, Socket.io, Axios.
 - **Server**: Express, Prisma, Helmet, Morgan, Bcrypt.
 - **Mobile**: Expo Router, Reanimated, Lucide Mobile, Haptics, Uniwind (TW v4).
@@ -80,5 +80,5 @@ The project is organized as a unified monorepo consisting of three core modules:
 
 ---
 
-## 📄 License
+##  License
 Internal Production Build (Proprietary)

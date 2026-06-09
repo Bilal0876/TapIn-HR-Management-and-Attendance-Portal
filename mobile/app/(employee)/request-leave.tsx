@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useCreateLeave } from '@/features/leaves/hooks';
@@ -12,26 +12,16 @@ try {
 }
 import { format } from 'date-fns';
 
-const C = {
-  bg: '#F8FAFC',
-  white: '#FFFFFF',
-  navy: '#1E293B',
-  gray: '#64748B',
-  accent: '#6366F1',
-  border: '#E2E8F0',
-};
-
 const LEAVE_TYPES = ['CASUAL', 'SICK', 'VACATION', 'OTHER'];
 
 function RequestLeaveScreen() {
   const router = useRouter();
   const createLeave = useCreateLeave();
-  
+
   const [type, setType] = useState('CASUAL');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [reason, setReason] = useState('');
-  
   const [showStart, setShowStart] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
 
@@ -54,30 +44,36 @@ function RequestLeaveScreen() {
   };
 
   return (
-    <View style={s.container}>
+    <View className="flex-1 bg-white">
       <Stack.Screen options={{ title: 'Request Leave', headerShown: true, headerBackTitle: 'Cancel' }} />
-      
-      <ScrollView contentContainerStyle={s.scroll}>
-        <View style={s.section}>
-          <Text style={s.label}>Leave Type</Text>
-          <View style={s.typeRow}>
+
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+
+        {/* Leave Type */}
+        <View className="mb-6">
+          <Text className="text-[13px] font-bold text-[#64748B] mb-2.5 uppercase tracking-wide">Leave Type</Text>
+          <View className="flex-row flex-wrap gap-2">
             {LEAVE_TYPES.map(t => (
-              <TouchableOpacity 
-                key={t} 
-                style={[s.typeBtn, type === t && s.typeBtnActive]}
+              <TouchableOpacity
+                key={t}
+                className={`px-3 py-2 rounded-xl border ${type === t ? 'bg-[#1C2840] border-[#1C2840]' : 'bg-[#F3F4F8] border-[#E5E9F2]'}`}
                 onPress={() => setType(t)}
               >
-                <Text style={[s.typeText, type === t && s.typeTextActive]}>{t}</Text>
+                <Text className={`text-xs font-semibold ${type === t ? 'text-white' : 'text-[#1C2840]'}`}>{t}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
 
-        <View style={s.section}>
-          <Text style={s.label}>Start Date</Text>
-          <TouchableOpacity style={s.datePicker} onPress={() => setShowStart(true)}>
-            <Ionicons name="calendar-outline" size={20} color={C.accent} />
-            <Text style={s.dateValue}>{format(startDate, 'PPP')}</Text>
+        {/* Start Date */}
+        <View className="mb-6">
+          <Text className="text-[13px] font-bold text-[#64748B] mb-2.5 uppercase tracking-wide">Start Date</Text>
+          <TouchableOpacity
+            className="p-4 bg-[#F3F4F8] rounded-xl flex-row items-center gap-3 border border-[#E5E9F2]"
+            onPress={() => setShowStart(true)}
+          >
+            <Ionicons name="calendar-outline" size={20} color="#5B6EF5" />
+            <Text className="text-base font-semibold text-[#1C2840]">{format(startDate, 'PPP')}</Text>
           </TouchableOpacity>
           {showStart && DateTimePicker && (
             <DateTimePicker
@@ -88,7 +84,7 @@ function RequestLeaveScreen() {
           )}
           {showStart && !DateTimePicker && (
             <TextInput
-              style={s.manualDateInput}
+              className="p-3 bg-[#FEF2F2] rounded-xl mt-2 text-base font-bold text-[#5B6EF5] border border-[#FECACA]"
               placeholder="YYYY-MM-DD"
               onSubmitEditing={(e) => {
                 const d = new Date(e.nativeEvent.text);
@@ -100,22 +96,26 @@ function RequestLeaveScreen() {
           )}
         </View>
 
-        <View style={s.section}>
-          <Text style={s.label}>End Date</Text>
-          <TouchableOpacity style={s.datePicker} onPress={() => setShowEnd(true)}>
-            <Ionicons name="calendar-outline" size={20} color={C.accent} />
-            <Text style={s.dateValue}>{format(endDate, 'PPP')}</Text>
+        {/* End Date */}
+        <View className="mb-6">
+          <Text className="text-[13px] font-bold text-[#64748B] mb-2.5 uppercase tracking-wide">End Date</Text>
+          <TouchableOpacity
+            className="p-4 bg-[#F3F4F8] rounded-xl flex-row items-center gap-3 border border-[#E5E9F2]"
+            onPress={() => setShowEnd(true)}
+          >
+            <Ionicons name="calendar-outline" size={20} color="#5B6EF5" />
+            <Text className="text-base font-semibold text-[#1C2840]">{format(endDate, 'PPP')}</Text>
           </TouchableOpacity>
           {showEnd && DateTimePicker && (
             <DateTimePicker
               value={endDate}
               mode="date"
-               onChange={(e: any, date?: Date) => { setShowEnd(false); if (date) setEndDate(date); }}
+              onChange={(e: any, date?: Date) => { setShowEnd(false); if (date) setEndDate(date); }}
             />
           )}
           {showEnd && !DateTimePicker && (
             <TextInput
-              style={s.manualDateInput}
+              className="p-3 bg-[#FEF2F2] rounded-xl mt-2 text-base font-bold text-[#5B6EF5] border border-[#FECACA]"
               placeholder="YYYY-MM-DD"
               onSubmitEditing={(e) => {
                 const d = new Date(e.nativeEvent.text);
@@ -127,50 +127,36 @@ function RequestLeaveScreen() {
           )}
         </View>
 
-        <View style={s.section}>
-          <Text style={s.label}>Reason for Leave</Text>
+        {/* Reason */}
+        <View className="mb-6">
+          <Text className="text-[13px] font-bold text-[#64748B] mb-2.5 uppercase tracking-wide">Reason for Leave</Text>
           <TextInput
-            style={s.input}
+            className="p-4 bg-[#F3F4F8] rounded-xl min-h-[120px] text-[15px] text-[#1C2840] border border-[#E5E9F2]"
             multiline
             placeholder="Please explain why you need leave..."
-            placeholderTextColor={C.gray}
+            placeholderTextColor="#64748B"
             value={reason}
             onChangeText={setReason}
+            textAlignVertical="top"
           />
         </View>
 
-        <TouchableOpacity 
-          style={[s.submitBtn, createLeave.isPending && { opacity: 0.7 }]} 
+        {/* Submit */}
+        <TouchableOpacity
+          className={`bg-[#5B6EF5] py-[18px] rounded-2xl items-center mt-2.5 ${createLeave.isPending ? 'opacity-70' : ''}`}
           onPress={handleSubmit}
           disabled={createLeave.isPending}
         >
           {createLeave.isPending ? (
-            <ActivityIndicator color={C.white} />
+            <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={s.submitText}>Submit Request</Text>
+            <Text className="text-white text-base font-extrabold">Submit Request</Text>
           )}
         </TouchableOpacity>
+
       </ScrollView>
     </View>
   );
 }
-
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: C.white },
-  scroll: { padding: 20 },
-  section: { marginBottom: 24 },
-  label: { fontSize: 13, fontWeight: '700', color: C.gray, marginBottom: 10, textTransform: 'uppercase', letterSpacing: 0.5 },
-  typeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  typeBtn: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10, borderWidth: 1, borderColor: C.border, backgroundColor: C.bg },
-  typeBtnActive: { backgroundColor: C.navy, borderColor: C.navy },
-  typeText: { fontSize: 12, fontWeight: '600', color: C.navy },
-  typeTextActive: { color: C.white },
-  datePicker: { padding: 16, backgroundColor: C.bg, borderRadius: 12, flexDirection: 'row', alignItems: 'center', gap: 12, borderWidth: 1, borderColor: C.border },
-  dateValue: { fontSize: 16, color: C.navy, fontWeight: '600' },
-  manualDateInput: { padding: 12, backgroundColor: '#FEF2F2', borderRadius: 10, marginTop: 8, fontSize: 16, fontWeight: '700', color: C.accent, borderWidth: 1, borderColor: '#FECACA' },
-  input: { padding: 16, backgroundColor: C.bg, borderRadius: 12, minHeight: 120, fontSize: 15, color: C.navy, textAlignVertical: 'top', borderWidth: 1, borderColor: C.border },
-  submitBtn: { backgroundColor: C.accent, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 10 },
-  submitText: { color: C.white, fontSize: 16, fontWeight: '800' }
-});
 
 export default RequestLeaveScreen;

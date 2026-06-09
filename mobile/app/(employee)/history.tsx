@@ -1,25 +1,13 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, StatusBar, RefreshControl, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StatusBar, RefreshControl, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { attendanceApi } from '@/features/attendance/api';
 import { reportsApi } from '@/features/reports/api';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
 import { format, parseISO } from 'date-fns';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system/legacy';
-
-const C = {
-  navy: '#0F1D3A',
-  accent: '#5BA3F5',
-  teal: '#1DB8A0',
-  white: '#FFFFFF',
-  subtle: '#8A9BB5',
-  bg: '#F8FAFC',
-  danger: '#FF6B6B',
-  warning: '#F59E0B'
-};
 
 export default function HistoryScreen() {
   const [history, setHistory] = useState<any[]>([]);
@@ -105,63 +93,73 @@ export default function HistoryScreen() {
 
   const renderItem = ({ item }: { item: any }) => {
     const hasIssue = !item.checkoutTime || item.dailySummary?.lateMinutes > 0;
+    const isComplete = item.status === 'COMPLETE';
 
     return (
       <TouchableOpacity
-        style={s.card}
+        className="bg-white rounded-2xl border border-[#E5E9F2] p-3.5 mb-2.5"
         activeOpacity={0.7}
         onPress={() => router.push({
           pathname: '/(employee)/request-correction',
           params: { recordId: item.id, date: item.date }
         })}
       >
-        <View style={s.cardHeader}>
-          <Text style={s.cardDate}>{format(parseISO(item.date), 'EEEE, MMM dd')}</Text>
-          <View style={[s.statusBadge, { backgroundColor: item.status === 'COMPLETE' ? '#ECFDF5' : '#FFF7ED' }]}>
-            <Text style={[s.statusText, { color: item.status === 'COMPLETE' ? '#059669' : '#D97706' }]}>
+        {/* Card header */}
+        <View className="flex-row justify-between items-center mb-3.5">
+          <Text className="text-[13px] font-semibold text-[#1C2840]">
+            {format(parseISO(item.date), 'EEEE, MMM dd')}
+          </Text>
+          <View className={`px-2 py-0.5 rounded-md ${isComplete ? 'bg-[#E0F7F1]' : 'bg-[#FEF6E4]'}`}>
+            <Text className={`text-[10px] font-semibold uppercase tracking-wide ${isComplete ? 'text-[#0D9E7A]' : 'text-[#D97706]'}`}>
               {item.status}
             </Text>
           </View>
         </View>
 
-        <View style={s.timeRow}>
-          <View style={s.timeBox}>
-            <Text style={s.timeLabel}>CHECK-IN</Text>
-            <Text style={s.timeValue}>{format(parseISO(item.checkinTime), 'hh:mm a')}</Text>
+        {/* Time row */}
+        <View className="flex-row items-center justify-between bg-[#F3F4F8] rounded-xl border border-[#E5E9F2] py-3 px-4 mb-3">
+          <View className="items-center">
+            <Text className="text-[9px] font-semibold text-[#B0BCCF] uppercase tracking-wide mb-1">CHECK-IN</Text>
+            <Text className="text-[15px] font-semibold text-[#1C2840] -tracking-wide">
+              {format(parseISO(item.checkinTime), 'hh:mm a')}
+            </Text>
           </View>
-          <Ionicons name="arrow-forward" size={16} color="#E2E8F0" />
-          <View style={s.timeBox}>
-            <Text style={s.timeLabel}>CHECK-OUT</Text>
-            <Text style={s.timeValue}>
+          <Ionicons name="arrow-forward" size={16} color="#E5E9F2" />
+          <View className="items-center">
+            <Text className="text-[9px] font-semibold text-[#B0BCCF] uppercase tracking-wide mb-1">CHECK-OUT</Text>
+            <Text className="text-[15px] font-semibold text-[#1C2840] -tracking-wide">
               {item.checkoutTime ? format(parseISO(item.checkoutTime), 'hh:mm a') : 'Missed'}
             </Text>
           </View>
         </View>
 
+        {/* Footer */}
         {item.dailySummary && (
-          <View style={s.footer}>
-            <View style={s.footerItem}>
-              <Ionicons name="time-outline" size={14} color={C.subtle} />
-              <Text style={s.footerText}>{Math.floor(item.dailySummary.totalWorkMinutes / 60)}h {item.dailySummary.totalWorkMinutes % 60}m worked</Text>
+          <View className="flex-row items-center pt-2.5 border-t border-[#F0F3FA]">
+            <View className="flex-row items-center gap-1.5">
+              <Ionicons name="time-outline" size={14} color="#96A0B5" />
+              <Text className="text-xs font-medium text-[#96A0B5]">
+                {Math.floor(item.dailySummary.totalWorkMinutes / 60)}h {item.dailySummary.totalWorkMinutes % 60}m worked
+              </Text>
             </View>
             {item.dailySummary.lateMinutes > 0 && (
-              <View style={[s.footerItem, { marginLeft: 'auto' }]}>
-                <Ionicons name="alert-circle" size={14} color={C.danger} />
-                <Text style={[s.footerText, { color: C.danger }]}>
-                  {item.dailySummary.lateMinutes >= 60 
+              <View className="flex-row items-center gap-1.5 ml-auto">
+                <Ionicons name="alert-circle" size={14} color="#E8405A" />
+                <Text className="text-xs font-medium text-[#E8405A]">
+                  {item.dailySummary.lateMinutes >= 60
                     ? `${Math.floor(item.dailySummary.lateMinutes / 60)}h ${item.dailySummary.lateMinutes % 60}m late`
-                    : `${item.dailySummary.lateMinutes}m late`
-                  }
+                    : `${item.dailySummary.lateMinutes}m late`}
                 </Text>
               </View>
             )}
           </View>
         )}
 
+        {/* Correction action */}
         {hasIssue && (
-          <View style={s.correctionAction}>
-            <Text style={s.correctionLabel}>Something wrong?</Text>
-            <Text style={s.correctionBtn}>Request Correction</Text>
+          <View className="flex-row justify-between items-center mt-2.5 bg-[#F3F4F8] py-2 px-3 rounded-lg border border-[#E5E9F2]">
+            <Text className="text-xs font-medium text-[#96A0B5]">Something wrong?</Text>
+            <Text className="text-xs font-semibold text-[#5B6EF5]">Request Correction</Text>
           </View>
         )}
       </TouchableOpacity>
@@ -169,77 +167,98 @@ export default function HistoryScreen() {
   };
 
   return (
-    <SafeAreaView style={s.root}>
-      <StatusBar barStyle="dark-content" />
-      <View style={s.header}>
-        <Text style={s.headerTitle}>Attendance History</Text>
-        <Text style={s.headerSub}>Review logs and request corrections quickly</Text>
+    <SafeAreaView className="flex-1 bg-[#F3F4F8]">
+      <StatusBar barStyle="light-content" />
+
+      {/* HEADER */}
+      <View className="px-[18px] pt-2 pb-5">
+        <Text className="text-[10px] text-black/30 uppercase tracking-widest mb-0.5">Employee</Text>
+        <Text className="text-[22px] font-semibold text-[#050505] -tracking-wide">Attendance History</Text>
+        <Text className="text-[11px] text-black/30 mt-0.5">Review logs and request corrections</Text>
       </View>
 
-      <View style={s.quickStatsRow}>
-        <View style={s.quickStatCard}>
-          <Text style={s.quickStatLabel}>TOTAL LOGS</Text>
-          <Text style={s.quickStatValue}>{history.length}</Text>
+      {/* STATS */}
+      <View className="flex-row gap-2 mx-4 mt-4 mb-2.5">
+        <View className="flex-1 bg-white rounded-xl border border-[#E5E9F2] py-3 px-3.5">
+          <Text className="text-[9px] font-semibold text-[#96A0B5] uppercase tracking-wide mb-1">Total Logs</Text>
+          <Text className="text-2xl font-semibold text-[#1C2840] -tracking-wide">{history.length}</Text>
         </View>
-        <View style={s.quickStatCard}>
-          <Text style={s.quickStatLabel}>NEEDS REVIEW</Text>
-          <Text style={[s.quickStatValue, issueCount > 0 && { color: C.warning }]}>{issueCount}</Text>
+        <View className="flex-1 bg-white rounded-xl border border-[#E5E9F2] py-3 px-3.5">
+          <Text className="text-[9px] font-semibold text-[#96A0B5] uppercase tracking-wide mb-1">Needs Review</Text>
+          <Text className={`text-2xl font-semibold -tracking-wide ${issueCount > 0 ? 'text-[#D97706]' : 'text-[#1C2840]'}`}>
+            {issueCount}
+          </Text>
         </View>
       </View>
 
-      <View style={s.reportCard}>
-        <View style={s.reportInfo}>
-          <Ionicons name="document-text-outline" size={20} color={C.accent} />
-          <Text style={s.reportText}>Monthly PDF ({format(new Date(currentYear, currentMonth - 1, 1), 'MMM yyyy')})</Text>
+      {/* REPORT CARD */}
+      <View className="mx-4 mb-2.5 bg-white rounded-xl border border-[#E5E9F2] py-[11px] px-[13px] flex-row items-center justify-between gap-2.5">
+        <View className="flex-row items-center gap-2.5 flex-1">
+          <View className="w-[30px] h-[30px] rounded-lg bg-[#ECEFFE] items-center justify-center">
+            <Ionicons name="document-text-outline" size={15} color="#5B6EF5" />
+          </View>
+          <Text className="text-xs font-medium text-[#1C2840]">
+            Monthly PDF · {format(new Date(currentYear, currentMonth - 1, 1), 'MMM yyyy')}
+          </Text>
         </View>
         <TouchableOpacity
-          style={s.reportBtn}
+          className="bg-[#0B0F17] rounded-lg px-3 py-2 flex-row items-center gap-1.5"
           onPress={reportUri ? handleOpenReport : handleDownloadReport}
           disabled={downloadingReport}
+          activeOpacity={0.7}
         >
           {downloadingReport ? (
-            <ActivityIndicator color={C.white} size="small" />
+            <ActivityIndicator color="#fff" size="small" />
           ) : (
             <>
-              <Ionicons name={reportUri ? 'open-outline' : 'download-outline'} size={16} color={C.white} />
-              <Text style={s.reportBtnText}>{reportUri ? 'Open PDF' : 'Download PDF'}</Text>
+              <Ionicons name={reportUri ? 'open-outline' : 'download-outline'} size={14} color="#fff" />
+              <Text className="text-white text-xs font-medium">{reportUri ? 'Open PDF' : 'Download'}</Text>
             </>
           )}
         </TouchableOpacity>
       </View>
 
-      <View style={s.filterRow}>
+      {/* FILTERS */}
+      <View className="flex-row gap-1.5 mx-4 mb-3">
         <TouchableOpacity
-          style={[s.filterChip, activeFilter === 'ALL' && s.filterChipActive]}
+          className={`px-[13px] py-2 rounded-lg border ${activeFilter === 'ALL' ? 'bg-[#0B0F17] border-[#0B0F17]' : 'bg-white border-[#E5E9F2]'}`}
           onPress={() => setActiveFilter('ALL')}
+          activeOpacity={0.7}
         >
-          <Text style={[s.filterText, activeFilter === 'ALL' && s.filterTextActive]}>All Records</Text>
+          <Text className={`text-xs font-medium ${activeFilter === 'ALL' ? 'text-white' : 'text-[#96A0B5]'}`}>
+            All Records
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[s.filterChip, activeFilter === 'ISSUES' && s.filterChipActive]}
+          className={`px-[13px] py-2 rounded-lg border ${activeFilter === 'ISSUES' ? 'bg-[#0B0F17] border-[#0B0F17]' : 'bg-white border-[#E5E9F2]'}`}
           onPress={() => setActiveFilter('ISSUES')}
+          activeOpacity={0.7}
         >
-          <Text style={[s.filterText, activeFilter === 'ISSUES' && s.filterTextActive]}>Needs Review</Text>
+          <Text className={`text-xs font-medium ${activeFilter === 'ISSUES' ? 'text-white' : 'text-[#96A0B5]'}`}>
+            Needs Review
+          </Text>
         </TouchableOpacity>
       </View>
 
+      {/* LIST */}
       {loading ? (
-        <View style={s.center}>
-          <ActivityIndicator color={C.accent} size="large" />
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator color="#3D52D5" size="large" />
         </View>
       ) : (
         <FlatList
           data={visibleHistory}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
-          contentContainerStyle={s.list}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 120 }}
+          showsVerticalScrollIndicator={false}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={C.accent} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#3D52D5" />
           }
           ListEmptyComponent={
-            <View style={s.empty}>
-              <Ionicons name="calendar-outline" size={60} color="#E2E8F0" />
-              <Text style={s.emptyText}>
+            <View className="items-center mt-20 gap-2">
+              <Ionicons name="calendar-outline" size={36} color="#E5E9F2" />
+              <Text className="text-[13px] font-medium text-[#96A0B5] text-center">
                 {activeFilter === 'ISSUES' ? 'No records need review.' : 'No logs found yet.'}
               </Text>
             </View>
@@ -249,86 +268,3 @@ export default function HistoryScreen() {
     </SafeAreaView>
   );
 }
-
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: C.bg },
-  header: { padding: 24, paddingBottom: 16 },
-  headerTitle: { fontSize: 28, fontWeight: '800', color: C.navy, letterSpacing: -0.5 },
-  headerSub: { fontSize: 14, color: C.subtle, marginTop: 4, fontWeight: '500' },
-  quickStatsRow: { flexDirection: 'row', gap: 10, marginHorizontal: 20, marginBottom: 12 },
-  quickStatCard: {
-    flex: 1,
-    backgroundColor: C.white,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-  },
-  quickStatLabel: { fontSize: 10, fontWeight: '700', color: C.subtle, letterSpacing: 0.6 },
-  quickStatValue: { marginTop: 4, fontSize: 22, fontWeight: '800', color: C.navy },
-  list: { paddingHorizontal: 20, paddingBottom: 120 },
-  reportCard: {
-    marginHorizontal: 20,
-    marginBottom: 12,
-    backgroundColor: C.white,
-    borderRadius: 16,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 10,
-  },
-  reportInfo: { flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 },
-  reportText: { fontSize: 12, color: C.navy, fontWeight: '700' },
-  reportBtn: {
-    backgroundColor: C.accent,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  reportBtnText: { color: C.white, fontSize: 12, fontWeight: '700' },
-  filterRow: { flexDirection: 'row', gap: 8, marginHorizontal: 20, marginBottom: 12 },
-  filterChip: {
-    backgroundColor: '#EEF2F7',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  filterChipActive: { backgroundColor: C.navy },
-  filterText: { color: C.navy, fontSize: 12, fontWeight: '700' },
-  filterTextActive: { color: C.white },
-  card: {
-    backgroundColor: C.white,
-    borderRadius: 24,
-    padding: 20,
-    marginBottom: 16,
-    shadowColor: '#64748B',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3
-  },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  cardDate: { fontSize: 16, fontWeight: '700', color: C.navy },
-  statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  statusText: { fontSize: 11, fontWeight: '800' },
-  timeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, paddingHorizontal: 4 },
-  timeBox: { alignItems: 'center' },
-  timeLabel: { fontSize: 10, fontWeight: '700', color: C.subtle, marginBottom: 4, letterSpacing: 0.5 },
-  timeValue: { fontSize: 17, fontWeight: '800', color: C.navy },
-  footer: { flexDirection: 'row', alignItems: 'center', paddingTop: 16, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
-  footerItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  footerText: { fontSize: 13, fontWeight: '600', color: '#64748B' },
-  correctionAction: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, backgroundColor: '#F8FAFC', padding: 12, borderRadius: 12, borderWidth: 1, borderColor: '#E5EAF2' },
-  correctionLabel: { fontSize: 13, color: '#64748B', fontWeight: '500' },
-  correctionBtn: { fontSize: 13, color: C.accent, fontWeight: '700' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  empty: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100 },
-  emptyText: { marginTop: 16, fontSize: 16, fontWeight: '600', color: '#CBD5E1' }
-});

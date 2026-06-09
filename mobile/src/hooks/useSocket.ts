@@ -14,6 +14,7 @@ export const useSocket = (event?: string, callback?: (data: any) => void) => {
     if (!companyId) return;
 
     socketRef.current = io(SOCKET_URL, {
+      auth: { companyId },
       transports: ['websocket'],
       forceNew: true
     });
