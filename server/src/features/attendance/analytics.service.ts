@@ -293,6 +293,10 @@ export class AnalyticsService {
         checkout,
         checkinAt,
         checkoutAt,
+        checkinLat: record.checkinLat,
+        checkinLng: record.checkinLng,
+        checkoutLat: record.checkoutLat,
+        checkoutLng: record.checkoutLng,
         color
       };
     });
@@ -330,6 +334,8 @@ export class AnalyticsService {
       time: format(l.createdAt, 'hh:mm a'),
       icon: l.icon || 'eye-outline',
       color: l.color || '#64748B',
+      lat: l.lat,
+      lng: l.lng,
       companyId: l.companyId
     }));
   }

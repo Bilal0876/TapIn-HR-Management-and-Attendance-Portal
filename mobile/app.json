@@ -10,7 +10,13 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "./plugins/withNinjaLongPaths"
+      "./plugins/withNinjaLongPaths",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Office Attendance to record your location when you check in or out for HR audit purposes."
+        }
+      ]
     ],
     "ios": {
       "supportsTablet": true,
@@ -21,7 +27,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

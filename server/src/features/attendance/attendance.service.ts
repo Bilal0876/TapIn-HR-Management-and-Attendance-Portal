@@ -99,7 +99,7 @@ export class AttendanceService {
     });
   }
 
-  static async checkin(employeeId: string, time?: Date) {
+  static async checkin(employeeId: string, time?: Date, lat?: number, lng?: number) {
     const checkinTime = time || new Date();
     
     // Make sure we get the correct "date" context by checking the timezone logic. Wait, simple check: date is today.
@@ -127,6 +127,8 @@ export class AttendanceService {
         date,
         checkinTime,
         status: AttendanceStatus.PENDING,
+        checkinLat: lat,
+        checkinLng: lng,
       },
       include: { employee: true }
     });
@@ -138,6 +140,8 @@ export class AttendanceService {
         action: 'Checked-in',
         icon: 'enter-outline',
         color: '#1DB8A0',
+        lat,
+        lng,
       }
     });
 
@@ -155,7 +159,7 @@ export class AttendanceService {
     return record;
   }
 
-  static async checkout(employeeId: string, time?: Date) {
+  static async checkout(employeeId: string, time?: Date, lat?: number, lng?: number) {
     const checkoutTime = time || new Date();
     const dateStr = checkoutTime.toISOString().split('T')[0];
     const date = new Date(dateStr);
@@ -211,6 +215,8 @@ export class AttendanceService {
         data: {
           checkoutTime,
           status: AttendanceStatus.COMPLETE,
+          checkoutLat: lat,
+          checkoutLng: lng,
         },
       });
 
@@ -239,6 +245,8 @@ export class AttendanceService {
           action: 'Checked-out',
           icon: 'exit-outline',
           color: '#6366F1',
+          lat,
+          lng,
         }
       });
 

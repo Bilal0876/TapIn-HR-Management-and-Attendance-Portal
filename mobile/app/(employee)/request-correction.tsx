@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View, Text, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Platform,
   ActivityIndicator, StatusBar, Alert
@@ -10,22 +10,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { format, parseISO } from 'date-fns';
 
 export default function RequestCorrectionScreen() {
-  const { recordId, date } = useLocalSearchParams();
+  const params = useLocalSearchParams<{
+    recordId: string;
+    date: string;
+    checkinTime?: string;
+    checkoutTime?: string;
+  }>();
+
+  const { recordId, date, checkinTime, checkoutTime } = params;
+
+  // Pre-fill with actual record times when passed
+  const defaultIn = checkinTime ? format(parseISO(checkinTime), 'HH:mm') : '09:00';
+  const defaultOut = checkoutTime ? format(parseISO(checkoutTime), 'HH:mm') : '18:00';
+
   const [loading, setLoading] = useState(false);
   const [reason, setReason] = useState('');
-  const [inTime, setInTime] = useState('09:00');
-  const [outTime, setOutTime] = useState('18:00');
+  const [inTime, setInTime] = useState(defaultIn);
+  const [outTime, setOutTime] = useState(defaultOut);
 
-  if (!recordId || !date) {
-    return (
-      <SafeAreaView className="flex-1 bg-[#F3F4F8] justify-center items-center">
-        <ActivityIndicator size="large" color="#5B6EF5" />
-      </SafeAreaView>
-    );
-  }
-
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     if (!reason.trim()) return Alert.alert('Error', 'Please provide a reason');
+    if (!recordId || !date) return;
 
     setLoading(true);
     try {
@@ -37,17 +42,40 @@ export default function RequestCorrectionScreen() {
         recordId: recordId as string,
         requestedCheckin: requestedIn.toISOString(),
         requestedCheckout: requestedOut.toISOString(),
-        reason
+        reason,
       });
 
-      router.back();
+      Alert.alert('Submitted', 'Your correction request has been sent for review.', [
+        { text: 'OK', onPress: () => router.back() },
+      ]);
     } catch (e) {
       console.error(e);
-      Alert.alert('Error', 'Failed to submit request');
+      Alert.alert('Error', 'Failed to submit request. Please try again.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [recordId, date, inTime, outTime, reason]);
+
+  if (!recordId || !date) {
+    return (
+      <SafeAreaView className="flex-1 bg-[#F3F4F8] justify-center items-center px-8">
+        <Ionicons name="alert-circle-outline" size={48} color="#E8405A" />
+        <Text className="text-base font-bold text-[#0B0F17] mt-4 text-center">Record not found</Text>
+        <Text className="text-sm text-[#96A0B5] mt-1 text-center">Please go back and try again.</Text>
+        <TouchableOpacity
+          className="mt-6 bg-[#5B6EF5] px-6 py-3 rounded-xl"
+          onPress={() => router.back()}
+        >
+          <Text className="text-white font-semibold">Go Back</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
+
+  const displayDate = (() => {
+    try { return format(parseISO(date as string), 'MMMM dd, yyyy'); }
+    catch { return date as string; }
+  })();
 
   return (
     <SafeAreaView className="flex-1 bg-[#F3F4F8]">
@@ -64,9 +92,7 @@ export default function RequestCorrectionScreen() {
           </TouchableOpacity>
           <View>
             <Text className="text-2xl font-extrabold text-[#0B0F17]">Fix Record</Text>
-            <Text className="text-sm font-medium text-[#96A0B5]">
-              {date ? format(parseISO(date as string), 'MMMM dd, yyyy') : ''}
-            </Text>
+            <Text className="text-sm font-medium text-[#96A0B5]">{displayDate}</Text>
           </View>
         </View>
 

@@ -96,13 +96,8 @@ export default function HistoryScreen() {
     const isComplete = item.status === 'COMPLETE';
 
     return (
-      <TouchableOpacity
+      <View
         className="bg-white rounded-2xl border border-[#E5E9F2] p-3.5 mb-2.5"
-        activeOpacity={0.7}
-        onPress={() => router.push({
-          pathname: '/(employee)/request-correction',
-          params: { recordId: item.id, date: item.date }
-        })}
       >
         {/* Card header */}
         <View className="flex-row justify-between items-center mb-3.5">
@@ -157,12 +152,24 @@ export default function HistoryScreen() {
 
         {/* Correction action */}
         {hasIssue && (
-          <View className="flex-row justify-between items-center mt-2.5 bg-[#F3F4F8] py-2 px-3 rounded-lg border border-[#E5E9F2]">
+          <TouchableOpacity
+            className="flex-row justify-between items-center mt-2.5 bg-[#F3F4F8] py-2 px-3 rounded-lg border border-[#E5E9F2]"
+            activeOpacity={0.7}
+            onPress={() => router.push({
+              pathname: '/(employee)/request-correction',
+              params: {
+                recordId: item.id,
+                date: item.date,
+                checkinTime: item.checkinTime,
+                checkoutTime: item.checkoutTime ?? '',
+              }
+            })}
+          >
             <Text className="text-xs font-medium text-[#96A0B5]">Something wrong?</Text>
-            <Text className="text-xs font-semibold text-[#5B6EF5]">Request Correction</Text>
-          </View>
+            <Text className="text-xs font-semibold text-[#5B6EF5]">Request Correction →</Text>
+          </TouchableOpacity>
         )}
-      </TouchableOpacity>
+      </View>
     );
   };
 

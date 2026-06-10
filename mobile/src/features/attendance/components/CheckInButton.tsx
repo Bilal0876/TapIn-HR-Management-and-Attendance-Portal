@@ -11,6 +11,8 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { attendanceApi } from '../api';
+import * as Haptics from 'expo-haptics';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type AttendanceStatus = 'IDLE' | 'PENDING' | 'ON_BREAK' | 'COMPLETE';
@@ -147,11 +149,6 @@ function StatPill({ icon, label, value, accent }: {
   );
 }
 
-import * as Haptics from 'expo-haptics';
-import Animated, {
-  FadeIn, FadeOut,
-} from 'react-native-reanimated';
-
 // ── Component ─────────────────────────────────────────────────────────────────
 export function CheckInButton({
   status, checkinTime, checkoutTime, workingHours,
@@ -171,8 +168,31 @@ export function CheckInButton({
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
     try {
-      if (normalized === 'PENDING') await attendanceApi.checkout();
-      else if (normalized === 'IDLE') await attendanceApi.checkin();
+      // 1. Silent location fetch
+      let lat: number | undefined;
+      let lng: number | undefined;
+      
+      try {
+        // Dynamic import — silently skips if native module not compiled yet
+        const Location = require('expo-location');
+        const { status: locStatus } = await Location.requestForegroundPermissionsAsync();
+        if (locStatus === 'granted') {
+          const loc = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Balanced,
+          });
+          lat = loc.coords.latitude;
+          lng = loc.coords.longitude;
+        }
+      } catch (e) {
+        console.warn('[GPS] Location unavailable, skipping:', e);
+      }
+
+      // 2. Call API with coordinates
+      if (normalized === 'PENDING') {
+        await attendanceApi.checkout(lat, lng);
+      } else if (normalized === 'IDLE') {
+        await attendanceApi.checkin(lat, lng);
+      }
 
       // Success haptic
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

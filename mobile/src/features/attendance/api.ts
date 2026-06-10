@@ -5,12 +5,12 @@ export const attendanceApi = {
     const res = await apiClient.get('/attendance/today');
     return res.data.record;
   },
-  checkin: async () => {
-    const res = await apiClient.post('/attendance/checkin', {});
+  checkin: async (lat?: number, lng?: number) => {
+    const res = await apiClient.post('/attendance/checkin', { lat, lng });
     return res.data;
   },
-  checkout: async () => {
-    const res = await apiClient.post('/attendance/checkout', {});
+  checkout: async (lat?: number, lng?: number) => {
+    const res = await apiClient.post('/attendance/checkout', { lat, lng });
     return res.data;
   },
   startBreak: async () => {

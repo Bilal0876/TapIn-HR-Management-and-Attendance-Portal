@@ -236,12 +236,23 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, previouslyConsumedSeco
   onPress: () => void;
   loading: boolean;
 }) {
+  const { opacity, translateY } = useMountAnim();
+  const sessionElapsed = useElapsed(activeBreak.startTime);
+  const elapsed = sessionElapsed + previouslyConsumedSeconds;
+  const allocSecs = allocatedMinutes * 60;
+  const progress = elapsed / allocSecs;
+  const isOver = elapsed > allocSecs;
+  const remaining = allocSecs - elapsed;
+
+  const pressScale = useRef(new Animated.Value(1)).current;
+  const onPressIn = () => Animated.spring(pressScale, { toValue: 0.97, useNativeDriver: true, speed: 40 }).start();
+  const onPressOut = () => Animated.spring(pressScale, { toValue: 1, useNativeDriver: true, speed: 20 }).start();
+
   const [hasNotified, setHasNotified] = useState(false);
 
   useEffect(() => {
     if (isOver && !hasNotified) {
       setHasNotified(true);
-      // Optional: Add a local notification or vibrate here
     }
   }, [isOver, hasNotified]);
 
