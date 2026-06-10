@@ -314,42 +314,23 @@ export class AnalyticsService {
       today = startOfDay(now);
     }
 
-    const records = await prisma.attendanceRecord.findMany({
+    const logs = await prisma.activityLog.findMany({
       where: { 
-        employee: { companyId },
-        updatedAt: { gte: today }
+        companyId,
+        createdAt: { gte: today }
       },
       include: { employee: true },
-      orderBy: { updatedAt: 'desc' },
-      take: 15
+      orderBy: { createdAt: 'desc' },
+      take: 20
     });
 
-    return records.map(r => {
-      let action = 'Activity';
-      let icon = 'eye-outline';
-      let color = '#64748B';
-
-      if (r.status === AttendanceStatus.PENDING) {
-        action = 'Checked-in';
-        icon = 'enter-outline';
-        color = '#1DB8A0';
-      } else if (r.status === AttendanceStatus.COMPLETE) {
-        action = 'Checked-out';
-        icon = 'exit-outline';
-        color = '#6366F1';
-      } else if (r.status === AttendanceStatus.FLAGGED) {
-        action = 'System Flagged';
-        icon = 'warning-outline';
-        color = '#EF4444';
-      }
-
-      return {
-        name: r.employee.name,
-        action,
-        time: format(r.updatedAt, 'hh:mm a'),
-        icon,
-        color
-      };
-    });
+    return logs.map(l => ({
+      name: l.employee.name,
+      action: l.action,
+      time: format(l.createdAt, 'hh:mm a'),
+      icon: l.icon || 'eye-outline',
+      color: l.color || '#64748B',
+      companyId: l.companyId
+    }));
   }
 }

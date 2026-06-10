@@ -65,4 +65,28 @@ export class ReportsController {
       next(e);
     }
   }
+
+  static async downloadEmployeeReport(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { year, month, employeeId } = req.query as { year: string, month: string, employeeId: string };
+      const { companyId } = (req as any).employee;
+
+      if (!employeeId) throw new Error('Employee ID is required');
+
+      const doc = await ReportsService.generateEmployeeMonthlyPDF(
+        companyId,
+        employeeId,
+        parseInt(year),
+        parseInt(month)
+      );
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename=employee-attendance-${year}-${month}.pdf`);
+
+      doc.pipe(res);
+      doc.end();
+    } catch (e) {
+      next(e);
+    }
+  }
 }

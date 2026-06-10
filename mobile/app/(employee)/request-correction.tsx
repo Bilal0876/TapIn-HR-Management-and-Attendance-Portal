@@ -16,6 +16,14 @@ export default function RequestCorrectionScreen() {
   const [inTime, setInTime] = useState('09:00');
   const [outTime, setOutTime] = useState('18:00');
 
+  if (!recordId || !date) {
+    return (
+      <SafeAreaView className="flex-1 bg-[#F3F4F8] justify-center items-center">
+        <ActivityIndicator size="large" color="#5B6EF5" />
+      </SafeAreaView>
+    );
+  }
+
   const handleSubmit = async () => {
     if (!reason.trim()) return Alert.alert('Error', 'Please provide a reason');
 

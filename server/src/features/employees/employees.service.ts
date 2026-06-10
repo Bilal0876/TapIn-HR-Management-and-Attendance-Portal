@@ -68,15 +68,15 @@ export class EmployeeService {
       }
     }
 
-    // Default password is 'Password123!' (must change on first login)
-    const passwordHash = await bcrypt.hash('Password123!', 12);
+    // Admin-set initial password
+    const passwordHash = await bcrypt.hash(data.password || 'Password123!', 12);
 
     const employee = await prisma.employee.create({
       data: {
         companyId: admin.companyId,
         email: data.email,
         name: data.name,
-        role: data.role,
+        role: data.role === Role.SUPER_ADMIN ? Role.EMPLOYEE : data.role,
         shiftProfileId: data.shiftProfileId || null,
         passwordHash,
         mustChangePassword: true,
@@ -117,25 +117,32 @@ export class EmployeeService {
     });
   }
 
-  static async deactivateEmployee(adminId: string, id: string) {
+  static async toggleEmployeeStatus(adminId: string, id: string) {
     const admin = await prisma.employee.findUnique({ where: { id: adminId } });
     if (!admin) {
       throw createError.NotFound('Admin not found');
     }
-    if (adminId === id) {
-      throw createError.BadRequest('You cannot deactivate your own account');
+
+    const employee = await prisma.employee.findUnique({ where: { id } });
+    if (!employee) {
+      throw createError.NotFound('Employee not found');
     }
 
-    const target = await prisma.employee.findFirst({
-      where: { id, companyId: admin.companyId },
-    });
-    if (!target) {
-      throw createError.NotFound('Employee not found');
+    if (employee.role === 'SUPER_ADMIN') {
+      throw createError.Forbidden('Super Admin status cannot be modified');
+    }
+
+    if (adminId === id) {
+      throw createError.BadRequest('You cannot modify your own status');
     }
 
     return prisma.employee.update({
       where: { id },
-      data: { isActive: false },
+      data: { isActive: !employee.isActive },
     });
+  }
+
+  static async deactivateEmployee(adminId: string, id: string) {
+    return this.toggleEmployeeStatus(adminId, id);
   }
 }

@@ -78,24 +78,20 @@ export function calculateDelta(
     0
   );
 
-  const totalWorkMinutes = totalOnSiteMinutes - totalBreakMinutes;
+  // Goodwill Logic: Deduction is capped at allocated break minutes.
+  // If they take an extra long break, we only deduct the allocated amount.
+  // If they take a shorter break, they get the surplus work time.
+  const actualDeduction = Math.min(totalBreakMinutes, breakMinutesAllocated);
+
+  const totalWorkMinutes = totalOnSiteMinutes - actualDeduction;
 
   const workDeltaMinutes = totalWorkMinutes - workMinutesPerDay;
 
-  // If the employee completed required work minutes (or exceeded),
-  // do not count late arrival as a penalty.
-  const lateMinutes = workDeltaMinutes >= 0 ? 0 : rawLateMinutes;
+  const lateMinutes = rawLateMinutes;
 
-  let breakDeltaMinutes = breakMinutesAllocated - totalBreakMinutes;
-  
-  // Apply grace period: if they overran their break, forgive up to `gracePeriodMinutes`
-  if (breakDeltaMinutes < 0) {
-    const overrun = Math.abs(breakDeltaMinutes);
-    const penalty = Math.max(0, overrun - gracePeriodMinutes);
-    breakDeltaMinutes = -penalty;
-  }
+  const breakDeltaMinutes = breakMinutesAllocated - totalBreakMinutes;
 
-  const netDeltaMinutes = workDeltaMinutes + breakDeltaMinutes;
+  const netDeltaMinutes = workDeltaMinutes;
 
   return {
     totalOnSiteMinutes,

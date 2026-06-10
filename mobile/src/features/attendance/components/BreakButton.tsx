@@ -236,17 +236,14 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, previouslyConsumedSeco
   onPress: () => void;
   loading: boolean;
 }) {
-  const { opacity, translateY } = useMountAnim();
-  const sessionElapsed = useElapsed(activeBreak.startTime);
-  const elapsed = sessionElapsed + previouslyConsumedSeconds;
-  const allocSecs = allocatedMinutes * 60;
-  const progress = elapsed / allocSecs;
-  const isOver = elapsed > allocSecs;
-  const remaining = allocSecs - elapsed;
+  const [hasNotified, setHasNotified] = useState(false);
 
-  const pressScale = useRef(new Animated.Value(1)).current;
-  const onPressIn = () => Animated.spring(pressScale, { toValue: 0.97, useNativeDriver: true, speed: 40 }).start();
-  const onPressOut = () => Animated.spring(pressScale, { toValue: 1, useNativeDriver: true, speed: 20 }).start();
+  useEffect(() => {
+    if (isOver && !hasNotified) {
+      setHasNotified(true);
+      // Optional: Add a local notification or vibrate here
+    }
+  }, [isOver, hasNotified]);
 
   return (
     <Animated.View style={[s.activeCard, { opacity, transform: [{ translateY }] }]}>
@@ -254,13 +251,19 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, previouslyConsumedSeco
       {/* ── Header row ── */}
       <View style={s.activeHeader}>
         <View style={s.activeHeaderLeft}>
-          <PulseDot />
-          <Text style={s.activeTitle}>On Break</Text>
+          {isOver ? (
+            <Ionicons name="checkmark-circle" size={18} color={C.teal} />
+          ) : (
+            <PulseDot />
+          )}
+          <Text style={[s.activeTitle, isOver && { color: C.teal }]}>
+            {isOver ? 'Break Finished' : 'On Break'}
+          </Text>
         </View>
-        <View style={[s.overBadge, { backgroundColor: isOver ? '#FFF7ED' : C.amberLight }]}>
-          <Text style={[s.overBadgeText, { color: isOver ? '#EA580C' : C.amber }]}>
+        <View style={[s.overBadge, { backgroundColor: isOver ? C.tealDim : C.amberLight }]}>
+          <Text style={[s.overBadgeText, { color: isOver ? C.teal : C.amber }]}>
             {isOver
-              ? `+${formatTime(elapsed - allocSecs)} extended`
+              ? 'Return to Work'
               : `${formatTime(Math.max(0, remaining))} left`}
           </Text>
         </View>
@@ -272,10 +275,10 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, previouslyConsumedSeco
           <ArcProgress progress={progress} />
           {/* centered text inside arc */}
           <View style={s.arcCenter} pointerEvents="none">
-            <Text style={[s.arcTime, isOver && { color: '#EA580C' }]}>
-              {formatTime(elapsed)}
+            <Text style={[s.arcTime, isOver && { color: C.teal }]}>
+              {formatTime(isOver ? allocSecs : elapsed)}
             </Text>
-            <Text style={s.arcSub}>elapsed</Text>
+            <Text style={s.arcSub}>{isOver ? 'completed' : 'elapsed'}</Text>
           </View>
         </View>
 
@@ -291,14 +294,14 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, previouslyConsumedSeco
             </View>
           </View>
           <View style={s.arcStatRow}>
-            <View style={[s.arcStatDot, { backgroundColor: C.tealDim }]}>
-              <Ionicons name="time-outline" size={13} color={C.teal} />
+            <View style={[s.arcStatDot, { backgroundColor: isOver ? C.tealDim : C.purpleDim }]}>
+              <Ionicons name={isOver ? "checkmark-done" : "time-outline"} size={13} color={isOver ? C.teal : C.purple} />
             </View>
             <View>
-              <Text style={[s.arcStatVal, isOver && { color: '#EA580C' }]}>
-                {isOver ? `Extended by ${formatTime(elapsed - allocSecs)}` : formatTime(Math.max(0, remaining))}
+              <Text style={[s.arcStatVal, isOver && { color: C.teal }]}>
+                {isOver ? 'Time Up!' : formatTime(Math.max(0, remaining))}
               </Text>
-              <Text style={s.arcStatLbl}>{isOver ? 'Extended Time' : 'Remaining'}</Text>
+              <Text style={s.arcStatLbl}>{isOver ? 'Enjoy your rest' : 'Remaining'}</Text>
             </View>
           </View>
         </View>
@@ -310,7 +313,7 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, previouslyConsumedSeco
           s.barFill,
           {
             width: `${Math.min(progress * 100, 100)}%`,
-            backgroundColor: isOver ? '#F59E0B' : C.amber,
+            backgroundColor: isOver ? C.teal : C.amber,
           },
         ]} />
       </View>
@@ -329,7 +332,7 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, previouslyConsumedSeco
           disabled={loading}
         >
           <LinearGradient
-            colors={isOver ? ['#F97316', '#FB923C'] : [C.amber, '#FBBF24']}
+            colors={isOver ? [C.teal, '#16A085'] : [C.amber, '#FBBF24']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={s.endBtn}
@@ -338,11 +341,11 @@ function ActiveBreakCard({ activeBreak, allocatedMinutes, previouslyConsumedSeco
               <ActivityIndicator color={C.white} size="small" />
             ) : (
               <>
-                <Ionicons name="stop-circle-outline" size={20} color={C.white} />
-                <Text style={s.endBtnText}>End Break</Text>
+                <Ionicons name={isOver ? "log-in-outline" : "stop-circle-outline"} size={20} color={C.white} />
+                <Text style={s.endBtnText}>{isOver ? 'Resume Work' : 'End Break'}</Text>
                 {isOver && (
-                  <View style={s.endBtnBadge}>
-                    <Text style={s.endBtnBadgeText}>relaxing!</Text>
+                  <View style={[s.endBtnBadge, { backgroundColor: 'rgba(255,255,255,0.3)' }]}>
+                    <Text style={s.endBtnBadgeText}>Done!</Text>
                   </View>
                 )}
               </>

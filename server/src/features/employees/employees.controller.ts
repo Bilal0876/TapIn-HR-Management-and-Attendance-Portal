@@ -52,4 +52,14 @@ export class EmployeesController {
       next(e);
     }
   }
+
+  static async toggleStatus(req: Request, res: Response, next: NextFunction) {
+    try {
+      const adminId = (req as any).employee.id;
+      const result = await EmployeeService.toggleEmployeeStatus(adminId, req.params.id);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
 }

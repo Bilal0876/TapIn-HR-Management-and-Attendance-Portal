@@ -60,7 +60,9 @@ function formatDuration(minutes: number) {
 }
 
 function formatCheckin(hour: number, minute: number) {
-  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+  const period = hour >= 12 ? 'PM' : 'AM';
+  const h = hour % 12 || 12;
+  return `${h}:${String(minute).padStart(2, '0')} ${period}`;
 }
 
 export default function ShiftSettingsScreen() {
@@ -71,26 +73,35 @@ export default function ShiftSettingsScreen() {
   const [name, setName] = useState('');
   const [checkinHour, setCheckinHour] = useState('09');
   const [checkinMin, setCheckinMin] = useState('00');
-  const [workMin, setWorkMin] = useState('480');
-  const [breakMin, setBreakMin] = useState('60');
+  const [workHours, setWorkHours] = useState('8');
+  const [workMinutes, setWorkMinutes] = useState('0');
+  const [breakHours, setBreakHours] = useState('1');
+  const [breakMinutes, setBreakMinutes] = useState('0');
   const [graceMin, setGraceMin] = useState('15');
+  const [period, setPeriod] = useState<'AM' | 'PM'>('AM');
 
   const openModal = (shift?: any) => {
     if (shift) {
       setEditingShift(shift);
       setName(shift.name);
-      setCheckinHour(String(shift.expectedCheckinHour).padStart(2, '0'));
+      setCheckinHour(String(shift.expectedCheckinHour % 12 || 12).padStart(2, '0'));
       setCheckinMin(String(shift.expectedCheckinMinute).padStart(2, '0'));
-      setWorkMin(String(shift.workMinutesPerDay));
-      setBreakMin(String(shift.breakMinutesAllocated));
+      setPeriod(shift.expectedCheckinHour >= 12 ? 'PM' : 'AM');
+      setWorkHours(String(Math.floor(shift.workMinutesPerDay / 60)));
+      setWorkMinutes(String(shift.workMinutesPerDay % 60));
+      setBreakHours(String(Math.floor(shift.breakMinutesAllocated / 60)));
+      setBreakMinutes(String(shift.breakMinutesAllocated % 60));
       setGraceMin(String(shift.gracePeriodMinutes));
     } else {
       setEditingShift(null);
       setName('');
       setCheckinHour('09');
       setCheckinMin('00');
-      setWorkMin('480');
-      setBreakMin('60');
+      setPeriod('AM');
+      setWorkHours('8');
+      setWorkMinutes('0');
+      setBreakHours('1');
+      setBreakMinutes('0');
       setGraceMin('15');
     }
     setModalVisible(true);
@@ -98,12 +109,14 @@ export default function ShiftSettingsScreen() {
 
   const handleSave = async () => {
     if (!name.trim()) return Alert.alert('Error', 'Please enter a profile name');
+    const h = parseInt(checkinHour);
+    const finalH = period === 'PM' ? (h === 12 ? 12 : h + 12) : (h === 12 ? 0 : h);
     const data = {
       name,
-      expectedCheckinHour: parseInt(checkinHour),
+      expectedCheckinHour: finalH,
       expectedCheckinMinute: parseInt(checkinMin),
-      workMinutesPerDay: parseInt(workMin),
-      breakMinutesAllocated: parseInt(breakMin),
+      workMinutesPerDay: parseInt(workHours) * 60 + parseInt(workMinutes),
+      breakMinutesAllocated: parseInt(breakHours) * 60 + parseInt(breakMinutes),
       gracePeriodMinutes: parseInt(graceMin),
     };
     try {
@@ -274,29 +287,52 @@ export default function ShiftSettingsScreen() {
               <Text style={s.sectionDividerLabel}>Check-in Time</Text>
               <View style={s.row}>
                 <View style={[s.inputGroup, { flex: 1, marginRight: 10 }]}>
-                  <Text style={s.label}>Hour (00–23)</Text>
+                  <Text style={s.label}>Hour (01–12)</Text>
                   <TextInput style={s.input} value={checkinHour} onChangeText={setCheckinHour} keyboardType="numeric" maxLength={2} />
                 </View>
-                <View style={[s.inputGroup, { flex: 1 }]}>
+                <View style={[s.inputGroup, { flex: 1, marginRight: 10 }]}>
                   <Text style={s.label}>Minute (00–59)</Text>
                   <TextInput style={s.input} value={checkinMin} onChangeText={setCheckinMin} keyboardType="numeric" maxLength={2} />
                 </View>
+                <View style={[s.inputGroup, { flex: 0.8 }]}>
+                  <Text style={s.label}>Period</Text>
+                  <View style={s.periodContainer}>
+                    <TouchableOpacity 
+                      style={[s.periodBtn, period === 'AM' && s.periodBtnActive]} 
+                      onPress={() => setPeriod('AM')}
+                    >
+                      <Text style={[s.periodText, period === 'AM' && s.periodTextActive]}>AM</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={[s.periodBtn, period === 'PM' && s.periodBtnActive]} 
+                      onPress={() => setPeriod('PM')}
+                    >
+                      <Text style={[s.periodText, period === 'PM' && s.periodTextActive]}>PM</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
 
-              <Text style={s.sectionDividerLabel}>Time Allocation</Text>
-              <View style={s.inputGroup}>
-                <Text style={s.label}>Daily Work (minutes)</Text>
-                <TextInput style={s.input} value={workMin} onChangeText={setWorkMin} keyboardType="numeric" placeholder="480" placeholderTextColor={C.muted} />
-                <Text style={s.hint}>Standard 8-hour day = 480 mins</Text>
-              </View>
-
+              <Text style={s.sectionDividerLabel}>Work Duration</Text>
               <View style={s.row}>
                 <View style={[s.inputGroup, { flex: 1, marginRight: 10 }]}>
-                  <Text style={s.label}>Break (mins)</Text>
-                  <TextInput style={s.input} value={breakMin} onChangeText={setBreakMin} keyboardType="numeric" />
+                  <Text style={s.label}>Hours</Text>
+                  <TextInput style={s.input} value={workHours} onChangeText={setWorkHours} keyboardType="numeric" maxLength={2} />
                 </View>
                 <View style={[s.inputGroup, { flex: 1 }]}>
-                  <Text style={s.label}>Grace (mins)</Text>
+                  <Text style={s.label}>Minutes</Text>
+                  <TextInput style={s.input} value={workMinutes} onChangeText={setWorkMinutes} keyboardType="numeric" maxLength={2} />
+                </View>
+              </View>
+
+              <Text style={s.sectionDividerLabel}>Break & Grace</Text>
+              <View style={s.row}>
+                <View style={[s.inputGroup, { flex: 0.8, marginRight: 10 }]}>
+                  <Text style={s.label}>Break (min)</Text>
+                  <TextInput style={s.input} value={breakMinutes} onChangeText={setBreakMinutes} keyboardType="numeric" />
+                </View>
+                <View style={[s.inputGroup, { flex: 1 }]}>
+                  <Text style={s.label}>Grace (min)</Text>
                   <TextInput style={s.input} value={graceMin} onChangeText={setGraceMin} keyboardType="numeric" />
                 </View>
               </View>

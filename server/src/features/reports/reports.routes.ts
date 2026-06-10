@@ -15,5 +15,6 @@ router.get('/my-monthly-pdf', validate({ query: DownloadReportSchema }), Reports
 router.use(requireAdmin);
 router.get('/monthly', validate({ query: DownloadReportSchema }), ReportsController.downloadMonthlyReport);
 router.get('/monthly-pdf', validate({ query: DownloadReportSchema }), ReportsController.downloadMonthlyPDF);
+router.get('/employee-pdf', ReportsController.downloadEmployeeReport);
 
 export default router;

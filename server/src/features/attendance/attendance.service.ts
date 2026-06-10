@@ -107,6 +107,12 @@ export class AttendanceService {
     const dateStr = checkinTime.toISOString().split('T')[0];
     const date = new Date(dateStr);
 
+    const employee = await prisma.employee.findUnique({ where: { id: employeeId } });
+    if (!employee) throw createError.NotFound('Employee not found');
+    if (employee.role === 'SUPER_ADMIN') {
+      throw createError.Forbidden('Super Admins do not participate in attendance tracking');
+    }
+
     const existing = await prisma.attendanceRecord.findUnique({
       where: { employeeId_date: { employeeId, date } },
     });
@@ -125,12 +131,23 @@ export class AttendanceService {
       include: { employee: true }
     });
 
+    await prisma.activityLog.create({
+      data: {
+        companyId: record.employee.companyId,
+        employeeId: record.employeeId,
+        action: 'Checked-in',
+        icon: 'enter-outline',
+        color: '#1DB8A0',
+      }
+    });
+
     emitToCompany(record.employee.companyId, 'activity:pulse', {
       name: record.employee.name,
       action: 'Checked-in',
       time: 'Just now',
       icon: 'enter-outline',
-      color: '#1DB8A0'
+      color: '#1DB8A0',
+      companyId: record.employee.companyId,
     });
 
     emitToCompany(record.employee.companyId, 'stats:update', {});
@@ -215,12 +232,23 @@ export class AttendanceService {
 
       const result = { record: updatedRecord, summary: dailySummary };
 
+      await tx.activityLog.create({
+        data: {
+          companyId: (record as any).employee.companyId,
+          employeeId: record.employeeId,
+          action: 'Checked-out',
+          icon: 'exit-outline',
+          color: '#6366F1',
+        }
+      });
+
       emitToCompany((record as any).employee.companyId, 'activity:pulse', {
         name: (record as any).employee.name,
         action: 'Checked-out',
         time: 'Just now',
         icon: 'exit-outline',
-        color: '#6366F1'
+        color: '#6366F1',
+        companyId: (record as any).employee.companyId,
       });
 
       emitToCompany((record as any).employee.companyId, 'stats:update', {});
@@ -341,12 +369,23 @@ export class AttendanceService {
       include: { employee: true }
     });
 
+    await prisma.activityLog.create({
+      data: {
+        companyId: breakSess.employee.companyId,
+        employeeId: breakSess.employeeId,
+        action: 'Took a break',
+        icon: 'cafe-outline',
+        color: '#F59E0B',
+      }
+    });
+
     emitToCompany(breakSess.employee.companyId, 'activity:pulse', {
       name: breakSess.employee.name,
       action: 'Took a break',
       time: 'Just now',
       icon: 'cafe-outline',
-      color: '#F59E0B'
+      color: '#F59E0B',
+      companyId: breakSess.employee.companyId,
     });
 
     emitToCompany(breakSess.employee.companyId, 'stats:update', {});
@@ -386,12 +425,23 @@ export class AttendanceService {
       include: { employee: true }
     });
 
+    await prisma.activityLog.create({
+      data: {
+        companyId: updatedBreak.employee.companyId,
+        employeeId: updatedBreak.employeeId,
+        action: 'Back from break',
+        icon: 'walk-outline',
+        color: '#10B981',
+      }
+    });
+
     emitToCompany(updatedBreak.employee.companyId, 'activity:pulse', {
       name: updatedBreak.employee.name,
       action: 'Back from break',
       time: 'Just now',
       icon: 'walk-outline',
-      color: '#10B981'
+      color: '#10B981',
+      companyId: updatedBreak.employee.companyId,
     });
 
     emitToCompany(updatedBreak.employee.companyId, 'stats:update', {});

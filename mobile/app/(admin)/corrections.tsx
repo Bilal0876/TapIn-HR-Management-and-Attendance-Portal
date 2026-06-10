@@ -82,16 +82,16 @@ export default function AdminCorrectionsScreen() {
       <View style={s.compareRow}>
         <View style={s.compareBox}>
           <Text style={s.compareLabel}>ORIGINAL</Text>
-          <Text style={s.compareValue}>{format(parseISO(item.originalCheckin), 'HH:mm')}</Text>
+          <Text style={s.compareValue}>{format(parseISO(item.originalCheckin), 'hh:mm a')}</Text>
           <Text style={s.compareValue}>
-            {item.originalCheckout ? format(parseISO(item.originalCheckout), 'HH:mm') : '--:--'}
+            {item.originalCheckout ? format(parseISO(item.originalCheckout), 'hh:mm a') : '--:--'}
           </Text>
         </View>
         <Ionicons name="arrow-forward" size={20} color="#E2E8F0" />
         <View style={s.compareBox}>
           <Text style={[s.compareLabel, { color: C.accent }]}>REQUESTED</Text>
-          <Text style={s.compareValue}>{item.requestedCheckin ? format(parseISO(item.requestedCheckin), 'HH:mm') : 'NC'}</Text>
-          <Text style={s.compareValue}>{item.requestedCheckout ? format(parseISO(item.requestedCheckout), 'HH:mm') : 'NC'}</Text>
+          <Text style={s.compareValue}>{item.requestedCheckin ? format(parseISO(item.requestedCheckin), 'hh:mm a') : 'NC'}</Text>
+          <Text style={s.compareValue}>{item.requestedCheckout ? format(parseISO(item.requestedCheckout), 'hh:mm a') : 'NC'}</Text>
         </View>
       </View>
 

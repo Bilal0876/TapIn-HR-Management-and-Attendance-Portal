@@ -110,6 +110,7 @@ export class AuthService {
         email: employee.email,
         name: employee.name,
         role: employee.role,
+        companyId: employee.companyId,
         mustChangePassword: employee.mustChangePassword,
         employeeCode: refreshedEmployee?.profile?.employeeCode,
         designation: refreshedEmployee?.profile?.designation,
@@ -156,7 +157,7 @@ export class AuthService {
     expiresAt.setDate(expiresAt.getDate() + 7);
 
     await prisma.$transaction([
-      prisma.refreshToken.delete({ where: { id: storedToken.id } }),
+      prisma.refreshToken.deleteMany({ where: { id: storedToken.id } }),
       prisma.refreshToken.create({
         data: { employeeId: sub, tokenHash: newTokenHash, expiresAt },
       }),

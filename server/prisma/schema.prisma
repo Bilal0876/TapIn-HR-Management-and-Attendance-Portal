@@ -74,8 +74,28 @@ model Employee {
   refreshTokens      RefreshToken[]
   passwordResetTokens PasswordResetToken[]
   leaveRequests      LeaveRequest[]
+  activityLogs       ActivityLog[]
 
   @@map("employees")
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  companyId String
+  employeeId String
+  action    String   // e.g. "Checked-in", "Checked-out", "Took a break"
+  details   String?
+  icon      String?
+  color     String?
+  lat       Float?
+  lng       Float?
+  createdAt DateTime @default(now())
+  employee  Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([companyId])
+  @@index([employeeId])
+  @@index([createdAt])
+  @@map("activity_logs")
 }
 
 enum Role {
@@ -130,6 +150,10 @@ model AttendanceRecord {
   checkinTime   DateTime
   checkoutTime  DateTime?
   status        AttendanceStatus @default(PENDING)
+  checkinLat    Float?
+  checkinLng    Float?
+  checkoutLat   Float?
+  checkoutLng   Float?
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
   employee      Employee         @relation(fields: [employeeId], references: [id])
