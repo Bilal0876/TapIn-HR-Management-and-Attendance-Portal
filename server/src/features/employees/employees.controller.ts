@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { EmployeeService } from './employees.service';
+import { CreateEmployeeSchema } from './employees.dto';
 
 export class EmployeesController {
   static async suggestCode(req: Request, res: Response, next: NextFunction) {
@@ -16,7 +17,8 @@ export class EmployeesController {
   static async create(req: Request, res: Response, next: NextFunction) {
     try {
       const adminId = (req as any).employee.id;
-      const result = await EmployeeService.createEmployee(adminId, req.body);
+      const validatedData = CreateEmployeeSchema.parse(req.body);
+      const result = await EmployeeService.createEmployee(adminId, { ...validatedData, password: req.body.password } as any);
       res.status(201).json(result);
     } catch (e) {
       next(e);

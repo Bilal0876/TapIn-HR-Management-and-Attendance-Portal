@@ -54,4 +54,53 @@ export const NotificationService = {
       data: { screen: 'actions' },
     });
   },
+
+  async notifyAdminsOfAttendanceAction(employeeName: string, action: string, companyId: string) {
+    const admins = await prisma.employee.findMany({
+      where: {
+        companyId,
+        role: { in: ['ADMIN', 'SUPER_ADMIN'] },
+        isActive: true,
+        pushToken: { not: null },
+      },
+      select: { pushToken: true },
+    });
+
+    if (admins.length === 0) return;
+
+    const notifications = admins.map((admin) => ({
+      to: admin.pushToken!,
+      title: '👥 Staff Activity',
+      body: `${employeeName} just ${action.toLowerCase()}.`,
+      data: { screen: 'dashboard' },
+    }));
+
+    for (const n of notifications) {
+      await sendPush(n);
+    }
+  },
+
+  async sendShiftReminder(employeeId: string, minutesBefore: number) {
+    const employee = await prisma.employee.findUnique({ where: { id: employeeId }, select: { pushToken: true, name: true } });
+    if (!employee?.pushToken) return;
+
+    await sendPush({
+      to: employee.pushToken,
+      title: '⌛ Shift Starting Soon',
+      body: `Hey ${employee.name?.split(' ')[0] ?? 'there'}, your shift starts in ${minutesBefore} minutes!`,
+      data: { screen: 'actions' },
+    });
+  },
+
+  async sendLateShiftWarning(employeeId: string) {
+    const employee = await prisma.employee.findUnique({ where: { id: employeeId }, select: { pushToken: true, name: true } });
+    if (!employee?.pushToken) return;
+
+    await sendPush({
+      to: employee.pushToken,
+      title: '🚨 Shift Started',
+      body: `Hey ${employee.name?.split(' ')[0] ?? 'there'}, your shift has already started. Please check in as soon as possible.`,
+      data: { screen: 'actions' },
+    });
+  },
 };

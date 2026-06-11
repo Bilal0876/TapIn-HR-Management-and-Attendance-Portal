@@ -4,6 +4,7 @@ import { createError } from '../../lib/errors';
 import { calculateDelta, resolveConfig } from '../../services/deltaEngine';
 import { toZonedTime } from 'date-fns-tz';
 import { emitToCompany } from '../../lib/socket';
+import { NotificationService } from '../../services/notificationService';
 import { UpdateShiftSettingsInput } from './attendance.dto';
 
 export class AttendanceService {
@@ -158,6 +159,12 @@ export class AttendanceService {
 
     emitToCompany((record as any).employee.companyId, 'stats:update', {});
 
+    NotificationService.notifyAdminsOfAttendanceAction(
+      (record as any).employee.name,
+      'Checked-in',
+      (record as any).employee.companyId
+    ).catch(e => console.error('[Push] Admin alert failed', e));
+
     return record;
   }
 
@@ -264,6 +271,12 @@ export class AttendanceService {
       });
 
       emitToCompany((record as any).employee.companyId, 'stats:update', {});
+
+      NotificationService.notifyAdminsOfAttendanceAction(
+        (record as any).employee.name,
+        'Checked-out',
+        (record as any).employee.companyId
+      ).catch(e => console.error('[Push] Admin alert failed', e));
 
       return result;
     });

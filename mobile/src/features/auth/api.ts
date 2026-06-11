@@ -20,5 +20,10 @@ export const authApi = {
   logout: async (refreshToken: string) => {
     const res = await apiClient.post('/auth/logout', { refreshToken });
     return res.data;
+  },
+  
+  updatePushToken: async (pushToken: string) => {
+    const res = await apiClient.put('/auth/push-token', { pushToken });
+    return res.data;
   }
 }

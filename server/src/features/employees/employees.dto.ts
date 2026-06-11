@@ -7,6 +7,7 @@ export const CreateEmployeeSchema = z.object({
   role: z.nativeEnum(Role).default(Role.EMPLOYEE),
   designation: z.string().optional(),
   department: z.string().optional(),
+  password: z.string().min(6).optional(),
   employeeCode: z.string().min(2).optional(),
   joiningDate: z.string().datetime().optional(), // Or string date
   shiftProfileId: z.string().optional(),

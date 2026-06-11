@@ -13,6 +13,8 @@ import { useTodayAttendance } from '@/features/attendance/hooks';
 import { format, parseISO, addMinutes } from 'date-fns';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ensurePermissions } from '@/lib/locationService';
+import { registerForPushNotificationsAsync } from '@/lib/notificationService';
+import { authApi } from '@/features/auth/api';
 
 // ── Animated wrapper that fades+scales when `status` changes
 function AnimatedStatusView({ status, children }: { status: string; children: React.ReactNode }) {
@@ -50,6 +52,22 @@ export default function EmployeeHome() {
 
   // Request location permission once at startup (not on every tap)
   useEffect(() => { ensurePermissions(); }, []);
+
+  // Request notification permission and sync push token
+  useEffect(() => {
+    const setupNotifications = async () => {
+      const token = await registerForPushNotificationsAsync();
+      if (token) {
+        try {
+          await authApi.updatePushToken(token);
+          console.log('[Push] Token synced to server');
+        } catch (err) {
+          console.error('[Push] Failed to sync token:', err);
+        }
+      }
+    };
+    setupNotifications();
+  }, []);
 
   if (isLoading) {
     return (
