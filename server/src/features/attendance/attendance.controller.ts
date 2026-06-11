@@ -48,10 +48,10 @@ export class AttendanceController {
 
   static async checkin(req: Request, res: Response, next: NextFunction) {
     try {
-      const { time, lat, lng } = req.body;
+      const { time, lat, lng, accuracy } = req.body;
       const employeeId = (req as any).employee.id;
       const parsedTime = time ? new Date(time) : undefined;
-      const result = await AttendanceService.checkin(employeeId, parsedTime, lat, lng);
+      const result = await AttendanceService.checkin(employeeId, parsedTime, lat, lng, accuracy);
       res.json(result);
     } catch (e) {
       next(e);
@@ -60,10 +60,10 @@ export class AttendanceController {
 
   static async checkout(req: Request, res: Response, next: NextFunction) {
     try {
-      const { time, lat, lng } = req.body;
+      const { time, lat, lng, accuracy } = req.body;
       const employeeId = (req as any).employee.id;
       const parsedTime = time ? new Date(time) : undefined;
-      const result = await AttendanceService.checkout(employeeId, parsedTime, lat, lng);
+      const result = await AttendanceService.checkout(employeeId, parsedTime, lat, lng, accuracy);
       res.json(result);
     } catch (e) {
       next(e);

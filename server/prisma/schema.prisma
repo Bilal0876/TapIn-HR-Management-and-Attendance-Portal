@@ -89,6 +89,7 @@ model ActivityLog {
   color     String?
   lat       Float?
   lng       Float?
+  accuracy  Float?
   createdAt DateTime @default(now())
   employee  Employee @relation(fields: [employeeId], references: [id])
 
@@ -150,11 +151,13 @@ model AttendanceRecord {
   checkinTime   DateTime
   checkoutTime  DateTime?
   status        AttendanceStatus @default(PENDING)
-  checkinLat    Float?
-  checkinLng    Float?
-  checkoutLat   Float?
-  checkoutLng   Float?
-  createdAt     DateTime         @default(now())
+  checkinLat       Float?
+  checkinLng       Float?
+  checkinAccuracy  Float?
+  checkoutLat      Float?
+  checkoutLng      Float?
+  checkoutAccuracy Float?
+  createdAt        DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
   employee      Employee         @relation(fields: [employeeId], references: [id])
   breakSessions BreakSession[]

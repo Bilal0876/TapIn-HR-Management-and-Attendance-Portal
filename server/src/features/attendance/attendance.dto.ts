@@ -3,10 +3,16 @@ import { AttendanceStatus } from '@prisma/client';
 
 export const CheckinSchema = z.object({
   time: z.string().datetime().optional(),
+  lat: z.number(),
+  lng: z.number(),
+  accuracy: z.number().optional(),
 });
 
 export const CheckoutSchema = z.object({
   time: z.string().datetime().optional(),
+  lat: z.number(),
+  lng: z.number(),
+  accuracy: z.number().optional(),
 });
 
 export const UpdateShiftSettingsSchema = z.object({

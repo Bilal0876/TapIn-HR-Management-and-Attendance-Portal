@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,14 @@ import {
   ActivityIndicator,
   Animated as RNAnimated,
   Easing,
+  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { attendanceApi } from '../api';
 import * as Haptics from 'expo-haptics';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { fetchFreshLocation } from '@/lib/locationService';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type AttendanceStatus = 'IDLE' | 'PENDING' | 'ON_BREAK' | 'COMPLETE';
@@ -158,49 +160,44 @@ export function CheckInButton({
   const normalized = (CFG[status as keyof typeof CFG] ? status : 'IDLE') as keyof typeof CFG;
   const cfg = CFG[normalized];
 
-  const isDisabled = normalized === 'ON_BREAK' || normalized === 'COMPLETE' || loading;
-  const ringsOn = !isDisabled && !loading;
+  const [isFetchingLocation, setIsFetchingLocation] = useState(false);
+
+  const isDisabled = normalized === 'ON_BREAK' || normalized === 'COMPLETE' || loading || isFetchingLocation;
+  const ringsOn = !isDisabled && !loading && !isFetchingLocation;
 
   const handlePress = useCallback(async () => {
     if (isDisabled) return;
 
-    // Haptic feedback
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    setIsFetchingLocation(true);
 
     try {
-      // 1. Silent location fetch
-      let lat: number | undefined;
-      let lng: number | undefined;
-      
-      try {
-        // Dynamic import — silently skips if native module not compiled yet
-        const Location = require('expo-location');
-        const { status: locStatus } = await Location.requestForegroundPermissionsAsync();
-        if (locStatus === 'granted') {
-          const loc = await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.Balanced,
-          });
-          lat = loc.coords.latitude;
-          lng = loc.coords.longitude;
-        }
-      } catch (e) {
-        console.warn('[GPS] Location unavailable, skipping:', e);
-      }
+      // 1. Always fetch fresh GPS — never stale, never cached
+      const fix = await fetchFreshLocation(10_000);
 
-      // 2. Call API with coordinates
+      // 2. Call API with verified coordinates
       if (normalized === 'PENDING') {
-        await attendanceApi.checkout(lat, lng);
+        await attendanceApi.checkout(fix.lat, fix.lng, fix.accuracy);
       } else if (normalized === 'IDLE') {
-        await attendanceApi.checkin(lat, lng);
+        await attendanceApi.checkin(fix.lat, fix.lng, fix.accuracy);
       }
 
-      // Success haptic
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       onRefresh();
-    } catch (_) {
+    } catch (err: any) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+
+      if (err?.name === 'LocationError') {
+        Alert.alert('Location Required', err.message);
+      } else {
+        const apiError = err?.response?.data?.message || err?.message || 'Attendance action failed.';
+        Alert.alert('Attendance Error', apiError);
+      }
+    } finally {
+      setIsFetchingLocation(false);
     }
   }, [normalized, isDisabled, onRefresh]);
+
 
   // Center offset: button sits in the middle of the canvas
   const btnOffset = (CANVAS - BTN) / 2;
@@ -243,8 +240,13 @@ export function CheckInButton({
                   opacity: isDisabled && status !== 'COMPLETE' ? 0.72 : 1,
                 }]}
               >
-                {loading ? (
-                  <ActivityIndicator color={C.white} size="large" />
+                {loading || isFetchingLocation ? (
+                  <>
+                    <ActivityIndicator color={C.white} size="large" />
+                    <Text style={[s.btnSub, { color: C.white, opacity: 0.9, marginTop: 10 }]}>
+                      {isFetchingLocation ? 'Fetching Location...' : 'Updating...'}
+                    </Text>
+                  </>
                 ) : (
                   <>
                     <Ionicons name={cfg.icon} size={34} color={C.white} style={s.btnIcon} />

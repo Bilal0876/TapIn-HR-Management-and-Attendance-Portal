@@ -1,28 +1,78 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, StatusBar, RefreshControl, TouchableOpacity, } from 'react-native';
+import {
+  View, Text, FlatList, ActivityIndicator,
+  StatusBar, RefreshControl, TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { attendanceApi } from '@/features/attendance/api';
 import { format, parseISO } from 'date-fns';
 
-const C = {
-  navy: '#0F1D3A',
-  accent: '#5BA3F5',
-  teal: '#1DB8A0',
-  white: '#FFFFFF',
-  subtle: '#8A9BB5',
-  bg: '#F8FAFC',
-  danger: '#FF6B6B',
-  warning: '#F59E0B',
-  green: '#10B981',
+const STATUS_CONFIG: Record<string, {
+  label: string; color: string; iconColor: string;
+  bgClass: string; textClass: string; icon: string;
+}> = {
+  PENDING: {
+    label: 'Pending', color: '#D97706', iconColor: '#D97706',
+    bgClass: 'bg-amber-50', textClass: 'text-amber-600',
+    icon: 'time-outline',
+  },
+  APPROVED: {
+    label: 'Approved', color: '#16A34A', iconColor: '#16A34A',
+    bgClass: 'bg-green-50', textClass: 'text-green-600',
+    icon: 'checkmark-circle-outline',
+  },
+  REJECTED: {
+    label: 'Rejected', color: '#E11D48', iconColor: '#E11D48',
+    bgClass: 'bg-red-50', textClass: 'text-red-500',
+    icon: 'close-circle-outline',
+  },
 };
 
-const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; icon: string }> = {
-  PENDING: { label: 'Pending', color: '#D97706', bg: '#FFF7ED', icon: 'time-outline' },
-  APPROVED: { label: 'Approved', color: C.green, bg: '#ECFDF5', icon: 'checkmark-circle-outline' },
-  REJECTED: { label: 'Rejected', color: C.danger, bg: '#FFF0F0', icon: 'close-circle-outline' },
-};
+const fmtTime = (t?: string) => t ? format(parseISO(t), 'hh:mm a') : '--:--';
+
+function TimeBlock({
+  label, checkin, checkout, accent = false,
+}: {
+  label: string; checkin?: string; checkout?: string; accent?: boolean;
+}) {
+  return (
+    <View className={`flex-1 rounded-xl px-3 py-2.5 ${accent ? 'bg-indigo-50' : 'bg-slate-50'}`}
+      style={{ borderWidth: 0.5, borderColor: accent ? '#C7D2FE' : '#E2E8F0' }}
+    >
+      <Text className="text-[10px] font-bold uppercase tracking-widest mb-2"
+        style={{ color: accent ? '#6366F1' : '#94A3B8' }}
+      >
+        {label}
+      </Text>
+      <View className="flex-row items-center gap-2">
+        <View>
+          <Text className="text-[9px] font-semibold uppercase mb-0.5"
+            style={{ color: accent ? '#A5B4FC' : '#94A3B8' }}
+          >In</Text>
+          <Text className="text-sm font-bold tabular-nums"
+            style={{ color: accent ? '#4338CA' : '#0D1B2A' }}
+          >
+            {fmtTime(checkin)}
+          </Text>
+        </View>
+        <Ionicons name="chevron-forward" size={12} color={accent ? '#C7D2FE' : '#E2E8F0'} />
+        <View>
+          <Text className="text-[9px] font-semibold uppercase mb-0.5"
+            style={{ color: accent ? '#A5B4FC' : '#94A3B8' }}
+          >Out</Text>
+          <Text className="text-sm font-bold tabular-nums"
+            style={{ color: accent ? '#4338CA' : '#0D1B2A' }}
+          >
+            {fmtTime(checkout)}
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+}
 
 export default function MyCorrectionsScreen() {
   const [requests, setRequests] = useState<any[]>([]);
@@ -51,54 +101,73 @@ export default function MyCorrectionsScreen() {
       ? format(parseISO(item.attendanceRecord.date), 'EEEE, MMM dd')
       : '—';
 
-    const fmtTime = (t?: string) => t ? format(parseISO(t), 'hh:mm a') : '—';
-
     return (
-      <View style={s.card}>
-        {/* Header */}
-        <View style={s.cardHeader}>
-          <Text style={s.cardDate}>{date}</Text>
-          <View style={[s.badge, { backgroundColor: cfg.bg }]}>
-            <Ionicons name={cfg.icon as any} size={12} color={cfg.color} />
-            <Text style={[s.badgeText, { color: cfg.color }]}>{cfg.label}</Text>
+      <View
+        className="bg-white rounded-2xl mb-3 overflow-hidden"
+        style={{ borderWidth: 0.5, borderColor: '#E2E8F0' }}
+      >
+        {/* Card top */}
+        <View className="px-4 pt-4 pb-3">
+          {/* Date + status badge */}
+          <View className="flex-row items-center justify-between mb-3">
+            <View className="flex-row items-center gap-2">
+              <Ionicons name="calendar-outline" size={13} color="#94A3B8" />
+              <Text className="text-sm font-semibold text-slate-800">{date}</Text>
+            </View>
+            <View
+              className={`flex-row items-center gap-1 px-2.5 py-1 rounded-lg ${cfg.bgClass}`}
+            >
+              <Ionicons name={cfg.icon as any} size={12} color={cfg.iconColor} />
+              <Text className={`text-[11px] font-bold ${cfg.textClass}`}>{cfg.label}</Text>
+            </View>
+          </View>
+
+          {/* Time comparison */}
+          <View className="flex-row items-center gap-2">
+            <TimeBlock
+              label="Current log"
+              checkin={item.originalCheckin}
+              checkout={item.originalCheckout}
+            />
+            <Ionicons name="arrow-forward" size={14} color="#CBD5E1" />
+            <TimeBlock
+              label="Requested"
+              checkin={item.requestedCheckin}
+              checkout={item.requestedCheckout}
+              accent
+            />
           </View>
         </View>
 
-        {/* Time comparison */}
-        <View style={s.timeGrid}>
-          <View style={s.timeCol}>
-            <Text style={s.timeHead}>Original</Text>
-            <Text style={s.timeVal}>{fmtTime(item.originalCheckin)}</Text>
-            <Text style={[s.timeVal, { opacity: 0.6 }]}>{fmtTime(item.originalCheckout)}</Text>
-          </View>
-          <View style={s.timeArrow}>
-            <Ionicons name="arrow-forward" size={18} color="#E2E8F0" />
-          </View>
-          <View style={s.timeCol}>
-            <Text style={s.timeHead}>Requested</Text>
-            <Text style={[s.timeVal, { color: C.accent }]}>{fmtTime(item.requestedCheckin)}</Text>
-            <Text style={[s.timeVal, { color: C.accent, opacity: 0.6 }]}>{fmtTime(item.requestedCheckout)}</Text>
-          </View>
-        </View>
-
-        {/* Reason */}
+        {/* Reason footer */}
         {item.reason ? (
-          <View style={s.reasonRow}>
-            <Ionicons name="chatbubble-ellipses-outline" size={13} color={C.subtle} />
-            <Text style={s.reasonText} numberOfLines={2}>{item.reason}</Text>
+          <View
+            className="flex-row items-start gap-2 px-4 py-3"
+            style={{ borderTopWidth: 0.5, borderTopColor: '#F1F5F9', backgroundColor: '#FAFAFA' }}
+          >
+            <Ionicons name="chatbubble-ellipses-outline" size={12} color="#94A3B8" style={{ marginTop: 1 }} />
+            <Text className="text-xs text-slate-400 flex-1 leading-5" numberOfLines={2}>
+              <Text className="font-semibold text-slate-500">Reason: </Text>
+              {item.reason}
+            </Text>
           </View>
         ) : null}
 
-        {/* Review note if rejected */}
-        {item.status === 'REJECTED' && item.reviewNote ? (
-          <View style={[s.reviewNote, { borderLeftColor: C.danger }]}>
-            <Text style={[s.reviewNoteText, { color: C.danger }]}>"{item.reviewNote}"</Text>
-          </View>
-        ) : null}
-
-        {item.status === 'APPROVED' && item.reviewNote ? (
-          <View style={[s.reviewNote, { borderLeftColor: C.green }]}>
-            <Text style={[s.reviewNoteText, { color: C.green }]}>"{item.reviewNote}"</Text>
+        {/* Review note */}
+        {item.reviewNote ? (
+          <View
+            className="px-4 py-2.5"
+            style={{
+              borderTopWidth: 0.5,
+              borderTopColor: '#F1F5F9',
+              borderLeftWidth: 3,
+              borderLeftColor: cfg.color,
+              backgroundColor: item.status === 'APPROVED' ? '#F0FDF4' : item.status === 'REJECTED' ? '#FFF1F2' : '#FFFBEB',
+            }}
+          >
+            <Text className="text-xs italic leading-5" style={{ color: cfg.color }}>
+              "{item.reviewNote}"
+            </Text>
           </View>
         ) : null}
       </View>
@@ -106,95 +175,76 @@ export default function MyCorrectionsScreen() {
   };
 
   return (
-    <SafeAreaView style={s.root}>
-      <StatusBar barStyle="dark-content" />
+    <View className="flex-1 bg-slate-100">
+      <StatusBar barStyle="light-content" />
 
-      <View style={s.header}>
-        <Text style={s.headerTitle}>My Requests</Text>
-        <Text style={s.headerSub}>Track your correction submissions</Text>
+      {/* Header */}
+      <LinearGradient colors={['#0D1B2A', '#1a2d42']}>
+        <SafeAreaView edges={['top']}>
+          <View className="px-5 pt-2 pb-6">
+            <Text className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              My Corrections
+            </Text>
+            <Text className="text-xl font-bold text-white">Requests</Text>
+            <Text className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              Track your correction submissions
+            </Text>
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
+
+      {/* CTA banner */}
+      <View className="px-4 mt-4 mb-2">
+        <TouchableOpacity
+          onPress={() => router.push('/(employee)/history')}
+          activeOpacity={0.8}
+          className="flex-row items-center justify-between bg-white rounded-xl px-4 py-3"
+          style={{ borderWidth: 0.5, borderColor: '#E2E8F0' }}
+        >
+          <View className="flex-row items-center gap-2.5">
+            <View className="w-8 h-8 rounded-lg bg-indigo-50 items-center justify-center">
+              <Ionicons name="create-outline" size={16} color="#6366F1" />
+            </View>
+            <Text className="text-sm font-semibold text-slate-700">Need to correct attendance?</Text>
+          </View>
+          <Text className="text-sm font-bold text-indigo-500">History →</Text>
+        </TouchableOpacity>
       </View>
 
-      {/* CTA to submit new correction via History */}
-      <TouchableOpacity style={s.ctaBanner} onPress={() => router.push('/(employee)/history')} activeOpacity={0.8}>
-        <View style={s.ctaLeft}>
-          <Ionicons name="create-outline" size={20} color={C.accent} />
-          <Text style={s.ctaText}>Need to correct attendance?</Text>
-        </View>
-        <Text style={s.ctaLink}>Go to History →</Text>
-      </TouchableOpacity>
+      {/* Section label */}
+      <View className="px-5 pt-3 pb-2">
+        <Text className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          {requests.length > 0 ? `${requests.length} request${requests.length !== 1 ? 's' : ''}` : 'All requests'}
+        </Text>
+      </View>
 
       {loading ? (
-        <View style={s.center}>
-          <ActivityIndicator color={C.accent} size="large" />
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator color="#6366F1" size="large" />
         </View>
       ) : (
         <FlatList
           data={requests}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
-          contentContainerStyle={s.list}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={C.accent} />}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 120, paddingTop: 4 }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#6366F1" />
+          }
           ListEmptyComponent={
-            <View style={s.empty}>
-              <Ionicons name="receipt-outline" size={64} color="#E2E8F0" />
-              <Text style={s.emptyTitle}>No requests yet</Text>
-              <Text style={s.emptySub}>Tap a record in History to submit a correction</Text>
+            <View className="items-center mt-20 px-10">
+              <View className="w-16 h-16 rounded-2xl bg-slate-100 items-center justify-center mb-4">
+                <Ionicons name="receipt-outline" size={28} color="#94A3B8" />
+              </View>
+              <Text className="text-base font-bold text-slate-400 mb-2">No requests yet</Text>
+              <Text className="text-sm text-slate-400 text-center leading-5">
+                Tap a record in History to submit a correction
+              </Text>
             </View>
           }
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
-
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: C.bg },
-  header: { paddingHorizontal: 24, paddingTop: 8, paddingBottom: 16 },
-  headerTitle: { fontSize: 28, fontWeight: '800', color: C.navy, letterSpacing: -0.5 },
-  headerSub: { fontSize: 14, color: C.subtle, marginTop: 4, fontWeight: '500' },
-  ctaBanner: {
-    marginHorizontal: 20,
-    marginBottom: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: 'rgba(91,163,245,0.08)',
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: 'rgba(91,163,245,0.18)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  ctaLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  ctaText: { fontSize: 13, fontWeight: '600', color: C.navy },
-  ctaLink: { fontSize: 13, fontWeight: '700', color: C.accent },
-  list: { paddingHorizontal: 20, paddingBottom: 120 },
-  card: {
-    backgroundColor: C.white,
-    borderRadius: 20,
-    padding: 18,
-    marginBottom: 14,
-    shadowColor: '#64748B',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    elevation: 3,
-  },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  cardDate: { fontSize: 15, fontWeight: '700', color: C.navy },
-  badge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  badgeText: { fontSize: 11, fontWeight: '800' },
-  timeGrid: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
-  timeCol: { flex: 1 },
-  timeArrow: { paddingHorizontal: 8 },
-  timeHead: { fontSize: 10, fontWeight: '700', color: C.subtle, marginBottom: 4, letterSpacing: 0.5, textTransform: 'uppercase' },
-  timeVal: { fontSize: 15, fontWeight: '700', color: C.navy, marginBottom: 2 },
-  reasonRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
-  reasonText: { fontSize: 13, color: C.subtle, flex: 1, lineHeight: 18 },
-  reviewNote: { marginTop: 10, paddingLeft: 10, borderLeftWidth: 3 },
-  reviewNoteText: { fontSize: 12, fontStyle: 'italic', lineHeight: 18 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  empty: { flex: 1, alignItems: 'center', marginTop: 80, paddingHorizontal: 40 },
-  emptyTitle: { fontSize: 18, fontWeight: '700', color: '#CBD5E1', marginTop: 16 },
-  emptySub: { fontSize: 13, color: '#CBD5E1', textAlign: 'center', marginTop: 8, lineHeight: 20 },
-});

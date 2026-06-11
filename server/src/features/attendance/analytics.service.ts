@@ -293,10 +293,12 @@ export class AnalyticsService {
         checkout,
         checkinAt,
         checkoutAt,
-        checkinLat: record.checkinLat,
-        checkinLng: record.checkinLng,
-        checkoutLat: record.checkoutLat,
-        checkoutLng: record.checkoutLng,
+        checkinLat: (record as any)?.checkinLat ?? null,
+        checkinLng: (record as any)?.checkinLng ?? null,
+        checkinAccuracy: (record as any)?.checkinAccuracy ?? null,
+        checkoutLat: (record as any)?.checkoutLat ?? null,
+        checkoutLng: (record as any)?.checkoutLng ?? null,
+        checkoutAccuracy: (record as any)?.checkoutAccuracy ?? null,
         color
       };
     });
@@ -336,6 +338,7 @@ export class AnalyticsService {
       color: l.color || '#64748B',
       lat: l.lat,
       lng: l.lng,
+      accuracy: (l as any).accuracy,
       companyId: l.companyId
     }));
   }

@@ -99,7 +99,7 @@ export class AttendanceService {
     });
   }
 
-  static async checkin(employeeId: string, time?: Date, lat?: number, lng?: number) {
+  static async checkin(employeeId: string, time?: Date, lat?: number, lng?: number, accuracy?: number) {
     const checkinTime = time || new Date();
     
     // Make sure we get the correct "date" context by checking the timezone logic. Wait, simple check: date is today.
@@ -129,37 +129,39 @@ export class AttendanceService {
         status: AttendanceStatus.PENDING,
         checkinLat: lat,
         checkinLng: lng,
-      },
+        checkinAccuracy: accuracy,
+      } as any,
       include: { employee: true }
     });
 
     await prisma.activityLog.create({
       data: {
-        companyId: record.employee.companyId,
+        companyId: (record as any).employee.companyId,
         employeeId: record.employeeId,
         action: 'Checked-in',
         icon: 'enter-outline',
         color: '#1DB8A0',
         lat,
         lng,
-      }
+        accuracy,
+      } as any
     });
 
-    emitToCompany(record.employee.companyId, 'activity:pulse', {
-      name: record.employee.name,
+    emitToCompany((record as any).employee.companyId, 'activity:pulse', {
+      name: (record as any).employee.name,
       action: 'Checked-in',
       time: 'Just now',
       icon: 'enter-outline',
       color: '#1DB8A0',
-      companyId: record.employee.companyId,
+      companyId: (record as any).employee.companyId,
     });
 
-    emitToCompany(record.employee.companyId, 'stats:update', {});
+    emitToCompany((record as any).employee.companyId, 'stats:update', {});
 
     return record;
   }
 
-  static async checkout(employeeId: string, time?: Date, lat?: number, lng?: number) {
+  static async checkout(employeeId: string, time?: Date, lat?: number, lng?: number, accuracy?: number) {
     const checkoutTime = time || new Date();
     const dateStr = checkoutTime.toISOString().split('T')[0];
     const date = new Date(dateStr);
@@ -217,7 +219,8 @@ export class AttendanceService {
           status: AttendanceStatus.COMPLETE,
           checkoutLat: lat,
           checkoutLng: lng,
-        },
+          checkoutAccuracy: accuracy,
+        } as any,
       });
 
       const dailySummary = await tx.dailySummary.create({
@@ -247,7 +250,8 @@ export class AttendanceService {
           color: '#6366F1',
           lat,
           lng,
-        }
+          accuracy,
+        } as any
       });
 
       emitToCompany((record as any).employee.companyId, 'activity:pulse', {
