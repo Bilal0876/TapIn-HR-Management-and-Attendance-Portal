@@ -1,13 +1,29 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
-  View, Text, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Platform,
-  ActivityIndicator, StatusBar, Alert
+  View, Text, TouchableOpacity, TextInput, ScrollView, Platform,
+  ActivityIndicator, StatusBar, Alert, StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams, router } from 'expo-router';
+import { Stack, useLocalSearchParams, router } from 'expo-router';
 import { correctionApi } from '@/features/corrections/api';
 import { Ionicons } from '@expo/vector-icons';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, isValid } from 'date-fns';
+
+function firstParam(value: string | string[] | undefined): string | undefined {
+  if (value == null) return undefined;
+  const v = Array.isArray(value) ? value[0] : value;
+  return v?.length ? v : undefined;
+}
+
+function parseTimeParam(value: string | undefined, fallback: string): string {
+  if (!value) return fallback;
+  try {
+    const d = parseISO(value);
+    return isValid(d) ? format(d, 'HH:mm') : fallback;
+  } catch {
+    return fallback;
+  }
+}
 
 export default function RequestCorrectionScreen() {
   const params = useLocalSearchParams<{
@@ -17,11 +33,13 @@ export default function RequestCorrectionScreen() {
     checkoutTime?: string;
   }>();
 
-  const { recordId, date, checkinTime, checkoutTime } = params;
+  const recordId = firstParam(params.recordId);
+  const date = firstParam(params.date);
+  const checkinTime = firstParam(params.checkinTime);
+  const checkoutTime = firstParam(params.checkoutTime);
 
-  // Pre-fill with actual record times when passed
-  const defaultIn = checkinTime ? format(parseISO(checkinTime), 'HH:mm') : '09:00';
-  const defaultOut = checkoutTime ? format(parseISO(checkoutTime), 'HH:mm') : '18:00';
+  const defaultIn = useMemo(() => parseTimeParam(checkinTime, '09:00'), [checkinTime]);
+  const defaultOut = useMemo(() => parseTimeParam(checkoutTime, '18:00'), [checkoutTime]);
 
   const [loading, setLoading] = useState(false);
   const [reason, setReason] = useState('');
@@ -34,12 +52,12 @@ export default function RequestCorrectionScreen() {
 
     setLoading(true);
     try {
-      const datePart = (date as string).split('T')[0];
+      const datePart = date.split('T')[0];
       const requestedIn = new Date(`${datePart}T${inTime}:00`);
       const requestedOut = new Date(`${datePart}T${outTime}:00`);
 
       await correctionApi.request({
-        recordId: recordId as string,
+        recordId,
         requestedCheckin: requestedIn.toISOString(),
         requestedCheckout: requestedOut.toISOString(),
         reason,
@@ -56,126 +74,216 @@ export default function RequestCorrectionScreen() {
     }
   }, [recordId, date, inTime, outTime, reason]);
 
+  const displayDate = useMemo(() => {
+    if (!date) return '';
+    try {
+      const d = parseISO(date);
+      return isValid(d) ? format(d, 'MMMM dd, yyyy') : date;
+    } catch {
+      return date;
+    }
+  }, [date]);
+
   if (!recordId || !date) {
     return (
-      <SafeAreaView className="flex-1 bg-[#F3F4F8] justify-center items-center px-8">
-        <Ionicons name="alert-circle-outline" size={48} color="#E8405A" />
-        <Text className="text-base font-bold text-[#0B0F17] mt-4 text-center">Record not found</Text>
-        <Text className="text-sm text-[#96A0B5] mt-1 text-center">Please go back and try again.</Text>
-        <TouchableOpacity
-          className="mt-6 bg-[#5B6EF5] px-6 py-3 rounded-xl"
-          onPress={() => router.back()}
-        >
-          <Text className="text-white font-semibold">Go Back</Text>
-        </TouchableOpacity>
+      <SafeAreaView style={s.root}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <View style={s.missingWrap}>
+          <Ionicons name="alert-circle-outline" size={48} color="#E8405A" />
+          <Text style={s.missingTitle}>Record not found</Text>
+          <Text style={s.missingSub}>Please go back and try again.</Text>
+          <TouchableOpacity style={s.missingBtn} onPress={() => router.back()}>
+            <Text style={s.missingBtnText}>Go Back</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     );
   }
 
-  const displayDate = (() => {
-    try { return format(parseISO(date as string), 'MMMM dd, yyyy'); }
-    catch { return date as string; }
-  })();
-
   return (
-    <SafeAreaView className="flex-1 bg-[#F3F4F8]">
+    <SafeAreaView style={s.root}>
+      <Stack.Screen options={{ headerShown: false }} />
       <StatusBar barStyle="dark-content" />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 
-        {/* Header */}
-        <View className="flex-row items-center px-6 py-6 gap-4">
-          <TouchableOpacity
-            className="w-11 h-11 rounded-xl bg-white justify-center items-center elevation-2"
-            onPress={() => router.back()}
-          >
-            <Ionicons name="arrow-back" size={24} color="#0F1D3A" />
-          </TouchableOpacity>
-          <View>
-            <Text className="text-2xl font-extrabold text-[#0B0F17]">Fix Record</Text>
-            <Text className="text-sm font-medium text-[#96A0B5]">{displayDate}</Text>
+      <View style={s.header}>
+        <TouchableOpacity style={s.backBtn} onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color="#0F1D3A" />
+        </TouchableOpacity>
+        <View style={s.headerText}>
+          <Text style={s.title}>Fix Record</Text>
+          <Text style={s.subtitle}>{displayDate}</Text>
+        </View>
+      </View>
+
+      <ScrollView
+        style={s.scroll}
+        contentContainerStyle={s.scrollContent}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
+      >
+        <View style={s.card}>
+          <Text style={s.cardTitle}>Requested Times</Text>
+
+          <View style={s.timeRow}>
+            <View style={s.timeCol}>
+              <Text style={s.fieldLabel}>CHECK-IN</Text>
+              <TextInput
+                style={s.timeInput}
+                value={inTime}
+                onChangeText={setInTime}
+                placeholder="09:00"
+                placeholderTextColor="#96A0B5"
+                keyboardType="numbers-and-punctuation"
+                maxLength={5}
+              />
+            </View>
+            <Ionicons name="arrow-forward" size={20} color="#CBD5E1" style={s.timeArrow} />
+            <View style={s.timeCol}>
+              <Text style={s.fieldLabel}>CHECK-OUT</Text>
+              <TextInput
+                style={s.timeInput}
+                value={outTime}
+                onChangeText={setOutTime}
+                placeholder="18:00"
+                placeholderTextColor="#96A0B5"
+                keyboardType="numbers-and-punctuation"
+                maxLength={5}
+              />
+            </View>
+          </View>
+
+          <View style={s.hint}>
+            <Ionicons name="information-circle-outline" size={18} color="#5B6EF5" />
+            <Text style={s.hintText}>Use 24-hour format (e.g. 14:30 for 2:30 PM)</Text>
           </View>
         </View>
 
-        <ScrollView contentContainerStyle={{ padding: 24 }} showsVerticalScrollIndicator={false}>
+        <View style={s.card}>
+          <Text style={s.cardTitle}>Justification</Text>
+          <Text style={s.fieldLabel}>REASON FOR CORRECTION</Text>
+          <TextInput
+            style={s.reasonInput}
+            value={reason}
+            onChangeText={setReason}
+            placeholder="e.g. Forgot to check out while leaving for an emergency meeting."
+            placeholderTextColor="#96A0B5"
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+          />
+        </View>
 
-          {/* Times card */}
-          <View className="bg-white rounded-3xl p-5 mb-6 elevation-2">
-            <Text className="text-lg font-bold text-[#0B0F17] mb-5">Requested Times</Text>
-
-            <View className="flex-row items-end gap-3">
-              <View className="flex-1">
-                <Text className="text-[11px] font-bold text-[#64748B] mb-2 tracking-wide">CHECK-IN</Text>
-                <TextInput
-                  className="bg-[#F3F4F8] border-[1.5px] border-[#E5E9F2] rounded-2xl p-4 text-[22px] font-extrabold text-[#0B0F17] text-center"
-                  value={inTime}
-                  onChangeText={setInTime}
-                  placeholder="09:00"
-                  keyboardType="numbers-and-punctuation"
-                  maxLength={5}
-                />
-              </View>
-              <View className="pb-4">
-                <Ionicons name="arrow-forward" size={20} color="#CBD5E1" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-[11px] font-bold text-[#64748B] mb-2 tracking-wide">CHECK-OUT</Text>
-                <TextInput
-                  className="bg-[#F3F4F8] border-[1.5px] border-[#E5E9F2] rounded-2xl p-4 text-[22px] font-extrabold text-[#0B0F17] text-center"
-                  value={outTime}
-                  onChangeText={setOutTime}
-                  placeholder="18:00"
-                  keyboardType="numbers-and-punctuation"
-                  maxLength={5}
-                />
-              </View>
+        <TouchableOpacity
+          style={[s.submitBtn, loading && s.submitBtnDisabled]}
+          onPress={handleSubmit}
+          disabled={loading}
+          activeOpacity={0.8}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <View style={s.submitInner}>
+              <Text style={s.submitText}>Submit for Review</Text>
+              <Ionicons name="send" size={18} color="#fff" />
             </View>
-
-            <View className="flex-row items-center gap-2 mt-4 bg-[#EEF0FE] p-3 rounded-xl">
-              <Ionicons name="information-circle-outline" size={18} color="#5B6EF5" />
-              <Text className="text-xs font-semibold text-[#5B6EF5]">
-                Use 24-hour format (e.g. 14:30 for 2:30 PM)
-              </Text>
-            </View>
-          </View>
-
-          {/* Reason card */}
-          <View className="bg-white rounded-3xl p-5 mb-6 elevation-2">
-            <Text className="text-lg font-bold text-[#0B0F17] mb-5">Justification</Text>
-            <Text className="text-[11px] font-bold text-[#64748B] mb-2 tracking-wide">
-              REASON FOR CORRECTION
-            </Text>
-            <TextInput
-              className="bg-[#F3F4F8] border-[1.5px] border-[#E5E9F2] rounded-2xl p-4 text-[15px] text-[#0B0F17] min-h-[120px]"
-              value={reason}
-              onChangeText={setReason}
-              placeholder="e.g. Forgot to check out while leaving for an emergency meeting."
-              multiline
-              numberOfLines={4}
-              textAlignVertical="top"
-            />
-          </View>
-
-          {/* Submit button */}
-          <TouchableOpacity
-            className="bg-[#5B6EF5] rounded-2xl overflow-hidden elevation-4"
-            onPress={handleSubmit}
-            disabled={loading}
-            activeOpacity={0.8}
-          >
-            <View className="flex-row items-center justify-center py-[18px] gap-2.5">
-              {loading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <>
-                  <Text className="text-white text-base font-extrabold">Submit for Review</Text>
-                  <Ionicons name="send" size={18} color="#fff" />
-                </>
-              )}
-            </View>
-          </TouchableOpacity>
-
-        </ScrollView>
-      </KeyboardAvoidingView>
+          )}
+        </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 }
+
+const s = StyleSheet.create({
+  root: { flex: 1, backgroundColor: '#F3F4F8' },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    gap: 16,
+  },
+  backBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 2,
+  },
+  headerText: { flex: 1 },
+  title: { fontSize: 24, fontWeight: '800', color: '#0B0F17' },
+  subtitle: { fontSize: 14, fontWeight: '500', color: '#96A0B5', marginTop: 2 },
+  scroll: { flex: 1 },
+  scrollContent: { padding: 24, paddingBottom: 40 },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    padding: 20,
+    marginBottom: 20,
+    elevation: 2,
+  },
+  cardTitle: { fontSize: 18, fontWeight: '700', color: '#0B0F17', marginBottom: 16 },
+  timeRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 12 },
+  timeCol: { flex: 1 },
+  timeArrow: { marginBottom: 16 },
+  fieldLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#64748B',
+    marginBottom: 8,
+    letterSpacing: 0.5,
+  },
+  timeInput: {
+    backgroundColor: '#F3F4F8',
+    borderWidth: 1.5,
+    borderColor: '#E5E9F2',
+    borderRadius: 16,
+    padding: 16,
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#0B0F17',
+    textAlign: 'center',
+  },
+  hint: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 16,
+    backgroundColor: '#EEF0FE',
+    padding: 12,
+    borderRadius: 12,
+  },
+  hintText: { flex: 1, fontSize: 12, fontWeight: '600', color: '#5B6EF5' },
+  reasonInput: {
+    backgroundColor: '#F3F4F8',
+    borderWidth: 1.5,
+    borderColor: '#E5E9F2',
+    borderRadius: 16,
+    padding: 16,
+    fontSize: 15,
+    color: '#0B0F17',
+    minHeight: 120,
+  },
+  submitBtn: {
+    backgroundColor: '#5B6EF5',
+    borderRadius: 16,
+    overflow: 'hidden',
+    elevation: 4,
+  },
+  submitBtnDisabled: { opacity: 0.7 },
+  submitInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 18,
+    gap: 10,
+  },
+  submitText: { color: '#fff', fontSize: 16, fontWeight: '800' },
+  missingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 32 },
+  missingTitle: { fontSize: 16, fontWeight: '700', color: '#0B0F17', marginTop: 16, textAlign: 'center' },
+  missingSub: { fontSize: 14, color: '#96A0B5', marginTop: 4, textAlign: 'center' },
+  missingBtn: { marginTop: 24, backgroundColor: '#5B6EF5', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 12 },
+  missingBtnText: { color: '#fff', fontWeight: '600' },
+});
