@@ -3,7 +3,7 @@ import { secureStorage } from './secureStorage';
 import { router } from 'expo-router';
 import { useAuthStore } from '@/features/auth/store';
 
-export const API_URL = process.env.EXPO_PUBLIC_API_URL || 'https://hr-portal-be-6k5b.onrender.com/api/v1';
+export const API_URL = process.env.EXPO_PUBLIC_API_URL || '';
 
 export const apiClient = axios.create({
   baseURL: API_URL,
