@@ -40,6 +40,12 @@ subprojects { subproject ->
 }
 
 function withNinjaLongPaths(config) {
+  // Only apply custom Ninja on Windows. Linux (EAS) already handles long paths
+  // and has its own ninja installment. 
+  if (process.platform !== 'win32') {
+    return config;
+  }
+
   const ninjaPath = path.join(__dirname, '..', 'tools', 'ninja.exe');
 
   config = withAppBuildGradle(config, (gradleConfig) => {
