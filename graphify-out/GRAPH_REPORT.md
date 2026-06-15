@@ -1,16 +1,16 @@
 # Graph Report - Hr-portal  (2026-06-15)
 
 ## Corpus Check
-- 271 files · ~328,642 words
+- 270 files · ~328,473 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1156 nodes · 1570 edges · 109 communities (92 shown, 17 thin omitted)
+- 1157 nodes · 1572 edges · 109 communities (91 shown, 18 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 3 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `39d7ed93`
+- Built from commit: `2e607bf6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -84,6 +84,7 @@
 - [[_COMMUNITY_Community 66|Community 66]]
 - [[_COMMUNITY_Community 67|Community 67]]
 - [[_COMMUNITY_Community 68|Community 68]]
+- [[_COMMUNITY_Community 69|Community 69]]
 - [[_COMMUNITY_Community 70|Community 70]]
 - [[_COMMUNITY_Community 71|Community 71]]
 - [[_COMMUNITY_Community 72|Community 72]]
@@ -108,24 +109,24 @@
 7. `Office Attendance App — Implementation Plan v2` - 15 edges
 8. `AttendanceService` - 14 edges
 9. `createError` - 14 edges
-10. `AttendanceService` - 13 edges
+10. `expo` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `DashboardOverview()` --calls--> `useAuthStore`  [EXTRACTED]
   web/src/app/dashboard/page.tsx → web/src/store/authStore.ts
+- `RegisterScreen()` --calls--> `useAuthStore`  [EXTRACTED]
+  mobile/app/(auth)/register.tsx → mobile/src/features/auth/store.ts
 - `useDailyLogs()` --calls--> `useSocket()`  [INFERRED]
   mobile/src/hooks/useDailyLogs.ts → mobile/src/hooks/useSocket.ts
 - `useEmployees()` --calls--> `useSocket()`  [INFERRED]
   mobile/src/hooks/useEmployees.ts → mobile/src/hooks/useSocket.ts
 - `EmployeesPage()` --calls--> `useAuthStore`  [EXTRACTED]
   web/src/app/dashboard/employees/page.tsx → web/src/store/authStore.ts
-- `DashboardLayout()` --calls--> `useAuthStore`  [EXTRACTED]
-  web/src/components/layout/DashboardLayout.tsx → web/src/store/authStore.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (109 total, 17 thin omitted)
+## Communities (109 total, 18 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.05
@@ -160,8 +161,8 @@ Cohesion: 0.09
 Nodes (22): artifacts, backtrace, backtraceGraph, commands, files, nodes, compileGroups, dependencies (+14 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.09
-Nodes (21): backgroundColor, foregroundImage, adaptiveIcon, googleServicesFile, package, permissions, expo, android (+13 more)
+Cohesion: 0.08
+Nodes (25): backgroundColor, foregroundImage, adaptiveIcon, googleServicesFile, package, permissions, projectId, expo (+17 more)
 
 ### Community 9 - "Community 9"
 Cohesion: 0.10
@@ -184,8 +185,8 @@ Cohesion: 0.29
 Nodes (7): scripts, android, ios, lint, start, test, web
 
 ### Community 14 - "Community 14"
-Cohesion: 0.11
-Nodes (19): C, s, C, LeaveApprovalsScreen(), s, correctionApi, LeavesScreen(), firstParam() (+11 more)
+Cohesion: 0.21
+Nodes (12): C, LeaveApprovalsScreen(), s, LeavesScreen(), LEAVE_TYPES, RequestLeaveScreen(), LeaveRequest, leavesApi (+4 more)
 
 ### Community 16 - "Community 16"
 Cohesion: 0.38
@@ -200,8 +201,8 @@ Cohesion: 0.12
 Nodes (15): compilerOptions, esModuleInterop, forceConsistentCasingInFileNames, isolatedModules, lib, module, moduleResolution, outDir (+7 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.21
-Nodes (8): AdminLayout(), AnimatedSvgBar(), buildPath(), C, CustomTabBar(), styles, EmployeeLayout(), usePushNotifications()
+Cohesion: 0.11
+Nodes (15): C, s, AdminLayout(), AnimatedSvgBar(), buildPath(), C, CustomTabBar(), styles (+7 more)
 
 ### Community 20 - "Community 20"
 Cohesion: 0.17
@@ -216,8 +217,8 @@ Cohesion: 0.18
 Nodes (4): ShiftProfileController, CreateShiftProfileInput, UpdateShiftProfileInput, ShiftProfileService
 
 ### Community 23 - "Community 23"
-Cohesion: 0.15
-Nodes (10): ab, AdminHome(), C, pr, s, sc, { width: SCREEN_W }, AdminStats (+2 more)
+Cohesion: 0.12
+Nodes (13): ab, AdminHome(), C, pr, s, sc, { width: SCREEN_W }, AdminStats (+5 more)
 
 ### Community 24 - "Community 24"
 Cohesion: 0.06
@@ -240,12 +241,12 @@ Cohesion: 0.29
 Nodes (7): RequestCorrectionInput, RequestCorrectionSchema, ReviewCorrectionInput, ReviewCorrectionSchema, router, authenticate(), verifyAccessToken()
 
 ### Community 29 - "Community 29"
-Cohesion: 0.21
-Nodes (8): useTodayAttendance(), BreakButton(), CheckInButton(), EmployeeHome(), registerForPushNotificationsAsync(), s, Skeleton(), SkeletonProps
+Cohesion: 0.13
+Nodes (8): usePersonalStats(), useTodayAttendance(), BreakButton(), CheckInButton(), EmployeeHome(), ProfileScreen(), { width: SCREEN_W }, registerForPushNotificationsAsync()
 
 ### Community 30 - "Community 30"
-Cohesion: 0.12
-Nodes (14): authApi, C, InputProps, styles, { width, height }, refreshQueue, secureStorage, CACHE_DIR (+6 more)
+Cohesion: 0.19
+Nodes (10): authApi, C, InputProps, styles, { width, height }, AuthState, secureStorage, ChangePasswordInput (+2 more)
 
 ### Community 31 - "Community 31"
 Cohesion: 0.12
@@ -259,17 +260,13 @@ Nodes (11): 1. Backend Server (`/server`), 2.  Mobile App (`/mobile`), 3.  Admin
 Cohesion: 0.16
 Nodes (5): ShiftProfileController, CreateShiftProfileInput, UpdateShiftProfileInput, router, ShiftProfileService
 
-### Community 35 - "Community 35"
-Cohesion: 0.17
-Nodes (3): CorrectionController, CorrectionService, NotificationService
-
 ### Community 36 - "Community 36"
-Cohesion: 0.13
-Nodes (14): AdminProfileScreen(), C, s, Index(), queryClient, usePersonalStats(), LoginScreen(), RegisterScreen() (+6 more)
+Cohesion: 0.20
+Nodes (7): AdminProfileScreen(), C, s, Index(), queryClient, LoginScreen(), useAuthStore
 
 ### Community 37 - "Community 37"
-Cohesion: 0.19
-Nodes (3): AnalyticsService, globalForPrisma, PushPayload
+Cohesion: 0.33
+Nodes (3): globalForPrisma, NotificationService, PushPayload
 
 ### Community 38 - "Community 38"
 Cohesion: 0.27
@@ -280,8 +277,8 @@ Cohesion: 0.24
 Nodes (6): BreakSessionInput, calculateDelta(), CompanyConfig, DeltaResult, resolveConfig(), baseConfig
 
 ### Community 42 - "Community 42"
-Cohesion: 0.18
-Nodes (11): AdminReportsScreen(), C, s, useAdminReports(), SOCKET_URL, useSocket(), reportsApi, s (+3 more)
+Cohesion: 0.20
+Nodes (10): AdminReportsScreen(), C, s, useAdminReports(), SOCKET_URL, useSocket(), s, StatCard() (+2 more)
 
 ### Community 43 - "Community 43"
 Cohesion: 0.20
@@ -304,7 +301,7 @@ Cohesion: 0.24
 Nodes (3): api, subscribers, ShiftProfile
 
 ### Community 48 - "Community 48"
-Cohesion: 0.29
+Cohesion: 0.28
 Nodes (5): AVATAR_PALETTES, C, DailyLogsScreen(), s, useDailyLogs()
 
 ### Community 50 - "Community 50"
@@ -312,8 +309,8 @@ Cohesion: 0.25
 Nodes (5): MainApplication, Application, Configuration, ReactApplication, ReactHost
 
 ### Community 52 - "Community 52"
-Cohesion: 0.16
-Nodes (10): C, InputProps, STEPS, styles, TIMEZONE_OPTIONS, TimezoneOption, C, s (+2 more)
+Cohesion: 0.15
+Nodes (11): C, InputProps, RegisterScreen(), STEPS, styles, TIMEZONE_OPTIONS, TimezoneOption, C (+3 more)
 
 ### Community 53 - "Community 53"
 Cohesion: 0.24
@@ -360,12 +357,16 @@ Cohesion: 0.38
 Nodes (5): RequestCorrectionInput, RequestCorrectionSchema, ReviewCorrectionInput, ReviewCorrectionSchema, router
 
 ### Community 67 - "Community 67"
-Cohesion: 0.29
+Cohesion: 0.31
 Nodes (4): attendanceApi, fmtTime(), STATUS_CONFIG, TimeBlock()
 
 ### Community 68 - "Community 68"
 Cohesion: 0.50
 Nodes (3): config, { getDefaultConfig }, { withUniwindConfig }
+
+### Community 69 - "Community 69"
+Cohesion: 0.21
+Nodes (8): refreshQueue, secureStorage, CACHE_DIR, { cacheDirectory, documentDirectory }, DOC_DIR, download(), ensureReportsDir(), reportsApi
 
 ### Community 70 - "Community 70"
 Cohesion: 0.47
@@ -388,21 +389,21 @@ Cohesion: 0.40
 Nodes (4): main, name, private, version
 
 ## Knowledge Gaps
-- **434 isolated node(s):** `s`, `LocationFix`, `name`, `version`, `description` (+429 more)
+- **435 isolated node(s):** `name`, `slug`, `version`, `orientation`, `icon` (+430 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **18 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `createError` connect `Community 24` to `Community 34`, `Community 37`, `Community 106`, `Community 16`, `Community 21`, `Community 53`, `Community 22`, `Community 26`, `Community 28`, `Community 31`?**
-  _High betweenness centrality (0.023) - this node is a cross-community bridge._
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Why does `authenticate()` connect `Community 28` to `Community 66`, `Community 34`, `Community 38`, `Community 70`, `Community 105`, `Community 106`, `Community 12`, `Community 16`, `Community 21`, `Community 55`, `Community 24`, `Community 31`, `Community 63`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
-- **Why does `validate()` connect `Community 55` to `Community 66`, `Community 38`, `Community 70`, `Community 105`, `Community 12`, `Community 31`, `Community 16`, `Community 21`, `Community 24`, `Community 28`, `Community 63`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **What connects `s`, `LocationFix`, `name` to the rest of the system?**
-  _434 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+- **Why does `AttendanceService` connect `Community 27` to `Community 37`, `Community 39`?**
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **What connects `name`, `slug`, `version` to the rest of the system?**
+  _435 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.05263157894736842 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
