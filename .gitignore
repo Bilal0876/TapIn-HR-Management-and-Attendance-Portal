@@ -48,3 +48,14 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+# Exclude Graphify internal caches, but commit the actual graph
+graphify-out/cache/
+graphify-out/manifest.json
+
+# Optional: If you don't want teammates opening the visual HTML tree from the repo
+graphify-out/*.html
+
+# Firebase Secrets (DO NOT PUSH)
+**/*/google-services.json
+**/*/GoogleService-Info.plist
+**/*/service-account-key.json

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+.next/
+.cache/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+*.log
+graphify-out/
+.cursor/
