@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { CorrectionController } from './correction.controller';
-import { authenticate } from '../../middleware/authenticate';
-import { requireAdmin } from '../../middleware/requireAdmin';
-import { validate } from '../../middleware/validate';
-import { RequestCorrectionSchema, ReviewCorrectionSchema } from './correction.dto';
+import { CorrectionController } from '../controllers/corrections.controller';
+import { authenticate } from '../middleware/authenticate';
+import { requireAdmin } from '../middleware/requireAdmin';
+import { validate } from '../middleware/validate';
+import { RequestCorrectionSchema, ReviewCorrectionSchema } from '../dtos/corrections.dto';
 
 const router = Router();
 

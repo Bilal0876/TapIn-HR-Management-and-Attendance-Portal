@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { ReportsController } from './reports.controller';
-import { authenticate } from '../../middleware/authenticate';
-import { requirePasswordChanged } from '../../middleware/requirePasswordChanged';
-import { requireAdmin } from '../../middleware/requireAdmin';
-import { validate } from '../../middleware/validate';
-import { DownloadReportSchema } from './reports.dto';
+import { ReportsController } from '../controllers/reports.controller';
+import { authenticate } from '../middleware/authenticate';
+import { requirePasswordChanged } from '../middleware/requirePasswordChanged';
+import { requireAdmin } from '../middleware/requireAdmin';
+import { validate } from '../middleware/validate';
+import { DownloadReportSchema } from '../dtos/reports.dto';
 
 const router = Router();
 

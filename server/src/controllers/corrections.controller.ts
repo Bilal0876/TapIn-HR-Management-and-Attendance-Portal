@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { CorrectionService } from './correction.service';
+import { CorrectionService } from '../services/corrections.service';
 
 export class CorrectionController {
   static async requestCorrection(req: Request, res: Response, next: NextFunction) {

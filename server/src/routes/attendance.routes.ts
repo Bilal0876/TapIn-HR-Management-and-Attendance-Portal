@@ -1,13 +1,12 @@
 import { Router } from 'express';
-import { AttendanceController } from './attendance.controller';
-import { validate } from '../../middleware/validate';
-import { authenticate } from '../../middleware/authenticate';
-import { requirePasswordChanged } from '../../middleware/requirePasswordChanged';
-import { requireAdmin } from '../../middleware/requireAdmin';
-import { requireSuperAdmin } from '../../middleware/requireSuperAdmin';
-import { CheckinSchema, CheckoutSchema, UpdateShiftSettingsSchema, AdminUpdateRecordSchema } from './attendance.dto';
-
-import { attendanceRateLimiter } from '../../middleware/rateLimiter';
+import { AttendanceController } from '../controllers/attendance.controller';
+import { validate } from '../middleware/validate';
+import { authenticate } from '../middleware/authenticate';
+import { requirePasswordChanged } from '../middleware/requirePasswordChanged';
+import { requireAdmin } from '../middleware/requireAdmin';
+import { requireSuperAdmin } from '../middleware/requireSuperAdmin';
+import { CheckinSchema, CheckoutSchema, UpdateShiftSettingsSchema, AdminUpdateRecordSchema } from '../dtos/attendance.dto';
+import { attendanceRateLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ShiftProfileService } from './shifts.service';
+import { ShiftProfileService } from '../services/shifts.service';
 
 export class ShiftProfileController {
   static async getCompanyShifts(req: Request, res: Response, next: NextFunction) {

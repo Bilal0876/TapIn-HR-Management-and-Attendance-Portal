@@ -1,4 +1,4 @@
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../lib/prisma';
 import { CorrectionStatus, LeaveType } from '@prisma/client';
 
 export class LeaveService {

@@ -1,6 +1,6 @@
-import { prisma } from '../../lib/prisma';
-import { createError } from '../../lib/errors';
-import { CreateShiftProfileInput, UpdateShiftProfileInput } from './shifts.dto';
+import { prisma } from '../lib/prisma';
+import { createError } from '../lib/errors';
+import { CreateShiftProfileInput, UpdateShiftProfileInput } from '../dtos/shifts.dto';
 
 export class ShiftProfileService {
   static async getCompanyShifts(companyId: string) {

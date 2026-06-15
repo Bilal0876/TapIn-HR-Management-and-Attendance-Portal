@@ -7,7 +7,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, useLocalSearchParams, router } from 'expo-router';
 import { correctionApi } from '@/features/corrections/api';
 import { Ionicons } from '@expo/vector-icons';
-import { format, parseISO, isValid } from 'date-fns';
+import { format, parseISO, isValid, set } from 'date-fns';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 function firstParam(value: string | string[] | undefined): string | undefined {
   if (value == null) return undefined;
@@ -15,11 +16,18 @@ function firstParam(value: string | string[] | undefined): string | undefined {
   return v?.length ? v : undefined;
 }
 
-function parseTimeParam(value: string | undefined, fallback: string): string {
-  if (!value) return fallback;
+function parseTimeParam(value: string | undefined, dateStr: string | undefined): Date {
+  const fallback = new Date();
+  if (!value || !dateStr) return fallback;
   try {
     const d = parseISO(value);
-    return isValid(d) ? format(d, 'HH:mm') : fallback;
+    if (!isValid(d)) return fallback;
+    
+    const base = parseISO(dateStr);
+    return set(base, {
+      hours: d.getHours(),
+      minutes: d.getMinutes(),
+    });
   } catch {
     return fallback;
   }
@@ -38,13 +46,15 @@ export default function RequestCorrectionScreen() {
   const checkinTime = firstParam(params.checkinTime);
   const checkoutTime = firstParam(params.checkoutTime);
 
-  const defaultIn = useMemo(() => parseTimeParam(checkinTime, '09:00'), [checkinTime]);
-  const defaultOut = useMemo(() => parseTimeParam(checkoutTime, '18:00'), [checkoutTime]);
+  const defaultIn = useMemo(() => parseTimeParam(checkinTime, date), [checkinTime, date]);
+  const defaultOut = useMemo(() => parseTimeParam(checkoutTime, date), [checkoutTime, date]);
 
   const [loading, setLoading] = useState(false);
   const [reason, setReason] = useState('');
   const [inTime, setInTime] = useState(defaultIn);
   const [outTime, setOutTime] = useState(defaultOut);
+
+  const [showPicker, setShowPicker] = useState<'in' | 'out' | null>(null);
 
   const handleSubmit = useCallback(async () => {
     if (!reason.trim()) return Alert.alert('Error', 'Please provide a reason');
@@ -52,14 +62,10 @@ export default function RequestCorrectionScreen() {
 
     setLoading(true);
     try {
-      const datePart = date.split('T')[0];
-      const requestedIn = new Date(`${datePart}T${inTime}:00`);
-      const requestedOut = new Date(`${datePart}T${outTime}:00`);
-
       await correctionApi.request({
         recordId,
-        requestedCheckin: requestedIn.toISOString(),
-        requestedCheckout: requestedOut.toISOString(),
+        requestedCheckin: inTime.toISOString(),
+        requestedCheckout: outTime.toISOString(),
         reason,
       });
 
@@ -128,34 +134,37 @@ export default function RequestCorrectionScreen() {
           <View style={s.timeRow}>
             <View style={s.timeCol}>
               <Text style={s.fieldLabel}>CHECK-IN</Text>
-              <TextInput
-                style={s.timeInput}
-                value={inTime}
-                onChangeText={setInTime}
-                placeholder="09:00"
-                placeholderTextColor="#96A0B5"
-                keyboardType="numbers-and-punctuation"
-                maxLength={5}
-              />
+              <TouchableOpacity style={s.timeInput} onPress={() => setShowPicker('in')}>
+                <Text style={s.timeValue}>{format(inTime, 'hh:mm a')}</Text>
+              </TouchableOpacity>
             </View>
             <Ionicons name="arrow-forward" size={20} color="#CBD5E1" style={s.timeArrow} />
             <View style={s.timeCol}>
               <Text style={s.fieldLabel}>CHECK-OUT</Text>
-              <TextInput
-                style={s.timeInput}
-                value={outTime}
-                onChangeText={setOutTime}
-                placeholder="18:00"
-                placeholderTextColor="#96A0B5"
-                keyboardType="numbers-and-punctuation"
-                maxLength={5}
-              />
+              <TouchableOpacity style={s.timeInput} onPress={() => setShowPicker('out')}>
+                <Text style={s.timeValue}>{format(outTime, 'hh:mm a')}</Text>
+              </TouchableOpacity>
             </View>
           </View>
 
+          {showPicker && (
+            <DateTimePicker
+              value={showPicker === 'in' ? inTime : outTime}
+              mode="time"
+              is24Hour={false}
+              onChange={(event: DateTimePickerEvent, selectedDate?: Date) => {
+                setShowPicker(null);
+                if (selectedDate) {
+                  if (showPicker === 'in') setInTime(selectedDate);
+                  else setOutTime(selectedDate);
+                }
+              }}
+            />
+          )}
+
           <View style={s.hint}>
             <Ionicons name="information-circle-outline" size={18} color="#5B6EF5" />
-            <Text style={s.hintText}>Use 24-hour format (e.g. 14:30 for 2:30 PM)</Text>
+            <Text style={s.hintText}>Select time using 12-hour format with AM/PM</Text>
           </View>
         </View>
 
@@ -240,11 +249,14 @@ const s = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: '#E5E9F2',
     borderRadius: 16,
-    padding: 16,
-    fontSize: 22,
+    padding: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  timeValue: {
+    fontSize: 20,
     fontWeight: '800',
     color: '#0B0F17',
-    textAlign: 'center',
   },
   hint: {
     flexDirection: 'row',

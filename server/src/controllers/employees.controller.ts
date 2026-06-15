@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { EmployeeService } from './employees.service';
-import { CreateEmployeeSchema } from './employees.dto';
+import { EmployeeService } from '../services/employees.service';
+import { CreateEmployeeSchema } from '../dtos/employees.dto';
 
 export class EmployeesController {
   static async suggestCode(req: Request, res: Response, next: NextFunction) {

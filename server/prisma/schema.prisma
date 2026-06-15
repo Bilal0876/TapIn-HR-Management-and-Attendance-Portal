@@ -7,8 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─── Company ───────────────────────────────────────────────────────────────
-
 model Company {
   id                    String         @id @default(cuid())
   name                  String
@@ -26,12 +24,10 @@ model Company {
   @@map("companies")
 }
 
-// ─── Shift Profile ─────────────────────────────────────────────────────────
-
 model ShiftProfile {
   id                    String     @id @default(cuid())
   companyId             String
-  name                  String     // e.g. "Morning Shift", "Night Shift"
+  name                  String
   workMinutesPerDay     Int        @default(480)
   breakMinutesAllocated Int        @default(60)
   gracePeriodMinutes    Int        @default(10)
@@ -40,58 +36,56 @@ model ShiftProfile {
   isDefault             Boolean    @default(false)
   createdAt             DateTime   @default(now())
   updatedAt             DateTime   @updatedAt
-  company               Company    @relation(fields: [companyId], references: [id])
   employees             Employee[]
+  company               Company    @relation(fields: [companyId], references: [id])
 
   @@index([companyId])
   @@map("shift_profiles")
 }
 
-// ─── Employee ──────────────────────────────────────────────────────────────
-
 model Employee {
-  id                 String               @id @default(cuid())
-  companyId          String
-  shiftProfileId     String?              // Optional: assigned shift profile
-  name               String
-  email              String               @unique
-  passwordHash       String
-  role               Role                 @default(EMPLOYEE)
-  isActive           Boolean              @default(true)
-  mustChangePassword Boolean              @default(true)
-  pushToken          String?
-  failedLoginAttempts Int               @default(0)
-  lockoutUntil       DateTime?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
-  company            Company              @relation(fields: [companyId], references: [id])
-  shiftProfile       ShiftProfile?        @relation(fields: [shiftProfileId], references: [id])
-  profile            EmployeeProfile?
-  attendanceRecords  AttendanceRecord[]
-  breakSessions      BreakSession[]
-  corrections        CorrectionRequest[]
-  monthlySummaries   MonthlySummary[]
-  refreshTokens      RefreshToken[]
+  id                  String               @id @default(cuid())
+  companyId           String
+  shiftProfileId      String?
+  name                String
+  email               String               @unique
+  passwordHash        String
+  role                Role                 @default(EMPLOYEE)
+  isActive            Boolean              @default(true)
+  mustChangePassword  Boolean              @default(true)
+  pushToken           String?
+  failedLoginAttempts Int                  @default(0)
+  lockoutUntil        DateTime?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  activityLogs        ActivityLog[]
+  attendanceRecords   AttendanceRecord[]
+  breakSessions       BreakSession[]
+  corrections         CorrectionRequest[]
+  profile             EmployeeProfile?
+  company             Company              @relation(fields: [companyId], references: [id])
+  shiftProfile        ShiftProfile?        @relation(fields: [shiftProfileId], references: [id])
+  leaveRequests       LeaveRequest[]
+  monthlySummaries    MonthlySummary[]
   passwordResetTokens PasswordResetToken[]
-  leaveRequests      LeaveRequest[]
-  activityLogs       ActivityLog[]
+  refreshTokens       RefreshToken[]
 
   @@map("employees")
 }
 
 model ActivityLog {
-  id        String   @id @default(cuid())
-  companyId String
+  id         String   @id @default(cuid())
+  companyId  String
   employeeId String
-  action    String   // e.g. "Checked-in", "Checked-out", "Took a break"
-  details   String?
-  icon      String?
-  color     String?
-  lat       Float?
-  lng       Float?
-  accuracy  Float?
-  createdAt DateTime @default(now())
-  employee  Employee @relation(fields: [employeeId], references: [id])
+  action     String
+  details    String?
+  icon       String?
+  color      String?
+  lat        Float?
+  lng        Float?
+  accuracy   Float?
+  createdAt  DateTime @default(now())
+  employee   Employee @relation(fields: [employeeId], references: [id])
 
   @@index([companyId])
   @@index([employeeId])
@@ -99,84 +93,63 @@ model ActivityLog {
   @@map("activity_logs")
 }
 
-enum Role {
-  EMPLOYEE
-  ADMIN
-  SUPER_ADMIN
-}
-
-// ─── Employee Profile ──────────────────────────────────────────────────────
-
 model EmployeeProfile {
-  id              String    @id @default(cuid())
-  employeeId      String    @unique
-  employeeCode    String    @unique
-  designation     String?
-  department      String?
-  phone           String?
-  joiningDate     DateTime  @db.Date
-  avatarUrl       String?
+  id                    String   @id @default(cuid())
+  employeeId            String   @unique
+  employeeCode          String   @unique
+  designation           String?
+  department            String?
+  phone                 String?
+  joiningDate           DateTime @db.Date
+  avatarUrl             String?
   workMinutesPerDay     Int?
   breakMinutesAllocated Int?
   expectedCheckinHour   Int?
   expectedCheckinMinute Int?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  employee        Employee  @relation(fields: [employeeId], references: [id])
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  employee              Employee @relation(fields: [employeeId], references: [id])
 
   @@map("employee_profiles")
 }
 
-// ─── Password Reset ────────────────────────────────────────────────────────
-
 model PasswordResetToken {
-  id            String    @id @default(cuid())
-  employeeId    String
-  tokenHash     String    @unique
-  expiresAt     DateTime
-  usedAt        DateTime?
-  createdAt     DateTime  @default(now())
-  employee      Employee  @relation(fields: [employeeId], references: [id])
+  id         String    @id @default(cuid())
+  employeeId String
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  usedAt     DateTime?
+  createdAt  DateTime  @default(now())
+  employee   Employee  @relation(fields: [employeeId], references: [id])
 
   @@index([employeeId])
   @@map("password_reset_tokens")
 }
 
-// ─── Attendance ────────────────────────────────────────────────────────────
-
 model AttendanceRecord {
-  id            String           @id @default(cuid())
-  employeeId    String
-  date          DateTime         @db.Date
-  checkinTime   DateTime
-  checkoutTime  DateTime?
-  status        AttendanceStatus @default(PENDING)
+  id               String              @id @default(cuid())
+  employeeId       String
+  date             DateTime            @db.Date
+  checkinTime      DateTime
+  checkoutTime     DateTime?
+  status           AttendanceStatus    @default(PENDING)
   checkinLat       Float?
   checkinLng       Float?
   checkinAccuracy  Float?
   checkoutLat      Float?
   checkoutLng      Float?
   checkoutAccuracy Float?
-  createdAt        DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
-  employee      Employee         @relation(fields: [employeeId], references: [id])
-  breakSessions BreakSession[]
-  dailySummary  DailySummary?
-  corrections   CorrectionRequest[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  employee         Employee            @relation(fields: [employeeId], references: [id])
+  breakSessions    BreakSession[]
+  corrections      CorrectionRequest[]
+  dailySummary     DailySummary?
 
   @@unique([employeeId, date])
   @@index([employeeId, date])
   @@map("attendance_records")
 }
-
-enum AttendanceStatus {
-  PENDING
-  COMPLETE
-  ABSENT
-  FLAGGED
-}
-
-// ─── Breaks ────────────────────────────────────────────────────────────────
 
 model BreakSession {
   id                 String           @id @default(cuid())
@@ -192,8 +165,6 @@ model BreakSession {
   @@index([attendanceRecordId])
   @@map("break_sessions")
 }
-
-// ─── Daily Summary ─────────────────────────────────────────────────────────
 
 model DailySummary {
   id                   String           @id @default(cuid())
@@ -218,8 +189,6 @@ model DailySummary {
   @@map("daily_summaries")
 }
 
-// ─── Corrections ───────────────────────────────────────────────────────────
-
 model CorrectionRequest {
   id                 String           @id @default(cuid())
   employeeId         String
@@ -235,41 +204,31 @@ model CorrectionRequest {
   originalCheckout   DateTime?
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
-  employee           Employee         @relation(fields: [employeeId], references: [id])
   attendanceRecord   AttendanceRecord @relation(fields: [attendanceRecordId], references: [id])
+  employee           Employee         @relation(fields: [employeeId], references: [id])
 
   @@index([employeeId, status])
   @@map("correction_requests")
 }
 
-enum CorrectionStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
-// ─── Monthly Summary ───────────────────────────────────────────────────────
-
 model MonthlySummary {
-  id                   String   @id @default(cuid())
-  employeeId           String
-  year                 Int
-  month                Int
-  daysPresent          Int
-  daysAbsent           Int
-  daysLate             Int
-  totalOvertimeMinutes Int
+  id                    String   @id @default(cuid())
+  employeeId            String
+  year                  Int
+  month                 Int
+  daysPresent           Int
+  daysAbsent            Int
+  daysLate              Int
+  totalOvertimeMinutes  Int
   totalUndertimeMinutes Int
-  netDeltaMinutes      Int
-  generatedAt          DateTime @default(now())
-  employee             Employee @relation(fields: [employeeId], references: [id])
+  netDeltaMinutes       Int
+  generatedAt           DateTime @default(now())
+  employee              Employee @relation(fields: [employeeId], references: [id])
 
   @@unique([employeeId, year, month])
   @@index([employeeId, year, month])
   @@map("monthly_summaries")
 }
-
-// ─── Auth ──────────────────────────────────────────────────────────────────
 
 model RefreshToken {
   id         String   @id @default(cuid())
@@ -283,25 +242,42 @@ model RefreshToken {
   @@map("refresh_tokens")
 }
 
-// ─── Leaves ────────────────────────────────────────────────────────────────
-
 model LeaveRequest {
-  id                String           @id @default(cuid())
-  employeeId        String
-  type              LeaveType        @default(CASUAL)
-  startDate         DateTime         @db.Date
-  endDate           DateTime         @db.Date
-  reason            String
-  status            CorrectionStatus @default(PENDING) // Reusing CorrectionStatus enum (PENDING, APPROVED, REJECTED)
-  reviewedBy        String?          // admin employeeId
-  reviewedAt        DateTime?
-  reviewNote        String?
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
-  employee          Employee         @relation(fields: [employeeId], references: [id])
+  id         String           @id @default(cuid())
+  employeeId String
+  type       LeaveType        @default(CASUAL)
+  startDate  DateTime         @db.Date
+  endDate    DateTime         @db.Date
+  reason     String
+  status     CorrectionStatus @default(PENDING)
+  reviewedBy String?
+  reviewedAt DateTime?
+  reviewNote String?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  employee   Employee         @relation(fields: [employeeId], references: [id])
 
   @@index([employeeId, status])
   @@map("leave_requests")
+}
+
+enum Role {
+  EMPLOYEE
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum AttendanceStatus {
+  PENDING
+  COMPLETE
+  ABSENT
+  FLAGGED
+}
+
+enum CorrectionStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 enum LeaveType {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { LeaveService } from './leaves.service';
+import { LeaveService } from '../services/leaves.service';
 
 export class LeaveController {
   static async create(req: Request, res: Response, next: NextFunction) {

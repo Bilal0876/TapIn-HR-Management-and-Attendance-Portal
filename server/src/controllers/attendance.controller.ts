@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { AttendanceService } from './attendance.service';
-import { AnalyticsService } from './analytics.service';
-import { prisma } from '../../lib/prisma';
-import { createError } from '../../lib/errors';
+import { AttendanceService } from '../services/attendance.service';
+import { AnalyticsService } from '../services/analytics.service';
 
 export class AttendanceController {
   static async getCompanyShiftSettings(req: Request, res: Response, next: NextFunction) {

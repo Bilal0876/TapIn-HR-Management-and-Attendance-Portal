@@ -2,13 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import authRoutes from './features/auth/auth.routes';
-import attendanceRoutes from './features/attendance/attendance.routes';
-import employeeRoutes from './features/employees/employees.routes';
-import correctionRoutes from './features/corrections/correction.routes';
-import reportsRoutes from './features/reports/reports.routes';
-import leaveRoutes from './features/leaves/leaves.routes';
-import shiftRoutes from './features/shifts/shifts.routes';
+import authRoutes from './routes/auth.routes';
+import attendanceRoutes from './routes/attendance.routes';
+import employeeRoutes from './routes/employees.routes';
+import shiftRoutes from './routes/shifts.routes';
+import leaveRoutes from './routes/leaves.routes';
+import correctionRoutes from './routes/corrections.routes';
+import reportsRoutes from './routes/reports.routes';
 import { errorHandler } from './middleware/errorHandler';
 
 export function createApp() {

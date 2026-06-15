@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { EmployeesController } from './employees.controller';
-import { authenticate } from '../../middleware/authenticate';
-import { requireAdmin } from '../../middleware/requireAdmin';
-import { validate } from '../../middleware/validate';
-import { CreateEmployeeSchema } from './employees.dto';
+import { EmployeesController } from '../controllers/employees.controller';
+import { authenticate } from '../middleware/authenticate';
+import { requireAdmin } from '../middleware/requireAdmin';
+import { validate } from '../middleware/validate';
+import { CreateEmployeeSchema } from '../dtos/employees.dto';
 
 const router = Router();
 

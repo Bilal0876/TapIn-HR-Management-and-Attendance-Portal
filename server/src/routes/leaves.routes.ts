@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { LeaveController } from './leaves.controller';
-import { authenticate } from '../../middleware/authenticate';
-import { requireAdmin } from '../../middleware/requireAdmin';
-import { validate } from '../../middleware/validate';
-import { CreateLeaveRequestSchema, ReviewLeaveRequestSchema } from './leaves.dto';
+import { LeaveController } from '../controllers/leaves.controller';
+import { authenticate } from '../middleware/authenticate';
+import { requireAdmin } from '../middleware/requireAdmin';
+import { validate } from '../middleware/validate';
+import { CreateLeaveRequestSchema, ReviewLeaveRequestSchema } from '../dtos/leaves.dto';
 
 const router = Router();
 

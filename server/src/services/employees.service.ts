@@ -1,8 +1,8 @@
 import { Role } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { prisma } from '../../lib/prisma';
-import { createError } from '../../lib/errors';
-import { CreateEmployeeInput } from './employees.dto';
+import { prisma } from '../lib/prisma';
+import { createError } from '../lib/errors';
+import { CreateEmployeeInput } from '../dtos/employees.dto';
 
 export class EmployeeService {
   private static normalizeSegment(input?: string, fallback: string = 'GEN') {
@@ -48,7 +48,7 @@ export class EmployeeService {
   static async createEmployee(adminId: string, data: CreateEmployeeInput) {
     const admin = await prisma.employee.findUnique({ where: { id: adminId } });
     
-    // Safety check (middleware should handle this, but let's be sure)
+    // Safety check
     if (admin?.role !== Role.ADMIN && admin?.role !== Role.SUPER_ADMIN) {
       throw createError.Forbidden('Insufficient permissions');
     }
@@ -93,7 +93,7 @@ export class EmployeeService {
     });
 
     // Broadcast update to all connected clients in the company
-    const { emitToCompany } = require('../../lib/socket');
+    const { emitToCompany } = require('../lib/socket');
     emitToCompany(admin.companyId, 'staff:updated', { 
       type: 'CREATED', 
       employee: { id: employee.id, name: employee.name } 

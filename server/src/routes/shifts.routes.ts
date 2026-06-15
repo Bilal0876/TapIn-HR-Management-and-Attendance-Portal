@@ -1,8 +1,7 @@
 import { Router } from 'express';
-import { ShiftProfileController } from './shifts.controller';
-import { authenticate } from '../../middleware/authenticate';
-import { requireAdmin } from '../../middleware/requireAdmin';
-import { requireSuperAdmin } from '../../middleware/requireSuperAdmin';
+import { ShiftProfileController } from '../controllers/shifts.controller';
+import { authenticate } from '../middleware/authenticate';
+import { requireAdmin } from '../middleware/requireAdmin';
 
 const router = Router();
 

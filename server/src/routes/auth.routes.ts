@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { AuthController } from './auth.controller';
-import { validate } from '../../middleware/validate';
-import { authenticate } from '../../middleware/authenticate';
-import { LoginSchema, RefreshSchema, ChangePasswordSchema, PushTokenSchema, RegisterCompanySchema } from './auth.dto';
-
-import { authRateLimiter } from '../../middleware/rateLimiter';
+import { AuthController } from '../controllers/auth.controller';
+import { validate } from '../middleware/validate';
+import { authenticate } from '../middleware/authenticate';
+import { LoginSchema, RefreshSchema, ChangePasswordSchema, PushTokenSchema, RegisterCompanySchema } from '../dtos/auth.dto';
+import { authRateLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 

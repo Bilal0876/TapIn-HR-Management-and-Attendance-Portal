@@ -46,7 +46,7 @@ export async function ensurePermissions(): Promise<boolean> {
  * @throws {LocationError} with a typed `code` so the caller can show
  *         the right message without parsing strings.
  */
-export async function fetchFreshLocation(timeoutMs = 10_000): Promise<LocationFix> {
+export async function fetchFreshLocation(timeoutMs = 15_000): Promise<LocationFix> {
   // 1. Permission gate
   if (!_permissionGranted) {
     // Try one more time in case ensurePermissions wasn't called yet

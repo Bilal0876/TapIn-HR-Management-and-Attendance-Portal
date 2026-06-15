@@ -1,6 +1,6 @@
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../lib/prisma';
 import { CorrectionStatus } from '@prisma/client';
-import { NotificationService } from '../../services/notificationService';
+import { NotificationService } from './notificationService';
 import { format } from 'date-fns';
 
 export class CorrectionService {
@@ -55,7 +55,6 @@ export class CorrectionService {
 
     if (!request) throw new Error('Request not found');
 
-    // Start a transaction to ensure atomic update of request and attendance record
     const result = await prisma.$transaction(async (tx) => {
       const updatedRequest = await tx.correctionRequest.update({
         where: { id: requestId },
@@ -68,13 +67,11 @@ export class CorrectionService {
       });
 
       if (status === CorrectionStatus.APPROVED) {
-        // Update the actual attendance record
         await tx.attendanceRecord.update({
           where: { id: request.attendanceRecordId },
           data: {
             checkinTime: request.requestedCheckin || request.originalCheckin,
             checkoutTime: request.requestedCheckout || request.originalCheckout,
-            // You might want to update status here too if it was ABSENT or FLAGGED
             status: 'COMPLETE' 
           }
         });
@@ -83,7 +80,6 @@ export class CorrectionService {
       return updatedRequest;
     });
 
-    // Fire push notification after transaction — non-blocking
     const dateStr = format(request.attendanceRecord.date, 'MMM dd');
     if (status === 'APPROVED' || status === 'REJECTED') {
       NotificationService.notifyCorrectionReviewed(request.employeeId, status, dateStr).catch(() => {});

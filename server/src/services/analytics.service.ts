@@ -1,7 +1,14 @@
-import { prisma } from '../../lib/prisma';
-import { startOfMonth, endOfMonth, subDays, startOfDay, endOfDay, eachDayOfInterval, format, formatDistanceToNow } from 'date-fns';
-import { toZonedTime, formatInTimeZone } from 'date-fns-tz';
+import { prisma } from '../lib/prisma';
+import { startOfMonth, endOfMonth, subDays, startOfDay, endOfDay, eachDayOfInterval, format } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 import { AttendanceStatus } from '@prisma/client';
+
+const formatDuration = (mins: number) => {
+  if (!mins || mins <= 0) return '0m';
+  const h = Math.floor(mins / 60);
+  const m = Math.round(mins % 60);
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+};
 
 export class AnalyticsService {
   static async getCompanyStats(companyId: string) {
@@ -20,8 +27,6 @@ export class AnalyticsService {
     } catch (e) {
       todayStr = now.toISOString().split('T')[0];
     }
-    // Build an exact Date object by parsing the local date string (no time component)
-    // This avoids any UTC/local shift that would cause Prisma to match wrong rows
     const todayDate = new Date(todayStr);
     const sevenDaysAgo = subDays(todayDate, 7);
 
@@ -43,7 +48,6 @@ export class AnalyticsService {
             companyId,
             role: { not: 'SUPER_ADMIN' }
           },
-          // Use explicit string comparison to bypass any Prisma date interpretation issue
           date: { equals: todayDate }
         },
         include: { dailySummary: true }
@@ -61,7 +65,6 @@ export class AnalyticsService {
       })
     ]);
 
-    // Calculate status distribution for today
     const presentCount = todayRecords.length;
     const lateCount = todayRecords.filter(r => r.dailySummary && r.dailySummary.lateMinutes > 0).length;
     
@@ -72,8 +75,8 @@ export class AnalyticsService {
       absent: Math.max(0, totalEmployees - presentCount),
       late: lateCount,
       avgWorkHours: weeklySummaries.length > 0 
-        ? (weeklySummaries.reduce((acc, s) => acc + s.totalWorkMinutes, 0) / (weeklySummaries.length * 60)).toFixed(1)
-        : 0
+        ? formatDuration(weeklySummaries.reduce((acc, s) => acc + s.totalWorkMinutes, 0) / (weeklySummaries.length))
+        : '0m'
     };
 
     return stats;
@@ -152,7 +155,7 @@ export class AnalyticsService {
       const summary = onTimeByDate.get(key) || { onTime: 0, total: 0, workMinutes: 0 };
       const attendanceRate = totalEmployees > 0 ? Math.round((present / totalEmployees) * 100) : 0;
       const onTimeRate = summary.total > 0 ? Math.round((summary.onTime / summary.total) * 100) : 0;
-      const avgWorkHours = summary.total > 0 ? Number((summary.workMinutes / summary.total / 60).toFixed(1)) : 0;
+      const avgWorkHours = summary.total > 0 ? formatDuration(summary.workMinutes / summary.total) : '0m';
 
       return {
         date: key,
@@ -175,9 +178,6 @@ export class AnalyticsService {
     };
   }
 
-  /**
-   * Get personalized stats for employee
-   */
   static async getPersonalStats(employeeId: string) {
     const now = new Date();
     const monthStart = startOfMonth(now);
@@ -206,7 +206,6 @@ export class AnalyticsService {
       }
     });
 
-    // Simple streak calculation
     let streak = 0;
     for (const record of allRecords) {
       if (record.status === AttendanceStatus.COMPLETE) streak++;
@@ -215,22 +214,17 @@ export class AnalyticsService {
 
     return {
        onTimeRate: totalDays > 0 ? Math.round(((totalDays - lateDays) / totalDays) * 100) : 0,
-       avgWorkHours: totalDays > 0 ? (totalMinutes / 60 / totalDays).toFixed(1) : '0.0',
+       avgWorkHours: totalDays > 0 ? formatDuration(totalMinutes / totalDays) : '0m',
        leavesTaken,
        streak,
-       totalHours: (totalMinutes / 60).toFixed(1),
+       totalHours: formatDuration(totalMinutes),
        daysPresent: totalDays,
     };
   }
 
-  /**
-   * Get detailed daily logs for specific date
-   */
   static async getDailyLogs(companyId: string, date: Date) {
     const company = await prisma.company.findUnique({ where: { id: companyId }, select: { timezone: true } });
     const tz = company?.timezone || 'Asia/Karachi';
-    
-    // Exact date matching: match only the DATE part
     const dateStr = formatInTimeZone(date, tz, 'yyyy-MM-dd');
     const startOfTargetDay = new Date(dateStr);
 
@@ -304,9 +298,6 @@ export class AnalyticsService {
     });
   }
 
-  /**
-   * Get recent activity for admin pulse feed
-   */
   static async getCompanyPulse(companyId: string) {
     const company = await prisma.company.findUnique({ where: { id: companyId }, select: { timezone: true } });
     if (!company) return [];

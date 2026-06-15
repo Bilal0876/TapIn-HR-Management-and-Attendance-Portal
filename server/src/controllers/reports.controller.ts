@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ReportsService } from './reports.service';
+import { ReportsService } from '../services/reports.service';
 
 export class ReportsController {
   static async downloadMonthlyReport(req: Request, res: Response, next: NextFunction) {

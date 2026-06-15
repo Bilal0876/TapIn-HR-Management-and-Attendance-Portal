@@ -1,13 +1,20 @@
 import ExcelJS from 'exceljs';
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../lib/prisma';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import PDFDocument from 'pdfkit-table';
 
+const formatDuration = (mins: number) => {
+  if (!mins || mins <= 0) return '0m';
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+};
+
 export class ReportsService {
   static async generateMonthlyExcel(companyId: string, year: number, month: number) {
     const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0, 23, 59, 59, 999); // Include full last day
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 
     const company = await prisma.company.findUnique({
       where: { id: companyId },
@@ -21,14 +28,9 @@ export class ReportsService {
         profile: true,
         attendanceRecords: {
           where: {
-            date: {
-              gte: startDate,
-              lte: endDate,
-            },
+            date: { gte: startDate, lte: endDate },
           },
-          include: {
-            dailySummary: true,
-          },
+          include: { dailySummary: true },
           orderBy: { date: 'asc' },
         },
       },
@@ -37,7 +39,6 @@ export class ReportsService {
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet(`${format(startDate, 'MMMM yyyy')}`);
 
-    // --- Styling & Headers ---
     sheet.columns = [
       { header: 'Employee Name', key: 'name', width: 20 },
       { header: 'ID', key: 'code', width: 10 },
@@ -45,10 +46,10 @@ export class ReportsService {
       { header: 'Status', key: 'status', width: 10 },
       { header: 'Check In', key: 'checkin', width: 15 },
       { header: 'Check Out', key: 'checkout', width: 15 },
-      { header: 'Work Mins', key: 'workMins', width: 10 },
-      { header: 'Break Mins', key: 'breakMins', width: 10 },
-      { header: 'Late Mins', key: 'lateMins', width: 10 },
-      { header: 'Net Delta', key: 'netDelta', width: 10 },
+      { header: 'Work Duration', key: 'workMins', width: 15 },
+      { header: 'Break Duration', key: 'breakMins', width: 15 },
+      { header: 'Late Arrivals', key: 'lateMins', width: 15 },
+      { header: 'Net Delta', key: 'netDelta', width: 12 },
     ];
 
     sheet.getRow(1).font = { bold: true };
@@ -58,18 +59,15 @@ export class ReportsService {
       fgColor: { argb: 'FFE2E8F0' },
     };
 
-    // --- Data Injection ---
     employees.forEach((emp) => {
       emp.attendanceRecords.forEach((record) => {
         const summary = record.dailySummary;
-
         const safeFormat = (date: any, fmt: string) => {
           if (!date) return '-';
           const d = new Date(date);
           if (isNaN(d.getTime())) return '-';
           try {
             const zoned = toZonedTime(d, company.timezone || 'UTC');
-            if (isNaN(zoned.getTime())) return '-';
             return format(zoned, fmt);
           } catch {
             return '-';
@@ -81,12 +79,12 @@ export class ReportsService {
           code: emp.profile?.employeeCode || '-',
           date: safeFormat(record.date, 'yyyy-MM-dd'),
           status: record.status,
-          checkin: safeFormat(record.checkinTime, 'HH:mm'),
-          checkout: safeFormat(record.checkoutTime, 'HH:mm'),
-          workMins: summary?.totalWorkMinutes ?? 0,
-          breakMins: summary?.totalBreakMinutes ?? 0,
-          lateMins: summary?.lateMinutes ?? 0,
-          netDelta: summary?.netDeltaMinutes ?? 0,
+          checkin: safeFormat(record.checkinTime, 'hh:mm a'),
+          checkout: safeFormat(record.checkoutTime, 'hh:mm a'),
+          workMins: formatDuration(summary?.totalWorkMinutes ?? 0),
+          breakMins: formatDuration(summary?.totalBreakMinutes ?? 0),
+          lateMins: formatDuration(summary?.lateMinutes ?? 0),
+          netDelta: summary?.netDeltaMinutes ? (summary.netDeltaMinutes < 0 ? '-' : '+') + formatDuration(Math.abs(summary.netDeltaMinutes)) : '0m',
         });
 
         if (record.status === 'ABSENT') {
@@ -100,7 +98,7 @@ export class ReportsService {
     return workbook;
   }
 
-  static async generateMonthlyPDF(companyId: string, year: number, month: number): Promise<PDFKit.PDFDocument> {
+  static async generateMonthlyPDF(companyId: string, year: number, month: number): Promise<any> {
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 
@@ -125,12 +123,10 @@ export class ReportsService {
 
     const doc = new PDFDocument({ margin: 30, size: 'A4' });
 
-    // --- Header ---
     doc.fontSize(20).text(data.name, { align: 'center' });
     doc.fontSize(12).text(`Monthly Attendance Report - ${format(startDate, 'MMMM yyyy')}`, { align: 'center' });
     doc.moveDown();
 
-    // Flatten data for table
     const tableRows: string[][] = [];
     data.employees.forEach((emp) => {
       emp.attendanceRecords.forEach((record) => {
@@ -141,7 +137,6 @@ export class ReportsService {
           if (isNaN(d.getTime())) return '-';
           try {
             const zoned = toZonedTime(d, data.timezone || 'UTC');
-            if (isNaN(zoned.getTime())) return '-';
             return format(zoned, fmt);
           } catch (e) {
             return '-';
@@ -153,10 +148,10 @@ export class ReportsService {
           emp.profile?.employeeCode || '-',
           safeFormat(record.date, 'MMM dd'),
           record.status,
-          safeFormat(record.checkinTime, 'HH:mm'),
-          safeFormat(record.checkoutTime, 'HH:mm'),
-          String(summary?.totalWorkMinutes ?? 0),
-          String(summary?.netDeltaMinutes ?? 0),
+          safeFormat(record.checkinTime, 'hh:mm a'),
+          safeFormat(record.checkoutTime, 'hh:mm a'),
+          formatDuration(summary?.totalWorkMinutes ?? 0),
+          summary?.netDeltaMinutes ? (summary.netDeltaMinutes < 0 ? '-' : '+') + formatDuration(Math.abs(summary.netDeltaMinutes)) : '0m',
         ]);
       });
     });
@@ -169,12 +164,10 @@ export class ReportsService {
 
     await (doc as any).table(table, {
       prepareHeader: () => { doc.font("Helvetica-Bold").fontSize(10); },
-      prepareRow: (row: any, index: any, column: any, rect: any, rowRect: any) => {
-        doc.font("Helvetica").fontSize(8);
-      },
+      prepareRow: () => { doc.font("Helvetica").fontSize(8); },
     });
 
-    return doc as any;
+    return doc;
   }
 
   static async generateEmployeeMonthlyPDF(
@@ -182,7 +175,7 @@ export class ReportsService {
     employeeId: string,
     year: number,
     month: number
-  ): Promise<PDFKit.PDFDocument> {
+  ): Promise<any> {
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 
@@ -204,11 +197,7 @@ export class ReportsService {
     const doc = new PDFDocument({ margin: 30, size: 'A4' });
 
     doc.fontSize(18).text(employee.company.name, { align: 'center' });
-    doc
-      .fontSize(12)
-      .text(`Attendance Report - ${employee.name} - ${format(startDate, 'MMMM yyyy')}`, {
-        align: 'center',
-      });
+    doc.fontSize(12).text(`Attendance Report - ${employee.name} - ${format(startDate, 'MMMM yyyy')}`, { align: 'center' });
     doc.moveDown();
 
     const tableRows: string[][] = [];
@@ -220,7 +209,6 @@ export class ReportsService {
         if (isNaN(d.getTime())) return '-';
         try {
           const zoned = toZonedTime(d, employee.company.timezone || 'UTC');
-          if (isNaN(zoned.getTime())) return '-';
           return format(zoned, fmt);
         } catch {
           return '-';
@@ -230,10 +218,10 @@ export class ReportsService {
       tableRows.push([
         safeFormat(record.date, 'MMM dd'),
         record.status,
-        safeFormat(record.checkinTime, 'HH:mm'),
-        safeFormat(record.checkoutTime, 'HH:mm'),
-        String(summary?.totalWorkMinutes ?? 0),
-        String(summary?.netDeltaMinutes ?? 0),
+        safeFormat(record.checkinTime, 'hh:mm a'),
+        safeFormat(record.checkoutTime, 'hh:mm a'),
+        formatDuration(summary?.totalWorkMinutes ?? 0),
+        summary?.netDeltaMinutes ? (summary.netDeltaMinutes < 0 ? '-' : '+') + formatDuration(Math.abs(summary.netDeltaMinutes)) : '0m',
       ]);
     });
 
@@ -244,14 +232,10 @@ export class ReportsService {
     };
 
     await (doc as any).table(table, {
-      prepareHeader: () => {
-        doc.font('Helvetica-Bold').fontSize(10);
-      },
-      prepareRow: () => {
-        doc.font('Helvetica').fontSize(8);
-      },
+      prepareHeader: () => { doc.font('Helvetica-Bold').fontSize(10); },
+      prepareRow: () => { doc.font('Helvetica').fontSize(8); },
     });
 
-    return doc as any;
+    return doc;
   }
 }

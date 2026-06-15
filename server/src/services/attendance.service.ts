@@ -1,11 +1,10 @@
 import { AttendanceStatus } from '@prisma/client';
-import { prisma } from '../../lib/prisma';
-import { createError } from '../../lib/errors';
-import { calculateDelta, resolveConfig } from '../../services/deltaEngine';
-import { toZonedTime } from 'date-fns-tz';
-import { emitToCompany } from '../../lib/socket';
-import { NotificationService } from '../../services/notificationService';
-import { UpdateShiftSettingsInput } from './attendance.dto';
+import { prisma } from '../lib/prisma';
+import { createError } from '../lib/errors';
+import { calculateDelta, resolveConfig } from './deltaEngine';
+import { emitToCompany } from '../lib/socket';
+import { NotificationService } from './notificationService';
+import { UpdateShiftSettingsInput } from '../dtos/attendance.dto';
 
 export class AttendanceService {
   /**
@@ -102,9 +101,6 @@ export class AttendanceService {
 
   static async checkin(employeeId: string, time?: Date, lat?: number, lng?: number, accuracy?: number) {
     const checkinTime = time || new Date();
-    
-    // Make sure we get the correct "date" context by checking the timezone logic. Wait, simple check: date is today.
-    // For simplicity we create the date based on UTC today for the Prisma DB Date.
     const dateStr = checkinTime.toISOString().split('T')[0];
     const date = new Date(dateStr);
 
@@ -238,15 +234,12 @@ export class AttendanceService {
           checkinTime: record.checkinTime,
           checkoutTime,
           ...delta,
-          // Guard against NaN values from deltaEngine
           lateMinutes: isNaN(delta.lateMinutes) ? 0 : delta.lateMinutes,
           workDeltaMinutes: isNaN(delta.workDeltaMinutes) ? 0 : delta.workDeltaMinutes,
           breakDeltaMinutes: isNaN(delta.breakDeltaMinutes) ? 0 : delta.breakDeltaMinutes,
           netDeltaMinutes: isNaN(delta.netDeltaMinutes) ? 0 : delta.netDeltaMinutes,
         },
       });
-
-      const result = { record: updatedRecord, summary: dailySummary };
 
       await tx.activityLog.create({
         data: {
@@ -278,7 +271,7 @@ export class AttendanceService {
         (record as any).employee.companyId
       ).catch(e => console.error('[Push] Admin alert failed', e));
 
-      return result;
+      return { record: updatedRecord, summary: dailySummary };
     });
   }
 
@@ -298,7 +291,6 @@ export class AttendanceService {
     });
 
     if (!record) {
-      // Find employee to get company schedule even if not checked in
       const employee = await prisma.employee.findUnique({
         where: { id: employeeId },
         include: { company: true, profile: true }
@@ -325,41 +317,6 @@ export class AttendanceService {
         expectedWorkMinutes: config.workMinutesPerDay,
         timezone: config.timezone
       }
-    };
-  }
-
-  static async getStats(employeeId: string) {
-    const summaries = await prisma.dailySummary.findMany({
-      where: { employeeId },
-      orderBy: { date: 'desc' },
-      take: 30
-    });
-
-    const leaves = await prisma.leaveRequest.count({
-      where: { 
-        employeeId, 
-        status: 'APPROVED',
-        startDate: { gte: new Date(new Date().getFullYear(), 0, 1) }
-      }
-    });
-
-    if (summaries.length === 0) {
-      return {
-        onTimeRate: 100,
-        avgWorkMinutes: 0,
-        leavesTaken: leaves,
-        totalDays: 0
-      };
-    }
-
-    const onTimeCount = summaries.filter(s => s.lateMinutes === 0).length;
-    const totalWorkMinutes = summaries.reduce((sum, s) => sum + s.totalWorkMinutes, 0);
-
-    return {
-      onTimeRate: Math.round((onTimeCount / summaries.length) * 100),
-      avgWorkMinutes: Math.round(totalWorkMinutes / summaries.length),
-      leavesTaken: leaves,
-      totalDays: summaries.length
     };
   }
 
@@ -503,8 +460,6 @@ export class AttendanceService {
     if (!record) throw createError.NotFound('Attendance record not found');
 
     const updateData: any = { ...data };
-    
-    // If times are changing, we need to recalculate metrics
     const newCheckin = data.checkinTime || record.checkinTime;
     const newCheckout = data.checkoutTime || record.checkoutTime;
 
