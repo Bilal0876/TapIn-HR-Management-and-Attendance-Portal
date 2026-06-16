@@ -223,7 +223,12 @@ export default function LoginScreen() {
         router.replace(res.employee.role === 'EMPLOYEE' ? '/(employee)/' : '/(admin)/');
       }
     } catch (e: any) {
-      setApiError(e.response?.data?.message || 'Incorrect email or password');
+      if (!e.response) {
+        // Network error — no response received
+        setApiError('Unable to connect to server. Check your internet connection.');
+      } else {
+        setApiError(e.response?.data?.message || 'Incorrect email or password');
+      }
     }
   };
 
