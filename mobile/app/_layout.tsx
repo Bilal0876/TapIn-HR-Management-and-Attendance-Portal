@@ -1,8 +1,10 @@
 import '../uniwind.css';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { Platform } from 'react-native';
 import { Slot, useRouter, useSegments } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuthStore } from '@/features/auth/store';
+import { KeyboardProvider, KeyboardController } from 'react-native-keyboard-controller';
 
 const queryClient = new QueryClient();
 
@@ -11,25 +13,19 @@ export default function RootLayout() {
   const segments = useSegments();
   const router = useRouter();
 
+  // Safety check for Expo Go (where native modules aren't linked)
+  const isLinked = !!KeyboardController && Platform.OS !== 'web';
+
   useEffect(() => {
     const inAuthGroup = segments[0] === '(auth)';
-
     if (!isAuthenticated) {
-      if (!inAuthGroup) {
-        router.replace('/(auth)/login');
-      }
+      if (!inAuthGroup) router.replace('/(auth)/login');
     } else {
-      // Authenticated users
       if (employee?.mustChangePassword) {
-        // Force to change password if not already there
-        if (!segments.includes('change-password')) {
-          router.replace('/(auth)/change-password');
-        }
+        if (!segments.includes('change-password')) router.replace('/(auth)/change-password');
       } else if (inAuthGroup) {
-        // Redirect away from auth group if password is changed and logged in
         const target = (employee?.role === 'ADMIN' || employee?.role === 'SUPER_ADMIN') 
-          ? '/(admin)/' 
-          : '/(employee)/';
+          ? '/(admin)/' : '/(employee)/';
         router.replace(target);
       }
     }
@@ -37,7 +33,9 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Slot />
+      <KeyboardProvider enabled={isLinked}>
+        <Slot />
+      </KeyboardProvider>
     </QueryClientProvider>
   );
 }

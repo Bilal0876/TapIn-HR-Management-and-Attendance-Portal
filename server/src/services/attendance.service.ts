@@ -351,25 +351,6 @@ export class AttendanceService {
       include: { employee: true }
     });
 
-    await prisma.activityLog.create({
-      data: {
-        companyId: breakSess.employee.companyId,
-        employeeId: breakSess.employeeId,
-        action: 'Took a break',
-        icon: 'cafe-outline',
-        color: '#F59E0B',
-      }
-    });
-
-    emitToCompany(breakSess.employee.companyId, 'activity:pulse', {
-      name: breakSess.employee.name,
-      action: 'Took a break',
-      time: 'Just now',
-      icon: 'cafe-outline',
-      color: '#F59E0B',
-      companyId: breakSess.employee.companyId,
-    });
-
     emitToCompany(breakSess.employee.companyId, 'stats:update', {});
 
     return breakSess;
@@ -405,25 +386,6 @@ export class AttendanceService {
         durationMinutes,
       },
       include: { employee: true }
-    });
-
-    await prisma.activityLog.create({
-      data: {
-        companyId: updatedBreak.employee.companyId,
-        employeeId: updatedBreak.employeeId,
-        action: 'Back from break',
-        icon: 'walk-outline',
-        color: '#10B981',
-      }
-    });
-
-    emitToCompany(updatedBreak.employee.companyId, 'activity:pulse', {
-      name: updatedBreak.employee.name,
-      action: 'Back from break',
-      time: 'Just now',
-      icon: 'walk-outline',
-      color: '#10B981',
-      companyId: updatedBreak.employee.companyId,
     });
 
     emitToCompany(updatedBreak.employee.companyId, 'stats:update', {});

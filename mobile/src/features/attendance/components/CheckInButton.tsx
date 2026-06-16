@@ -188,7 +188,15 @@ export function CheckInButton({
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 
       if (err?.name === 'LocationError') {
-        Alert.alert('Location Required', err.message);
+        if (err.code === 'SERVICES_DISABLED') {
+          Alert.alert(
+            'GPS Disabled',
+            'Your device location services are turned off. Please enable GPS in your device settings to check in.',
+            [{ text: 'OK' }]
+          );
+        } else {
+          Alert.alert('Location Required', err.message);
+        }
       } else {
         const apiError = err?.response?.data?.message || err?.message || 'Attendance action failed.';
         Alert.alert('Attendance Error', apiError);

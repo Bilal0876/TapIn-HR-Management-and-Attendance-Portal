@@ -77,7 +77,7 @@ export default function CreateEmployeeScreen() {
   const insets = useSafeAreaInsets();
   const bottomPad = 114 + insets.bottom + 16;
 
-  const { control, handleSubmit, formState: { errors }, watch, setValue } = useForm({
+  const { control, handleSubmit, formState: { errors }, watch, setValue, setError } = useForm({
     defaultValues: {
       name: '', email: '', employeeCode: '',
       designation: '', department: '',
@@ -112,7 +112,12 @@ export default function CreateEmployeeScreen() {
       await employeeApi.create(payload);
       router.back();
     } catch (e: any) {
-      setApiError(e.response?.data?.message || 'Failed to create employee');
+      const msg = e.response?.data?.message || '';
+      if (e.response?.status === 409 && msg.toLowerCase().includes('email')) {
+        setError('email', { type: 'manual', message: 'Email already exists' });
+      } else {
+        setApiError(msg || 'Failed to create employee');
+      }
     } finally {
       setLoadingSubmit(false);
     }
