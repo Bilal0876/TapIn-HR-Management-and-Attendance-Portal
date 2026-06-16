@@ -6,6 +6,11 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/favicon.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
     "scheme": "attendance-app",
     "plugins": [
       "expo-router",

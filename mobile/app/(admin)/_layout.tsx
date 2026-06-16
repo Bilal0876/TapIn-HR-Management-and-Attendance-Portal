@@ -4,8 +4,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
 import { CustomTabBar, TAB_BAR_HEIGHT } from '@/components/CustomTabBar';
 
+import { useAuthStore } from '@/features/auth/store';
+
 export default function AdminLayout() {
   usePushNotifications();
+  const { employee } = useAuthStore();
+  
+  // Explicitly check for role to avoid undefined/flash issues
+  const role = employee?.role;
+  if (!role) return null; // Wait for auth state
+
+  const isSuperAdmin = role === 'SUPER_ADMIN';
+  const isAdmin = role === 'ADMIN';
+
   return (
     <Tabs
       tabBar={(props) => <CustomTabBar {...(props as any)} />}
@@ -28,8 +39,17 @@ export default function AdminLayout() {
       <Tabs.Screen
         name="corrections"
         options={{
+          href: isAdmin ? undefined : null,
           title: 'Corrections',
           tabBarIcon: ({ color, size }) => <Ionicons name="checkmark-circle" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="daily-logs"
+        options={{
+          href: isAdmin ? null : undefined,
+          title: 'Attendance',
+          tabBarIcon: ({ color, size }) => <Ionicons name="calendar" size={size} color={color} />,
         }}
       />
       <Tabs.Screen

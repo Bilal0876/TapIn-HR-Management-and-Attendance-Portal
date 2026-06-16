@@ -161,7 +161,10 @@ export default function AdminHome() {
     { title: 'Staff Directory', icon: 'people-outline', color: C.accent, route: '/(admin)/employees' },
     { title: 'Attendance', icon: 'calendar-outline', color: C.teal, route: '/(admin)/daily-logs' },
     { title: 'Data Export', icon: 'document-text-outline', color: C.amber, route: '/(admin)/reports' },
-    { title: 'Leave Requests', icon: 'mail-outline', color: C.violet, route: '/(admin)/leave-approvals' },
+    ...(!isSuperAdmin ? [
+      { title: 'Leave Requests', icon: 'mail-outline', color: C.violet, route: '/(admin)/leave-approvals' },
+      { title: 'Correction Requests', icon: 'sync-outline', color: '#10B981', route: '/(admin)/corrections' },
+    ] : []),
     ...(isSuperAdmin ? [{ title: 'Work Rules', icon: 'settings-outline', color: C.rose, route: '/(admin)/shift-settings' }] : []),
   ];
 

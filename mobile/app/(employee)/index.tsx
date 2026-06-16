@@ -129,20 +129,6 @@ export default function EmployeeHome() {
               Shift: {checkin12h} — {checkoutTimeStr}
             </Text>
           </View>
-
-          <TouchableOpacity
-            className="w-11 h-11 rounded-xl bg-white items-center justify-center"
-            style={{ borderWidth: 1, borderColor: '#E2E8F0' }}
-          >
-            <Ionicons name="notifications-outline" size={24} color="#0F1D3A" />
-            <View
-              className="absolute w-2 h-2 rounded-full bg-red-400"
-              style={{
-                top: 10, right: 10,
-                borderWidth: 1.5, borderColor: '#FFFFFF',
-              }}
-            />
-          </TouchableOpacity>
         </View>
 
         {/* ── Dashboard ── */}

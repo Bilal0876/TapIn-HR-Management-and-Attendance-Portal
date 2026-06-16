@@ -215,18 +215,31 @@ function TabItem({
   );
 }
 
+import { useAuthStore } from '@/features/auth/store';
+
 // ── Main CustomTabBar ─────────────────────────────────────────────────────────
 export function CustomTabBar({ state, descriptors, navigation }: any) {
   const insets = useSafeAreaInsets();
+  const { employee } = useAuthStore();
+  const role = employee?.role;
+  const isSuperAdmin = role === 'SUPER_ADMIN';
+  const isAdmin = role === 'ADMIN';
 
   // Filter to only primary tabs — sub-screens and hidden routes are excluded
   const HIDDEN_ROUTES = new Set([
     'leave-approvals', 'create-employee', 'request-correction', 'request-leave',
+    'shift-settings'
   ]);
+
   const visibleRoutes = state.routes.filter((r: any) => {
-    if (HIDDEN_ROUTES.has(r.name)) return false;
     const { options } = descriptors[r.key];
-    return options.tabBarIcon !== undefined && (options as any).href !== null;
+    const isHiddenBySet = HIDDEN_ROUTES.has(r.name);
+    
+    // FAIL-SAFE ROLE FILTERING
+    if (r.name === 'corrections' && isSuperAdmin) return false;
+    if (r.name === 'daily-logs' && isAdmin) return false;
+
+    return options.tabBarIcon !== undefined && (options as any).href !== null && !isHiddenBySet;
   });
 
   const focusedKey = state.routes[state.index]?.key;
