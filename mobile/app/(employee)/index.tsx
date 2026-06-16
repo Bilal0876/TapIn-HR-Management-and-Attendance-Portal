@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import {
   View, Text, ActivityIndicator, StatusBar,
-  ScrollView, TouchableOpacity, Animated,
+  ScrollView, Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CheckInButton } from '@/features/attendance/components/CheckInButton';
@@ -15,8 +15,9 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { ensurePermissions } from '@/lib/locationService';
 import { registerForPushNotificationsAsync } from '@/lib/notificationService';
 import { authApi } from '@/features/auth/api';
+import { TAB_BAR_HEIGHT } from '@/components/CustomTabBar';
 
-// ── Animated wrapper that fades+scales when `status` changes
+// ── Animated wrapper that fades+scales when `status` changes ──────────────────
 function AnimatedStatusView({ status, children }: { status: string; children: React.ReactNode }) {
   const opacity = useRef(new Animated.Value(1)).current;
   const scale = useRef(new Animated.Value(1)).current;
@@ -26,7 +27,6 @@ function AnimatedStatusView({ status, children }: { status: string; children: Re
     if (prevStatus.current === status) return;
     prevStatus.current = status;
 
-    // Fade + shrink out, swap, fade + grow in
     Animated.sequence([
       Animated.parallel([
         Animated.timing(opacity, { toValue: 0, duration: 180, useNativeDriver: true }),
@@ -50,10 +50,8 @@ export default function EmployeeHome() {
   const { employee } = useAuthStore();
   const { data: record, isLoading, refetch } = useTodayAttendance();
 
-  // Request location permission once at startup (not on every tap)
   useEffect(() => { ensurePermissions(); }, []);
 
-  // Request notification permission and sync push token
   useEffect(() => {
     const setupNotifications = async () => {
       const token = await registerForPushNotificationsAsync();
@@ -71,12 +69,12 @@ export default function EmployeeHome() {
 
   if (isLoading) {
     return (
-      <SafeAreaView className="flex-1 bg-slate-50">
+      <SafeAreaView className="flex-1 bg-white">
         <View className="p-6">
           <Skeleton width={180} height={32} borderRadius={8} style={{ marginBottom: 8 }} />
           <Skeleton width={120} height={16} borderRadius={4} style={{ marginBottom: 32 }} />
           <View className="items-center mb-10">
-            <Skeleton width={180} height={180} borderRadius={90} />
+            <Skeleton width={160} height={160} borderRadius={80} />
           </View>
           <Skeleton width="100%" height={80} borderRadius={24} style={{ marginBottom: 20 }} />
           <Skeleton width="100%" height={120} borderRadius={24} />
@@ -109,33 +107,32 @@ export default function EmployeeHome() {
     : null;
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50">
+    // Changed bg-slate-50 → bg-white so the button canvas blends seamlessly
+    <SafeAreaView className="flex-1 bg-white">
       <StatusBar barStyle="dark-content" />
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: TAB_BAR_HEIGHT + 16 }}
         showsVerticalScrollIndicator={false}
       >
 
         {/* ── Header ── */}
-        <View className="flex-row justify-between items-center px-6 pt-3 pb-6">
-          <View>
-            <Text
-              className="text-2xl font-extrabold text-[#0F1D3A]"
-              style={{ letterSpacing: -0.5 }}
-            >
-              Hello, {employee?.name?.split(' ')[0]}
-            </Text>
-            <Text className="text-[13px] text-slate-500 mt-0.5 font-medium">
-              Shift: {checkin12h} — {checkoutTimeStr}
-            </Text>
-          </View>
+        <View className="px-6 pt-3 pb-4">
+          <Text
+            className="text-2xl font-extrabold text-[#0F1D3A]"
+            style={{ letterSpacing: -0.5 }}
+          >
+            Hello, {employee?.name?.split(' ')[0]}
+          </Text>
+          <Text className="text-[13px] text-slate-500 mt-0.5 font-medium">
+            Shift: {checkin12h} — {checkoutTimeStr}
+          </Text>
         </View>
 
         {/* ── Dashboard ── */}
         <View className="px-5">
 
-          {/* CheckIn button — animated on status change, no horizontal padding so stats card spans full width */}
-          <View style={{ marginBottom: 32 }}>
+          {/* CheckIn button */}
+          <View style={{ marginBottom: 28, alignItems: 'center' }}>
             <AnimatedStatusView status={record?.status || 'IDLE'}>
               <CheckInButton
                 status={record?.status || 'IDLE'}
@@ -150,7 +147,6 @@ export default function EmployeeHome() {
           {/* Break section */}
           {record?.status === 'PENDING' && (
             <View className="items-center mb-8">
-              {/* Divider */}
               <View className="flex-row items-center gap-3 mb-5 w-full">
                 <View className="flex-1 h-px bg-slate-200" />
                 <Text className="text-[10px] font-bold text-slate-400 tracking-widest">
@@ -169,8 +165,11 @@ export default function EmployeeHome() {
           )}
 
           {/* Tip card */}
-          <View className="mt-5 rounded-3xl overflow-hidden">
-            <LinearGradient colors={['#EEF2FF', '#E0E7FF']} style={{ flexDirection: 'row', padding: 20, gap: 16, alignItems: 'flex-start' }}>
+          <View className="mt-2 rounded-3xl overflow-hidden">
+            <LinearGradient
+              colors={['#EEF2FF', '#E0E7FF']}
+              style={{ flexDirection: 'row', padding: 20, gap: 16, alignItems: 'flex-start' }}
+            >
               <Ionicons name="bulb" size={24} color="#4F46E5" />
               <View className="flex-1">
                 <Text className="text-[15px] font-bold text-indigo-900 mb-1">Shift Reminder</Text>

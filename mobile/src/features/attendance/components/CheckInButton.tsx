@@ -15,6 +15,10 @@ import { attendanceApi } from '../api';
 import * as Haptics from 'expo-haptics';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { fetchFreshLocation } from '@/lib/locationService';
+import { Dimensions } from 'react-native';
+
+const SCREEN_W = Dimensions.get('window').width;
+const CARD_W = SCREEN_W - 40; // px-5 = 20px each side
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type AttendanceStatus = 'IDLE' | 'PENDING' | 'ON_BREAK' | 'COMPLETE';
@@ -40,12 +44,12 @@ const C = {
   border: '#E2E8F0',
 };
 
-// ── Sizing constants — single source of truth ─────────────────────────────────
-const BTN = 168;   // button diameter
-const HALO = BTN + 48;  // soft halo ring diameter
-const RING1 = BTN + 80;  // first ripple ring
-const RING2 = BTN + 116; // second ripple ring
-const CANVAS = RING2 + 8; // container must fit the largest ring
+// ── Sizing constants — slightly reduced button ────────────────────────────────
+const BTN = 148;          // reduced from 168
+const HALO = BTN + 44;
+const RING1 = BTN + 74;
+const RING2 = BTN + 108;
+const CANVAS = RING2 + 8;
 
 // ── Per-status config ─────────────────────────────────────────────────────────
 const CFG = {
@@ -80,7 +84,6 @@ const CFG = {
 } as const;
 
 // ── Single ripple ring ────────────────────────────────────────────────────────
-// Rendered inside a CANVAS×CANVAS container — centered via negative margins.
 function RippleRing({
   size, delay, color, active,
 }: { size: number; delay: number; color: string; active: boolean }) {
@@ -106,7 +109,6 @@ function RippleRing({
   const scale = anim.interpolate({ inputRange: [0, 1], outputRange: [0.78, 1] });
   const opacity = anim.interpolate({ inputRange: [0, 0.25, 1], outputRange: [0, 0.55, 0] });
 
-  // Center absolutely inside the CANVAS container
   const offset = (CANVAS - size) / 2;
 
   return (
@@ -126,26 +128,21 @@ function RippleRing({
   );
 }
 
-// ── Press spring ──────────────────────────────────────────────────────────────
-function usePressShrink() {
-  const scale = useRef(new RNAnimated.Value(1)).current;
-  const onPressIn = () => RNAnimated.spring(scale, { toValue: 0.94, useNativeDriver: true, speed: 40 }).start();
-  const onPressOut = () => RNAnimated.spring(scale, { toValue: 1, useNativeDriver: true, speed: 20 }).start();
-  return { scale, onPressIn, onPressOut };
-}
-
 // ── Stat pill ─────────────────────────────────────────────────────────────────
+// Fixed: column layout so label sits above value — no overflow on long time strings
 function StatPill({ icon, label, value, accent }: {
   icon: string; label: string; value: string; accent: string;
 }) {
   return (
     <View style={s.pill}>
       <View style={[s.pillIcon, { backgroundColor: `${accent}1A` }]}>
-        <Ionicons name={icon as any} size={15} color={accent} />
+        <Ionicons name={icon as any} size={14} color={accent} />
       </View>
-      <View>
-        <Text style={s.pillVal}>{value}</Text>
+      <View style={s.pillText}>
         <Text style={s.pillLbl}>{label}</Text>
+        <Text style={s.pillVal} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+          {value}
+        </Text>
       </View>
     </View>
   );
@@ -156,7 +153,6 @@ export function CheckInButton({
   status, checkinTime, checkoutTime, workingHours,
   loading = false, onRefresh,
 }: CheckInButtonProps) {
-  // Safe status lookup
   const normalized = (CFG[status as keyof typeof CFG] ? status : 'IDLE') as keyof typeof CFG;
   const cfg = CFG[normalized];
 
@@ -172,10 +168,8 @@ export function CheckInButton({
     setIsFetchingLocation(true);
 
     try {
-      // 1. Always fetch fresh GPS — never stale, never cached
       const fix = await fetchFreshLocation(10_000);
 
-      // 2. Call API with verified coordinates
       if (normalized === 'PENDING') {
         await attendanceApi.checkout(fix.lat, fix.lng, fix.accuracy);
       } else if (normalized === 'IDLE') {
@@ -206,29 +200,27 @@ export function CheckInButton({
     }
   }, [normalized, isDisabled, onRefresh]);
 
-
-  // Center offset: button sits in the middle of the canvas
   const btnOffset = (CANVAS - BTN) / 2;
   const haloOffset = (CANVAS - HALO) / 2;
 
   return (
     <View style={s.root}>
 
-      {/* ── Fixed canvas: rings + button all share the same coordinate space ── */}
+      {/* ── Canvas: rings + button ── */}
       <View style={{ width: CANVAS, height: CANVAS }}>
 
-        {/* Soft static halo — always visible */}
+        {/* Soft static halo */}
         <View style={[s.halo, {
           top: haloOffset, left: haloOffset,
           width: HALO, height: HALO, borderRadius: HALO / 2,
           backgroundColor: cfg.halo,
         }]} />
 
-        {/* Animated ripple rings */}
+        {/* Ripple rings */}
         <RippleRing size={RING1} delay={0} color={cfg.ring} active={ringsOn} />
         <RippleRing size={RING2} delay={600} color={cfg.ring} active={ringsOn} />
 
-        {/* Button — absolutely centered in canvas */}
+        {/* Button */}
         <View style={[s.btnWrap, { top: btnOffset, left: btnOffset }]}>
           <TouchableOpacity
             activeOpacity={0.8}
@@ -236,7 +228,7 @@ export function CheckInButton({
             onPress={handlePress}
           >
             <Animated.View
-              key={normalized} // Force a clean cross-fade on status change
+              key={normalized}
               entering={FadeIn.duration(400)}
               exiting={FadeOut.duration(300)}
             >
@@ -257,7 +249,7 @@ export function CheckInButton({
                   </>
                 ) : (
                   <>
-                    <Ionicons name={cfg.icon} size={34} color={C.white} style={s.btnIcon} />
+                    <Ionicons name={cfg.icon} size={30} color={C.white} style={s.btnIcon} />
                     <Text style={s.btnLabel}>{cfg.label}</Text>
                     <Text style={s.btnSub}>{cfg.sublabel}</Text>
                   </>
@@ -286,17 +278,14 @@ export function CheckInButton({
 const s = StyleSheet.create({
   root: { alignItems: 'center' },
 
-  // halo — static soft background circle
   halo: { position: 'absolute' },
 
-  // button wrapper — position: absolute inside canvas
   btnWrap: {
     position: 'absolute',
     width: BTN,
     height: BTN,
   },
 
-  // gradient button circle
   circle: {
     width: BTN,
     height: BTN,
@@ -309,32 +298,58 @@ const s = StyleSheet.create({
     shadowRadius: 20,
     elevation: 14,
   },
-  btnIcon: { marginBottom: 4 },
-  btnLabel: { color: C.white, fontSize: 20, fontWeight: '800', letterSpacing: 0.2 },
-  btnSub: { color: 'rgba(255,255,255,0.65)', fontSize: 11, marginTop: 2 },
+  btnIcon: { marginBottom: 3 },
+  btnLabel: { color: C.white, fontSize: 18, fontWeight: '800', letterSpacing: 0.2 },
+  btnSub: { color: 'rgba(255,255,255,0.65)', fontSize: 10.5, marginTop: 2 },
 
-  // stats
+  // Stats card
   statsCard: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: C.white,
     borderRadius: 18,
-    marginTop: 20,
-    paddingVertical: 14,
-    paddingHorizontal: 20,
+    marginTop: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     shadowColor: C.navy,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.07,
     shadowRadius: 12,
     elevation: 4,
-    gap: 4,
+    width: CARD_W,
   },
-  divider: { width: 1, height: 32, backgroundColor: C.border, marginHorizontal: 8 },
-  pill: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  divider: { width: 1, height: 28, backgroundColor: C.border, marginHorizontal: 6 },
+
+  // Pill: row with icon + stacked text
+  pill: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    overflow: 'hidden',
+  },
   pillIcon: {
-    width: 32, height: 32, borderRadius: 9,
-    alignItems: 'center', justifyContent: 'center',
+    width: 30,
+    height: 30,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
   },
-  pillVal: { fontSize: 13, fontWeight: '700', color: C.navy, letterSpacing: 0.2 },
-  pillLbl: { fontSize: 10, color: C.subtle, marginTop: 1 },
+  pillText: {
+    flex: 1,
+    flexShrink: 1,
+  },
+  // Label on top (small), value below (bold) — reversed from before to match common pattern
+  pillLbl: {
+    fontSize: 9.5,
+    color: C.subtle,
+    marginBottom: 1,
+  },
+  pillVal: {
+    fontSize: 12.5,
+    fontWeight: '700',
+    color: C.navy,
+    letterSpacing: 0.1,
+  },
 });
