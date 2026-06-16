@@ -1,7 +1,7 @@
-# Graph Report - Hr-portal  (2026-06-15)
+# Graph Report - Hr-portal  (2026-06-16)
 
 ## Corpus Check
-- 270 files · ~318,552 words
+- 153 files · ~240,011 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7ee0550b`
+- Built from commit: `0d9ab463`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -407,7 +407,7 @@ Cohesion: 0.33
 Nodes (4): AdminProfileScreen(), C, s, secureStorage
 
 ## Knowledge Gaps
-- **436 isolated node(s):** `name`, `version`, `main`, `start`, `android` (+431 more)
+- **436 isolated node(s):** `{ width, height }`, `C`, `InputProps`, `styles`, `AVATAR_COLORS` (+431 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -415,12 +415,12 @@ Nodes (4): AdminProfileScreen(), C, s, secureStorage
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `createError` connect `Community 44` to `Community 34`, `Community 37`, `Community 16`, `Community 21`, `Community 53`, `Community 22`, `Community 26`, `Community 28`, `Community 31`?**
-  _High betweenness centrality (0.020) - this node is a cross-community bridge._
+  _High betweenness centrality (0.021) - this node is a cross-community bridge._
 - **Why does `authenticate()` connect `Community 28` to `Community 34`, `Community 35`, `Community 38`, `Community 105`, `Community 12`, `Community 16`, `Community 49`, `Community 21`, `Community 53`, `Community 55`, `Community 24`, `Community 31`, `Community 63`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **Why does `AttendanceService` connect `Community 27` to `Community 37`, `Community 39`?**
   _High betweenness centrality (0.016) - this node is a cross-community bridge._
-- **What connects `name`, `version`, `main` to the rest of the system?**
+- **What connects `{ width, height }`, `C`, `InputProps` to the rest of the system?**
   _436 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.05263157894736842 - nodes in this community are weakly interconnected._
