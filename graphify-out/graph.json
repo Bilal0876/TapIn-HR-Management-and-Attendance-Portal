@@ -4,6 +4,66 @@
   "graph": {},
   "nodes": [
     {
+      "label": "create-employee.tsx",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "admin_create_employee",
+      "community": 11,
+      "norm_label": "create-employee.tsx"
+    },
+    {
+      "label": "C",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "admin_create_employee_c",
+      "community": 11,
+      "norm_label": "c"
+    },
+    {
+      "label": "StyledInput()",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "admin_create_employee_styledinput",
+      "community": 11,
+      "norm_label": "styledinput()"
+    },
+    {
+      "label": "f",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L52",
+      "_origin": "ast",
+      "id": "admin_create_employee_f",
+      "community": 11,
+      "norm_label": "f"
+    },
+    {
+      "label": "CreateEmployeeScreen()",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "admin_create_employee_createemployeescreen",
+      "community": 11,
+      "norm_label": "createemployeescreen()"
+    },
+    {
+      "label": "s",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L315",
+      "_origin": "ast",
+      "id": "admin_create_employee_s",
+      "community": 11,
+      "norm_label": "s"
+    },
+    {
       "label": "login.tsx",
       "file_type": "code",
       "source_file": "mobile/app/(auth)/login.tsx",
@@ -14,20 +74,10 @@
       "norm_label": "login.tsx"
     },
     {
-      "label": "{ width, height }",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L15",
-      "_origin": "ast",
-      "id": "auth_login_width_height",
-      "community": 30,
-      "norm_label": "{ width, height }"
-    },
-    {
       "label": "C",
       "file_type": "code",
       "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "auth_login_c",
       "community": 30,
@@ -37,7 +87,7 @@
       "label": "LiveClock()",
       "file_type": "code",
       "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L35",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "auth_login_liveclock",
       "community": 30,
@@ -47,7 +97,7 @@
       "label": "InputProps",
       "file_type": "code",
       "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L74",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "auth_login_inputprops",
       "community": 30,
@@ -57,7 +107,7 @@
       "label": "FloatInput()",
       "file_type": "code",
       "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L86",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "auth_login_floatinput",
       "community": 30,
@@ -67,91 +117,131 @@
       "label": "LoginScreen()",
       "file_type": "code",
       "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L196",
+      "source_location": "L158",
       "_origin": "ast",
       "id": "auth_login_loginscreen",
-      "community": 36,
+      "community": 30,
       "norm_label": "loginscreen()"
     },
     {
-      "label": "styles",
+      "label": "s",
       "file_type": "code",
       "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L421",
+      "source_location": "L391",
       "_origin": "ast",
-      "id": "auth_login_styles",
+      "id": "auth_login_s",
       "community": 30,
-      "norm_label": "styles"
+      "norm_label": "s"
     },
     {
-      "label": "page.tsx",
+      "label": "register.tsx",
       "file_type": "code",
-      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_file": "mobile/app/(auth)/register.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "dashboard_page",
-      "community": 57,
-      "norm_label": "page.tsx"
+      "id": "auth_register",
+      "community": 52,
+      "norm_label": "register.tsx"
     },
     {
-      "label": "StatCard()",
+      "label": "C",
       "file_type": "code",
-      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "auth_register_c",
+      "community": 52,
+      "norm_label": "c"
+    },
+    {
+      "label": "STEPS",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "auth_register_steps",
+      "community": 52,
+      "norm_label": "steps"
+    },
+    {
+      "label": "InputProps",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L51",
+      "_origin": "ast",
+      "id": "auth_register_inputprops",
+      "community": 52,
+      "norm_label": "inputprops"
+    },
+    {
+      "label": "FloatInput()",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "auth_register_floatinput",
+      "community": 52,
+      "norm_label": "floatinput()"
+    },
+    {
+      "label": "StepIndicator()",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L141",
+      "_origin": "ast",
+      "id": "auth_register_stepindicator",
+      "community": 52,
+      "norm_label": "stepindicator()"
+    },
+    {
+      "label": "RegisterScreen()",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L170",
+      "_origin": "ast",
+      "id": "auth_register_registerscreen",
+      "community": 36,
+      "norm_label": "registerscreen()"
+    },
+    {
+      "label": "s",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L456",
+      "_origin": "ast",
+      "id": "auth_register_s",
+      "community": 52,
+      "norm_label": "s"
+    },
+    {
+      "label": "_layout.tsx",
+      "file_type": "code",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_layout",
+      "community": 36,
+      "norm_label": "_layout.tsx"
+    },
+    {
+      "label": "queryClient",
+      "file_type": "code",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "app_layout_queryclient",
+      "community": 36,
+      "norm_label": "queryclient"
+    },
+    {
+      "label": "RootLayout()",
+      "file_type": "code",
+      "source_file": "mobile/app/_layout.tsx",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "dashboard_page_statcard",
-      "community": 57,
-      "norm_label": "statcard()"
-    },
-    {
-      "label": "StatusBadge()",
-      "file_type": "code",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L52",
-      "_origin": "ast",
-      "id": "dashboard_page_statusbadge",
-      "community": 57,
-      "norm_label": "statusbadge()"
-    },
-    {
-      "label": "AVATAR_COLORS",
-      "file_type": "code",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L79",
-      "_origin": "ast",
-      "id": "dashboard_page_avatar_colors",
-      "community": 57,
-      "norm_label": "avatar_colors"
-    },
-    {
-      "label": "avatarColor()",
-      "file_type": "code",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L82",
-      "_origin": "ast",
-      "id": "dashboard_page_avatarcolor",
-      "community": 57,
-      "norm_label": "avatarcolor()"
-    },
-    {
-      "label": "PulseItem",
-      "file_type": "code",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L86",
-      "_origin": "ast",
-      "id": "dashboard_page_pulseitem",
-      "community": 57,
-      "norm_label": "pulseitem"
-    },
-    {
-      "label": "DashboardOverview()",
-      "file_type": "code",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L94",
-      "_origin": "ast",
-      "id": "dashboard_page_dashboardoverview",
-      "community": 57,
-      "norm_label": "dashboardoverview()"
+      "id": "app_layout_rootlayout",
+      "community": 36,
+      "norm_label": "rootlayout()"
     },
     {
       "label": "package.json",
@@ -159,9 +249,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "mobile_package",
       "community": 107,
-      "norm_label": "package.json",
-      "id": "mobile_package"
+      "norm_label": "package.json"
     },
     {
       "label": "name",
@@ -169,9 +259,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L2",
       "_origin": "ast",
+      "id": "mobile_package_name",
       "community": 107,
-      "norm_label": "name",
-      "id": "mobile_package_name"
+      "norm_label": "name"
     },
     {
       "label": "version",
@@ -179,9 +269,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L3",
       "_origin": "ast",
+      "id": "mobile_package_version",
       "community": 107,
-      "norm_label": "version",
-      "id": "mobile_package_version"
+      "norm_label": "version"
     },
     {
       "label": "main",
@@ -189,9 +279,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L4",
       "_origin": "ast",
+      "id": "mobile_package_main",
       "community": 107,
-      "norm_label": "main",
-      "id": "mobile_package_main"
+      "norm_label": "main"
     },
     {
       "label": "scripts",
@@ -199,9 +289,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L5",
       "_origin": "ast",
+      "id": "mobile_package_scripts",
       "community": 13,
-      "norm_label": "scripts",
-      "id": "mobile_package_scripts"
+      "norm_label": "scripts"
     },
     {
       "label": "start",
@@ -209,9 +299,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L6",
       "_origin": "ast",
+      "id": "mobile_package_scripts_start",
       "community": 13,
-      "norm_label": "start",
-      "id": "mobile_package_scripts_start"
+      "norm_label": "start"
     },
     {
       "label": "android",
@@ -219,9 +309,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L7",
       "_origin": "ast",
+      "id": "mobile_package_scripts_android",
       "community": 13,
-      "norm_label": "android",
-      "id": "mobile_package_scripts_android"
+      "norm_label": "android"
     },
     {
       "label": "ios",
@@ -229,9 +319,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L8",
       "_origin": "ast",
+      "id": "mobile_package_scripts_ios",
       "community": 13,
-      "norm_label": "ios",
-      "id": "mobile_package_scripts_ios"
+      "norm_label": "ios"
     },
     {
       "label": "web",
@@ -239,9 +329,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L9",
       "_origin": "ast",
+      "id": "mobile_package_scripts_web",
       "community": 13,
-      "norm_label": "web",
-      "id": "mobile_package_scripts_web"
+      "norm_label": "web"
     },
     {
       "label": "test",
@@ -249,9 +339,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L10",
       "_origin": "ast",
+      "id": "mobile_package_scripts_test",
       "community": 13,
-      "norm_label": "test",
-      "id": "mobile_package_scripts_test"
+      "norm_label": "test"
     },
     {
       "label": "lint",
@@ -259,9 +349,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L11",
       "_origin": "ast",
+      "id": "mobile_package_scripts_lint",
       "community": 13,
-      "norm_label": "lint",
-      "id": "mobile_package_scripts_lint"
+      "norm_label": "lint"
     },
     {
       "label": "eas-build-pre-install",
@@ -269,9 +359,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L12",
       "_origin": "ast",
+      "id": "mobile_package_scripts_eas_build_pre_install",
       "community": 13,
-      "norm_label": "eas-build-pre-install",
-      "id": "mobile_package_scripts_eas_build_pre_install"
+      "norm_label": "eas-build-pre-install"
     },
     {
       "label": "dependencies",
@@ -279,9 +369,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L14",
       "_origin": "ast",
+      "id": "mobile_package_dependencies",
       "community": 0,
-      "norm_label": "dependencies",
-      "id": "mobile_package_dependencies"
+      "norm_label": "dependencies"
     },
     {
       "label": "@expo-google-fonts/dm-mono",
@@ -289,9 +379,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L15",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_google_fonts_dm_mono",
       "community": 0,
-      "norm_label": "@expo-google-fonts/dm-mono",
-      "id": "mobile_package_dependencies_expo_google_fonts_dm_mono"
+      "norm_label": "@expo-google-fonts/dm-mono"
     },
     {
       "label": "@expo-google-fonts/dm-sans",
@@ -299,9 +389,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L16",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_google_fonts_dm_sans",
       "community": 0,
-      "norm_label": "@expo-google-fonts/dm-sans",
-      "id": "mobile_package_dependencies_expo_google_fonts_dm_sans"
+      "norm_label": "@expo-google-fonts/dm-sans"
     },
     {
       "label": "@gorhom/bottom-sheet",
@@ -309,9 +399,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L17",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_gorhom_bottom_sheet",
       "community": 0,
-      "norm_label": "@gorhom/bottom-sheet",
-      "id": "mobile_package_dependencies_gorhom_bottom_sheet"
+      "norm_label": "@gorhom/bottom-sheet"
     },
     {
       "label": "@hookform/resolvers",
@@ -319,9 +409,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L18",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_hookform_resolvers",
       "community": 0,
-      "norm_label": "@hookform/resolvers",
-      "id": "mobile_package_dependencies_hookform_resolvers"
+      "norm_label": "@hookform/resolvers"
     },
     {
       "label": "@react-native-community/datetimepicker",
@@ -329,9 +419,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L19",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react_native_community_datetimepicker",
       "community": 0,
-      "norm_label": "@react-native-community/datetimepicker",
-      "id": "mobile_package_dependencies_react_native_community_datetimepicker"
+      "norm_label": "@react-native-community/datetimepicker"
     },
     {
       "label": "@tanstack/react-query",
@@ -339,9 +429,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L20",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_tanstack_react_query",
       "community": 0,
-      "norm_label": "@tanstack/react-query",
-      "id": "mobile_package_dependencies_tanstack_react_query"
+      "norm_label": "@tanstack/react-query"
     },
     {
       "label": "axios",
@@ -349,9 +439,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L21",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_axios",
       "community": 0,
-      "norm_label": "axios",
-      "id": "mobile_package_dependencies_axios"
+      "norm_label": "axios"
     },
     {
       "label": "date-fns",
@@ -359,9 +449,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L22",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_date_fns",
       "community": 0,
-      "norm_label": "date-fns",
-      "id": "mobile_package_dependencies_date_fns"
+      "norm_label": "date-fns"
     },
     {
       "label": "date-fns-tz",
@@ -369,9 +459,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L23",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_date_fns_tz",
       "community": 0,
-      "norm_label": "date-fns-tz",
-      "id": "mobile_package_dependencies_date_fns_tz"
+      "norm_label": "date-fns-tz"
     },
     {
       "label": "expo",
@@ -379,9 +469,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L24",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo",
       "community": 0,
-      "norm_label": "expo",
-      "id": "mobile_package_dependencies_expo"
+      "norm_label": "expo"
     },
     {
       "label": "expo-constants",
@@ -389,9 +479,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L25",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_constants",
       "community": 0,
-      "norm_label": "expo-constants",
-      "id": "mobile_package_dependencies_expo_constants"
+      "norm_label": "expo-constants"
     },
     {
       "label": "expo-device",
@@ -399,9 +489,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L26",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_device",
       "community": 0,
-      "norm_label": "expo-device",
-      "id": "mobile_package_dependencies_expo_device"
+      "norm_label": "expo-device"
     },
     {
       "label": "expo-file-system",
@@ -409,9 +499,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L27",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_file_system",
       "community": 0,
-      "norm_label": "expo-file-system",
-      "id": "mobile_package_dependencies_expo_file_system"
+      "norm_label": "expo-file-system"
     },
     {
       "label": "expo-font",
@@ -419,9 +509,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L28",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_font",
       "community": 0,
-      "norm_label": "expo-font",
-      "id": "mobile_package_dependencies_expo_font"
+      "norm_label": "expo-font"
     },
     {
       "label": "expo-haptics",
@@ -429,9 +519,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L29",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_haptics",
       "community": 0,
-      "norm_label": "expo-haptics",
-      "id": "mobile_package_dependencies_expo_haptics"
+      "norm_label": "expo-haptics"
     },
     {
       "label": "expo-linear-gradient",
@@ -439,9 +529,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L30",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_linear_gradient",
       "community": 0,
-      "norm_label": "expo-linear-gradient",
-      "id": "mobile_package_dependencies_expo_linear_gradient"
+      "norm_label": "expo-linear-gradient"
     },
     {
       "label": "expo-linking",
@@ -449,9 +539,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L31",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_linking",
       "community": 0,
-      "norm_label": "expo-linking",
-      "id": "mobile_package_dependencies_expo_linking"
+      "norm_label": "expo-linking"
     },
     {
       "label": "expo-local-authentication",
@@ -459,9 +549,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L32",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_local_authentication",
       "community": 0,
-      "norm_label": "expo-local-authentication",
-      "id": "mobile_package_dependencies_expo_local_authentication"
+      "norm_label": "expo-local-authentication"
     },
     {
       "label": "expo-location",
@@ -469,9 +559,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L33",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_location",
       "community": 0,
-      "norm_label": "expo-location",
-      "id": "mobile_package_dependencies_expo_location"
+      "norm_label": "expo-location"
     },
     {
       "label": "expo-notifications",
@@ -479,9 +569,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L34",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_notifications",
       "community": 0,
-      "norm_label": "expo-notifications",
-      "id": "mobile_package_dependencies_expo_notifications"
+      "norm_label": "expo-notifications"
     },
     {
       "label": "expo-router",
@@ -489,9 +579,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L35",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_router",
       "community": 0,
-      "norm_label": "expo-router",
-      "id": "mobile_package_dependencies_expo_router"
+      "norm_label": "expo-router"
     },
     {
       "label": "expo-secure-store",
@@ -499,9 +589,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L36",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_secure_store",
       "community": 0,
-      "norm_label": "expo-secure-store",
-      "id": "mobile_package_dependencies_expo_secure_store"
+      "norm_label": "expo-secure-store"
     },
     {
       "label": "expo-sharing",
@@ -509,9 +599,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L37",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_sharing",
       "community": 0,
-      "norm_label": "expo-sharing",
-      "id": "mobile_package_dependencies_expo_sharing"
+      "norm_label": "expo-sharing"
     },
     {
       "label": "expo-status-bar",
@@ -519,9 +609,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L38",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_expo_status_bar",
       "community": 0,
-      "norm_label": "expo-status-bar",
-      "id": "mobile_package_dependencies_expo_status_bar"
+      "norm_label": "expo-status-bar"
     },
     {
       "label": "react",
@@ -529,9 +619,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L39",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react",
       "community": 0,
-      "norm_label": "react",
-      "id": "mobile_package_dependencies_react"
+      "norm_label": "react"
     },
     {
       "label": "react-hook-form",
@@ -539,9 +629,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L40",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react_hook_form",
       "community": 0,
-      "norm_label": "react-hook-form",
-      "id": "mobile_package_dependencies_react_hook_form"
+      "norm_label": "react-hook-form"
     },
     {
       "label": "react-native",
@@ -549,9 +639,9 @@
       "source_file": "mobile/package.json",
       "source_location": "L41",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react_native",
       "community": 0,
-      "norm_label": "react-native",
-      "id": "mobile_package_dependencies_react_native"
+      "norm_label": "react-native"
     },
     {
       "label": "react-native-gesture-handler",
@@ -559,169 +649,499 @@
       "source_file": "mobile/package.json",
       "source_location": "L42",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react_native_gesture_handler",
       "community": 0,
-      "norm_label": "react-native-gesture-handler",
-      "id": "mobile_package_dependencies_react_native_gesture_handler"
+      "norm_label": "react-native-gesture-handler"
+    },
+    {
+      "label": "react-native-keyboard-controller",
+      "file_type": "code",
+      "source_file": "mobile/package.json",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "mobile_package_dependencies_react_native_keyboard_controller",
+      "community": 0,
+      "norm_label": "react-native-keyboard-controller"
     },
     {
       "label": "react-native-reanimated",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L43",
+      "source_location": "L44",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react_native_reanimated",
       "community": 0,
-      "norm_label": "react-native-reanimated",
-      "id": "mobile_package_dependencies_react_native_reanimated"
+      "norm_label": "react-native-reanimated"
     },
     {
       "label": "react-native-safe-area-context",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L44",
+      "source_location": "L45",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react_native_safe_area_context",
       "community": 0,
-      "norm_label": "react-native-safe-area-context",
-      "id": "mobile_package_dependencies_react_native_safe_area_context"
+      "norm_label": "react-native-safe-area-context"
     },
     {
       "label": "react-native-screens",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L45",
+      "source_location": "L46",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react_native_screens",
       "community": 0,
-      "norm_label": "react-native-screens",
-      "id": "mobile_package_dependencies_react_native_screens"
+      "norm_label": "react-native-screens"
     },
     {
       "label": "react-native-svg",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L46",
+      "source_location": "L47",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react_native_svg",
       "community": 0,
-      "norm_label": "react-native-svg",
-      "id": "mobile_package_dependencies_react_native_svg"
+      "norm_label": "react-native-svg"
     },
     {
       "label": "react-native-worklets",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L47",
+      "source_location": "L48",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_react_native_worklets",
       "community": 0,
-      "norm_label": "react-native-worklets",
-      "id": "mobile_package_dependencies_react_native_worklets"
+      "norm_label": "react-native-worklets"
     },
     {
       "label": "socket.io-client",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L48",
+      "source_location": "L49",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_socket_io_client",
       "community": 0,
-      "norm_label": "socket.io-client",
-      "id": "mobile_package_dependencies_socket_io_client"
+      "norm_label": "socket.io-client"
     },
     {
       "label": "tailwindcss",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L49",
+      "source_location": "L50",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_tailwindcss",
       "community": 0,
-      "norm_label": "tailwindcss",
-      "id": "mobile_package_dependencies_tailwindcss"
+      "norm_label": "tailwindcss"
     },
     {
       "label": "uniwind",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L50",
+      "source_location": "L51",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_uniwind",
       "community": 0,
-      "norm_label": "uniwind",
-      "id": "mobile_package_dependencies_uniwind"
+      "norm_label": "uniwind"
     },
     {
       "label": "zustand",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L51",
+      "source_location": "L52",
       "_origin": "ast",
+      "id": "mobile_package_dependencies_zustand",
       "community": 0,
-      "norm_label": "zustand",
-      "id": "mobile_package_dependencies_zustand"
+      "norm_label": "zustand"
     },
     {
       "label": "devDependencies",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L53",
+      "source_location": "L54",
       "_origin": "ast",
+      "id": "mobile_package_devdependencies",
       "community": 104,
-      "norm_label": "devdependencies",
-      "id": "mobile_package_devdependencies"
+      "norm_label": "devdependencies"
     },
     {
       "label": "@babel/core",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L54",
+      "source_location": "L55",
       "_origin": "ast",
+      "id": "mobile_package_devdependencies_babel_core",
       "community": 104,
-      "norm_label": "@babel/core",
-      "id": "mobile_package_devdependencies_babel_core"
+      "norm_label": "@babel/core"
     },
     {
       "label": "@types/react",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L55",
+      "source_location": "L56",
       "_origin": "ast",
+      "id": "mobile_package_devdependencies_types_react",
       "community": 104,
-      "norm_label": "@types/react",
-      "id": "mobile_package_devdependencies_types_react"
+      "norm_label": "@types/react"
     },
     {
       "label": "@types/react-dom",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L56",
+      "source_location": "L57",
       "_origin": "ast",
+      "id": "mobile_package_devdependencies_types_react_dom",
       "community": 104,
-      "norm_label": "@types/react-dom",
-      "id": "mobile_package_devdependencies_types_react_dom"
+      "norm_label": "@types/react-dom"
     },
     {
       "label": "babel-plugin-module-resolver",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L57",
+      "source_location": "L58",
       "_origin": "ast",
+      "id": "mobile_package_devdependencies_babel_plugin_module_resolver",
       "community": 104,
-      "norm_label": "babel-plugin-module-resolver",
-      "id": "mobile_package_devdependencies_babel_plugin_module_resolver"
+      "norm_label": "babel-plugin-module-resolver"
     },
     {
       "label": "typescript",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L58",
+      "source_location": "L59",
       "_origin": "ast",
+      "id": "mobile_package_devdependencies_typescript",
       "community": 104,
-      "norm_label": "typescript",
-      "id": "mobile_package_devdependencies_typescript"
+      "norm_label": "typescript"
     },
     {
       "label": "private",
       "file_type": "code",
       "source_file": "mobile/package.json",
-      "source_location": "L60",
+      "source_location": "L61",
       "_origin": "ast",
+      "id": "mobile_package_private",
       "community": 107,
-      "norm_label": "private",
-      "id": "mobile_package_private"
+      "norm_label": "private"
+    },
+    {
+      "label": "SafeKeyboardAvoidingView.tsx",
+      "file_type": "code",
+      "source_file": "mobile/src/components/ui/SafeKeyboardAvoidingView.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "ui_safekeyboardavoidingview",
+      "community": 52,
+      "norm_label": "safekeyboardavoidingview.tsx"
+    },
+    {
+      "label": "SafeKeyboardAvoidingView()",
+      "file_type": "code",
+      "source_file": "mobile/src/components/ui/SafeKeyboardAvoidingView.tsx",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "ui_safekeyboardavoidingview_safekeyboardavoidingview",
+      "community": 52,
+      "norm_label": "safekeyboardavoidingview()"
+    },
+    {
+      "label": "CheckInButton.tsx",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "components_checkinbutton",
+      "community": 45,
+      "norm_label": "checkinbutton.tsx"
+    },
+    {
+      "label": "AttendanceStatus",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "components_checkinbutton_attendancestatus",
+      "community": 45,
+      "norm_label": "attendancestatus"
+    },
+    {
+      "label": "CheckInButtonProps",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "components_checkinbutton_checkinbuttonprops",
+      "community": 45,
+      "norm_label": "checkinbuttonprops"
+    },
+    {
+      "label": "C",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "components_checkinbutton_c",
+      "community": 45,
+      "norm_label": "c"
+    },
+    {
+      "label": "CFG",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L51",
+      "_origin": "ast",
+      "id": "components_checkinbutton_cfg",
+      "community": 45,
+      "norm_label": "cfg"
+    },
+    {
+      "label": "RippleRing()",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L84",
+      "_origin": "ast",
+      "id": "components_checkinbutton_ripplering",
+      "community": 45,
+      "norm_label": "ripplering()"
+    },
+    {
+      "label": "usePressShrink()",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L130",
+      "_origin": "ast",
+      "id": "components_checkinbutton_usepressshrink",
+      "community": 45,
+      "norm_label": "usepressshrink()"
+    },
+    {
+      "label": "StatPill()",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L138",
+      "_origin": "ast",
+      "id": "components_checkinbutton_statpill",
+      "community": 45,
+      "norm_label": "statpill()"
+    },
+    {
+      "label": "CheckInButton()",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L155",
+      "_origin": "ast",
+      "id": "components_checkinbutton_checkinbutton",
+      "community": 70,
+      "norm_label": "checkinbutton()"
+    },
+    {
+      "label": "s",
+      "file_type": "code",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L286",
+      "_origin": "ast",
+      "id": "components_checkinbutton_s",
+      "community": 45,
+      "norm_label": "s"
+    },
+    {
+      "label": "attendance.service.ts",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "services_attendance_service",
+      "community": 37,
+      "norm_label": "attendance.service.ts"
+    },
+    {
+      "label": "AttendanceService",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice",
+      "community": 37,
+      "norm_label": "attendanceservice"
+    },
+    {
+      "label": ".getCompanyShiftSettings()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_getcompanyshiftsettings",
+      "community": 37,
+      "norm_label": ".getcompanyshiftsettings()"
+    },
+    {
+      "label": ".updateCompanyShiftSettings()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_updatecompanyshiftsettings",
+      "community": 37,
+      "norm_label": ".updatecompanyshiftsettings()"
+    },
+    {
+      "label": ".getCompanyProfile()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L78",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_getcompanyprofile",
+      "community": 37,
+      "norm_label": ".getcompanyprofile()"
+    },
+    {
+      "label": ".updateCompanyProfile()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L95",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_updatecompanyprofile",
+      "community": 37,
+      "norm_label": ".updatecompanyprofile()"
+    },
+    {
+      "label": ".checkin()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L102",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_checkin",
+      "community": 37,
+      "norm_label": ".checkin()"
+    },
+    {
+      "label": ".checkout()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L167",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_checkout",
+      "community": 37,
+      "norm_label": ".checkout()"
+    },
+    {
+      "label": ".getToday()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L278",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_gettoday",
+      "community": 37,
+      "norm_label": ".gettoday()"
+    },
+    {
+      "label": ".startBreak()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L323",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_startbreak",
+      "community": 37,
+      "norm_label": ".startbreak()"
+    },
+    {
+      "label": ".endBreak()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L359",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_endbreak",
+      "community": 37,
+      "norm_label": ".endbreak()"
+    },
+    {
+      "label": ".getHistory()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L396",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_gethistory",
+      "community": 37,
+      "norm_label": ".gethistory()"
+    },
+    {
+      "label": ".adminUpdateRecord()",
+      "file_type": "code",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L408",
+      "_origin": "ast",
+      "id": "services_attendance_service_attendanceservice_adminupdaterecord",
+      "community": 37,
+      "norm_label": ".adminupdaterecord()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 57,
+      "norm_label": "page.tsx",
+      "id": "dashboard_page"
+    },
+    {
+      "label": "StatCard()",
+      "file_type": "code",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L11",
+      "_origin": "ast",
+      "community": 57,
+      "norm_label": "statcard()",
+      "id": "dashboard_page_statcard"
+    },
+    {
+      "label": "StatusBadge()",
+      "file_type": "code",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L52",
+      "_origin": "ast",
+      "community": 57,
+      "norm_label": "statusbadge()",
+      "id": "dashboard_page_statusbadge"
+    },
+    {
+      "label": "AVATAR_COLORS",
+      "file_type": "code",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L79",
+      "_origin": "ast",
+      "community": 57,
+      "norm_label": "avatar_colors",
+      "id": "dashboard_page_avatar_colors"
+    },
+    {
+      "label": "avatarColor()",
+      "file_type": "code",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L82",
+      "_origin": "ast",
+      "community": 57,
+      "norm_label": "avatarcolor()",
+      "id": "dashboard_page_avatarcolor"
+    },
+    {
+      "label": "PulseItem",
+      "file_type": "code",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L86",
+      "_origin": "ast",
+      "community": 57,
+      "norm_label": "pulseitem",
+      "id": "dashboard_page_pulseitem"
+    },
+    {
+      "label": "DashboardOverview()",
+      "file_type": "code",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L94",
+      "_origin": "ast",
+      "community": 57,
+      "norm_label": "dashboardoverview()",
+      "id": "dashboard_page_dashboardoverview"
     },
     {
       "label": "app.json",
@@ -1679,7 +2099,7 @@
       "source_file": "server/src/controllers/attendance.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 26,
+      "community": 55,
       "norm_label": "attendance.controller.ts",
       "id": "controllers_attendance_controller"
     },
@@ -2319,7 +2739,7 @@
       "source_file": "server/src/dtos/attendance.dto.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 26,
+      "community": 37,
       "norm_label": "updateshiftsettingsinput",
       "id": "dtos_attendance_dto_updateshiftsettingsinput"
     },
@@ -2549,7 +2969,7 @@
       "source_file": "server/src/dtos/leaves.dto.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 49,
+      "community": 105,
       "norm_label": "leaves.dto.ts",
       "id": "dtos_leaves_dto"
     },
@@ -2559,7 +2979,7 @@
       "source_file": "server/src/dtos/leaves.dto.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 49,
+      "community": 105,
       "norm_label": "leavetypeschema",
       "id": "dtos_leaves_dto_leavetypeschema"
     },
@@ -2569,7 +2989,7 @@
       "source_file": "server/src/dtos/leaves.dto.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 49,
+      "community": 105,
       "norm_label": "createleaverequestschema",
       "id": "dtos_leaves_dto_createleaverequestschema"
     },
@@ -2579,7 +2999,7 @@
       "source_file": "server/src/dtos/leaves.dto.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 49,
+      "community": 105,
       "norm_label": "reviewleaverequestschema",
       "id": "dtos_leaves_dto_reviewleaverequestschema"
     },
@@ -2659,7 +3079,7 @@
       "source_file": "server/src/routes/attendance.routes.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 105,
+      "community": 63,
       "norm_label": "router",
       "id": "routes_attendance_routes_router"
     },
@@ -2729,7 +3149,7 @@
       "source_file": "server/src/routes/leaves.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 49,
+      "community": 105,
       "norm_label": "leaves.routes.ts",
       "id": "routes_leaves_routes"
     },
@@ -2739,7 +3159,7 @@
       "source_file": "server/src/routes/leaves.routes.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 49,
+      "community": 105,
       "norm_label": "router",
       "id": "routes_leaves_routes_router"
     },
@@ -2789,7 +3209,7 @@
       "source_file": "server/src/services/analytics.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 26,
+      "community": 55,
       "norm_label": "analytics.service.ts",
       "id": "services_analytics_service"
     },
@@ -2799,7 +3219,7 @@
       "source_file": "server/src/services/analytics.service.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 26,
+      "community": 55,
       "norm_label": "formatduration()",
       "id": "services_analytics_service_formatduration"
     },
@@ -2809,7 +3229,7 @@
       "source_file": "server/src/services/analytics.service.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 26,
+      "community": 55,
       "norm_label": "analyticsservice",
       "id": "services_analytics_service_analyticsservice"
     },
@@ -2819,7 +3239,7 @@
       "source_file": "server/src/services/analytics.service.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 26,
+      "community": 55,
       "norm_label": ".getcompanystats()",
       "id": "services_analytics_service_analyticsservice_getcompanystats"
     },
@@ -2829,7 +3249,7 @@
       "source_file": "server/src/services/analytics.service.ts",
       "source_location": "L85",
       "_origin": "ast",
-      "community": 26,
+      "community": 55,
       "norm_label": ".getcompanytrend()",
       "id": "services_analytics_service_analyticsservice_getcompanytrend"
     },
@@ -2839,7 +3259,7 @@
       "source_file": "server/src/services/analytics.service.ts",
       "source_location": "L181",
       "_origin": "ast",
-      "community": 26,
+      "community": 55,
       "norm_label": ".getpersonalstats()",
       "id": "services_analytics_service_analyticsservice_getpersonalstats"
     },
@@ -2849,7 +3269,7 @@
       "source_file": "server/src/services/analytics.service.ts",
       "source_location": "L225",
       "_origin": "ast",
-      "community": 26,
+      "community": 55,
       "norm_label": ".getdailylogs()",
       "id": "services_analytics_service_analyticsservice_getdailylogs"
     },
@@ -2859,139 +3279,9 @@
       "source_file": "server/src/services/analytics.service.ts",
       "source_location": "L301",
       "_origin": "ast",
-      "community": 26,
+      "community": 55,
       "norm_label": ".getcompanypulse()",
       "id": "services_analytics_service_analyticsservice_getcompanypulse"
-    },
-    {
-      "label": "attendance.service.ts",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": "attendance.service.ts",
-      "id": "services_attendance_service"
-    },
-    {
-      "label": "AttendanceService",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L9",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": "attendanceservice",
-      "id": "services_attendance_service_attendanceservice"
-    },
-    {
-      "label": ".getCompanyShiftSettings()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L13",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".getcompanyshiftsettings()",
-      "id": "services_attendance_service_attendanceservice_getcompanyshiftsettings"
-    },
-    {
-      "label": ".updateCompanyShiftSettings()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L38",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".updatecompanyshiftsettings()",
-      "id": "services_attendance_service_attendanceservice_updatecompanyshiftsettings"
-    },
-    {
-      "label": ".getCompanyProfile()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L78",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".getcompanyprofile()",
-      "id": "services_attendance_service_attendanceservice_getcompanyprofile"
-    },
-    {
-      "label": ".updateCompanyProfile()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L95",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".updatecompanyprofile()",
-      "id": "services_attendance_service_attendanceservice_updatecompanyprofile"
-    },
-    {
-      "label": ".checkin()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L102",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".checkin()",
-      "id": "services_attendance_service_attendanceservice_checkin"
-    },
-    {
-      "label": ".checkout()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L167",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".checkout()",
-      "id": "services_attendance_service_attendanceservice_checkout"
-    },
-    {
-      "label": ".getToday()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L278",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".gettoday()",
-      "id": "services_attendance_service_attendanceservice_gettoday"
-    },
-    {
-      "label": ".startBreak()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L323",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".startbreak()",
-      "id": "services_attendance_service_attendanceservice_startbreak"
-    },
-    {
-      "label": ".endBreak()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L378",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".endbreak()",
-      "id": "services_attendance_service_attendanceservice_endbreak"
-    },
-    {
-      "label": ".getHistory()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L434",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".gethistory()",
-      "id": "services_attendance_service_attendanceservice_gethistory"
-    },
-    {
-      "label": ".adminUpdateRecord()",
-      "file_type": "code",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L446",
-      "_origin": "ast",
-      "community": 26,
-      "norm_label": ".adminupdaterecord()",
-      "id": "services_attendance_service_attendanceservice_adminupdaterecord"
     },
     {
       "label": "auth.service.ts",
@@ -2999,7 +3289,7 @@
       "source_file": "server/src/services/auth.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 44,
+      "community": 24,
       "norm_label": "auth.service.ts",
       "id": "services_auth_service"
     },
@@ -4994,66 +5284,6 @@
       "id": "admin_corrections_s"
     },
     {
-      "label": "create-employee.tsx",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "create-employee.tsx",
-      "id": "admin_create_employee"
-    },
-    {
-      "label": "C",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L16",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "c",
-      "id": "admin_create_employee_c"
-    },
-    {
-      "label": "StyledInput()",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L29",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "styledinput()",
-      "id": "admin_create_employee_styledinput"
-    },
-    {
-      "label": "f",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L52",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "f",
-      "id": "admin_create_employee_f"
-    },
-    {
-      "label": "CreateEmployeeScreen()",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L73",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "createemployeescreen()",
-      "id": "admin_create_employee_createemployeescreen"
-    },
-    {
-      "label": "s",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L310",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "s",
-      "id": "admin_create_employee_s"
-    },
-    {
       "label": "daily-logs.tsx",
       "file_type": "code",
       "source_file": "mobile/app/(admin)/daily-logs.tsx",
@@ -5129,7 +5359,7 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "employees.tsx",
       "id": "admin_employees"
     },
@@ -5139,7 +5369,7 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "c",
       "id": "admin_employees_c"
     },
@@ -5149,7 +5379,7 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "avatar_palette",
       "id": "admin_employees_avatar_palette"
     },
@@ -5159,7 +5389,7 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "avatarcolors()",
       "id": "admin_employees_avatarcolors"
     },
@@ -5169,7 +5399,7 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "employeecard()",
       "id": "admin_employees_employeecard"
     },
@@ -5179,7 +5409,7 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "card",
       "id": "admin_employees_card"
     },
@@ -5189,7 +5419,7 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L124",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "employeesscreen()",
       "id": "admin_employees_employeesscreen"
     },
@@ -5199,7 +5429,7 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L234",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "s",
       "id": "admin_employees_s"
     },
@@ -5299,7 +5529,7 @@
       "source_file": "mobile/app/(admin)/index.tsx",
       "source_location": "L156",
       "_origin": "ast",
-      "community": 23,
+      "community": 106,
       "norm_label": "adminhome()",
       "id": "admin_index_adminhome"
     },
@@ -5359,7 +5589,7 @@
       "source_file": "mobile/app/(admin)/profile.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 109,
+      "community": 36,
       "norm_label": "profile.tsx",
       "id": "admin_profile"
     },
@@ -5369,7 +5599,7 @@
       "source_file": "mobile/app/(admin)/profile.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 109,
+      "community": 36,
       "norm_label": "c",
       "id": "admin_profile_c"
     },
@@ -5379,7 +5609,7 @@
       "source_file": "mobile/app/(admin)/profile.tsx",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 109,
+      "community": 36,
       "norm_label": "settingrow()",
       "id": "admin_profile_settingrow"
     },
@@ -5389,7 +5619,7 @@
       "source_file": "mobile/app/(admin)/profile.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 109,
+      "community": 36,
       "norm_label": "adminprofilescreen()",
       "id": "admin_profile_adminprofilescreen"
     },
@@ -5399,7 +5629,7 @@
       "source_file": "mobile/app/(admin)/profile.tsx",
       "source_location": "L131",
       "_origin": "ast",
-      "community": 109,
+      "community": 36,
       "norm_label": "s",
       "id": "admin_profile_s"
     },
@@ -5542,86 +5772,6 @@
       "community": 75,
       "norm_label": "authlayout()",
       "id": "auth_layout_authlayout"
-    },
-    {
-      "label": "register.tsx",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 52,
-      "norm_label": "register.tsx",
-      "id": "auth_register"
-    },
-    {
-      "label": "C",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L16",
-      "_origin": "ast",
-      "community": 52,
-      "norm_label": "c",
-      "id": "auth_register_c"
-    },
-    {
-      "label": "STEPS",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L31",
-      "_origin": "ast",
-      "community": 52,
-      "norm_label": "steps",
-      "id": "auth_register_steps"
-    },
-    {
-      "label": "InputProps",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L49",
-      "_origin": "ast",
-      "community": 52,
-      "norm_label": "inputprops",
-      "id": "auth_register_inputprops"
-    },
-    {
-      "label": "FloatInput()",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L61",
-      "_origin": "ast",
-      "community": 52,
-      "norm_label": "floatinput()",
-      "id": "auth_register_floatinput"
-    },
-    {
-      "label": "StepIndicator()",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L143",
-      "_origin": "ast",
-      "community": 52,
-      "norm_label": "stepindicator()",
-      "id": "auth_register_stepindicator"
-    },
-    {
-      "label": "RegisterScreen()",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L172",
-      "_origin": "ast",
-      "community": 52,
-      "norm_label": "registerscreen()",
-      "id": "auth_register_registerscreen"
-    },
-    {
-      "label": "styles",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L440",
-      "_origin": "ast",
-      "community": 52,
-      "norm_label": "styles",
-      "id": "auth_register_styles"
     },
     {
       "label": "_layout.tsx",
@@ -5892,36 +6042,6 @@
       "community": 67,
       "norm_label": "s",
       "id": "employee_summary_s"
-    },
-    {
-      "label": "_layout.tsx",
-      "file_type": "code",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 36,
-      "norm_label": "_layout.tsx",
-      "id": "mobile_app_layout_tsx_app_layout"
-    },
-    {
-      "label": "queryClient",
-      "file_type": "code",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L7",
-      "_origin": "ast",
-      "community": 36,
-      "norm_label": "queryclient",
-      "id": "app_layout_queryclient"
-    },
-    {
-      "label": "RootLayout()",
-      "file_type": "code",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L9",
-      "_origin": "ast",
-      "community": 36,
-      "norm_label": "rootlayout()",
-      "id": "mobile_app_layout_tsx_app_layout_rootlayout"
     },
     {
       "label": "index.tsx",
@@ -6524,112 +6644,12 @@
       "id": "components_breakbutton_s"
     },
     {
-      "label": "CheckInButton.tsx",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "checkinbutton.tsx",
-      "id": "components_checkinbutton"
-    },
-    {
-      "label": "AttendanceStatus",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L20",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "attendancestatus",
-      "id": "components_checkinbutton_attendancestatus"
-    },
-    {
-      "label": "CheckInButtonProps",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L22",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "checkinbuttonprops",
-      "id": "components_checkinbutton_checkinbuttonprops"
-    },
-    {
-      "label": "C",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L32",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "c",
-      "id": "components_checkinbutton_c"
-    },
-    {
-      "label": "CFG",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L51",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "cfg",
-      "id": "components_checkinbutton_cfg"
-    },
-    {
-      "label": "RippleRing()",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L84",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "ripplering()",
-      "id": "components_checkinbutton_ripplering"
-    },
-    {
-      "label": "usePressShrink()",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L130",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "usepressshrink()",
-      "id": "components_checkinbutton_usepressshrink"
-    },
-    {
-      "label": "StatPill()",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L138",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "statpill()",
-      "id": "components_checkinbutton_statpill"
-    },
-    {
-      "label": "CheckInButton()",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L155",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "checkinbutton()",
-      "id": "components_checkinbutton_checkinbutton"
-    },
-    {
-      "label": "s",
-      "file_type": "code",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L278",
-      "_origin": "ast",
-      "community": 45,
-      "norm_label": "s",
-      "id": "components_checkinbutton_s"
-    },
-    {
       "label": "hooks.ts",
       "file_type": "code",
       "source_file": "mobile/src/features/attendance/hooks.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 70,
       "norm_label": "hooks.ts",
       "id": "attendance_hooks"
     },
@@ -6649,7 +6669,7 @@
       "source_file": "mobile/src/features/attendance/hooks.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 29,
+      "community": 70,
       "norm_label": "useattendancehistory()",
       "id": "attendance_hooks_useattendancehistory"
     },
@@ -6669,7 +6689,7 @@
       "source_file": "mobile/src/features/attendance/hooks.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 29,
+      "community": 70,
       "norm_label": "usecheckin()",
       "id": "attendance_hooks_usecheckin"
     },
@@ -6679,7 +6699,7 @@
       "source_file": "mobile/src/features/attendance/hooks.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 29,
+      "community": 70,
       "norm_label": "usecheckout()",
       "id": "attendance_hooks_usecheckout"
     },
@@ -6689,7 +6709,7 @@
       "source_file": "mobile/src/features/attendance/hooks.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 29,
+      "community": 70,
       "norm_label": "usestartbreak()",
       "id": "attendance_hooks_usestartbreak"
     },
@@ -6699,7 +6719,7 @@
       "source_file": "mobile/src/features/attendance/hooks.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 29,
+      "community": 70,
       "norm_label": "useendbreak()",
       "id": "attendance_hooks_useendbreak"
     },
@@ -6719,7 +6739,7 @@
       "source_file": "mobile/src/features/auth/api.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 70,
+      "community": 30,
       "norm_label": "authapi",
       "id": "auth_api_authapi"
     },
@@ -6789,7 +6809,7 @@
       "source_file": "mobile/src/features/employees/api.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "api.ts",
       "id": "employees_api"
     },
@@ -6799,7 +6819,7 @@
       "source_file": "mobile/src/features/employees/api.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "employeeapi",
       "id": "employees_api_employeeapi"
     },
@@ -7019,7 +7039,7 @@
       "source_file": "mobile/src/hooks/useAdminDashboard.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 23,
+      "community": 106,
       "norm_label": "useadmindashboard()",
       "id": "hooks_useadmindashboard_useadmindashboard"
     },
@@ -7029,7 +7049,7 @@
       "source_file": "mobile/src/hooks/useAdminReports.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 42,
+      "community": 69,
       "norm_label": "useadminreports.ts",
       "id": "hooks_useadminreports"
     },
@@ -7069,7 +7089,7 @@
       "source_file": "mobile/src/hooks/useEmployees.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "useemployees.ts",
       "id": "hooks_useemployees"
     },
@@ -7079,7 +7099,7 @@
       "source_file": "mobile/src/hooks/useEmployees.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 11,
+      "community": 40,
       "norm_label": "useemployees()",
       "id": "hooks_useemployees_useemployees"
     },
@@ -7139,7 +7159,7 @@
       "source_file": "mobile/src/hooks/useSocket.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 42,
+      "community": 106,
       "norm_label": "usesocket.ts",
       "id": "hooks_usesocket"
     },
@@ -7149,7 +7169,7 @@
       "source_file": "mobile/src/hooks/useSocket.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 42,
+      "community": 106,
       "norm_label": "socket_url",
       "id": "hooks_usesocket_socket_url"
     },
@@ -7159,7 +7179,7 @@
       "source_file": "mobile/src/hooks/useSocket.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 42,
+      "community": 106,
       "norm_label": "usesocket()",
       "id": "hooks_usesocket_usesocket"
     },
@@ -7189,7 +7209,7 @@
       "source_file": "mobile/src/lib/secureStorage.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 109,
+      "community": 29,
       "norm_label": "securestorage.ts",
       "id": "lib_securestorage"
     },
@@ -7199,7 +7219,7 @@
       "source_file": "mobile/src/lib/secureStorage.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 109,
+      "community": 29,
       "norm_label": "securestorage",
       "id": "lib_securestorage_securestorage"
     },
@@ -7389,7 +7409,7 @@
       "source_file": "server/src/features/attendance/analytics.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 37,
+      "community": 73,
       "norm_label": "analytics.service.ts",
       "id": "attendance_analytics_service"
     },
@@ -7459,7 +7479,7 @@
       "source_file": "server/src/features/attendance/attendance.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 37,
+      "community": 73,
       "norm_label": "attendance.controller.ts",
       "id": "attendance_attendance_controller"
     },
@@ -7699,7 +7719,7 @@
       "source_file": "server/src/features/attendance/attendance.dto.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 27,
+      "community": 38,
       "norm_label": "updateshiftsettingsinput",
       "id": "attendance_attendance_dto_updateshiftsettingsinput"
     },
@@ -7729,7 +7749,7 @@
       "source_file": "server/src/features/attendance/attendance.routes.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 105,
+      "community": 38,
       "norm_label": "router",
       "id": "attendance_attendance_routes_router"
     },
@@ -7739,7 +7759,7 @@
       "source_file": "server/src/features/attendance/attendance.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 37,
+      "community": 38,
       "norm_label": "attendance.service.ts",
       "id": "attendance_attendance_service"
     },
@@ -7769,7 +7789,7 @@
       "source_file": "server/src/features/attendance/attendance.service.ts",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 27,
+      "community": 38,
       "norm_label": ".updatecompanyshiftsettings()",
       "id": "attendance_attendance_service_attendanceservice_updatecompanyshiftsettings"
     },
@@ -8169,7 +8189,7 @@
       "source_file": "server/src/features/corrections/correction.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": "correction.controller.ts",
       "id": "corrections_correction_controller"
     },
@@ -8179,7 +8199,7 @@
       "source_file": "server/src/features/corrections/correction.controller.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": "correctioncontroller",
       "id": "corrections_correction_controller_correctioncontroller"
     },
@@ -8189,7 +8209,7 @@
       "source_file": "server/src/features/corrections/correction.controller.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": ".requestcorrection()",
       "id": "corrections_correction_controller_correctioncontroller_requestcorrection"
     },
@@ -8199,7 +8219,7 @@
       "source_file": "server/src/features/corrections/correction.controller.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": ".getmyrequests()",
       "id": "corrections_correction_controller_correctioncontroller_getmyrequests"
     },
@@ -8209,7 +8229,7 @@
       "source_file": "server/src/features/corrections/correction.controller.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": ".getpendingrequests()",
       "id": "corrections_correction_controller_correctioncontroller_getpendingrequests"
     },
@@ -8219,7 +8239,7 @@
       "source_file": "server/src/features/corrections/correction.controller.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": ".reviewrequest()",
       "id": "corrections_correction_controller_correctioncontroller_reviewrequest"
     },
@@ -8299,7 +8319,7 @@
       "source_file": "server/src/features/corrections/correction.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 37,
+      "community": 35,
       "norm_label": "correction.service.ts",
       "id": "corrections_correction_service"
     },
@@ -8309,7 +8329,7 @@
       "source_file": "server/src/features/corrections/correction.service.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": "correctionservice",
       "id": "corrections_correction_service_correctionservice"
     },
@@ -8319,7 +8339,7 @@
       "source_file": "server/src/features/corrections/correction.service.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": ".createrequest()",
       "id": "corrections_correction_service_correctionservice_createrequest"
     },
@@ -8329,7 +8349,7 @@
       "source_file": "server/src/features/corrections/correction.service.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": ".listuserrequests()",
       "id": "corrections_correction_service_correctionservice_listuserrequests"
     },
@@ -8339,7 +8359,7 @@
       "source_file": "server/src/features/corrections/correction.service.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": ".listpendingrequests()",
       "id": "corrections_correction_service_correctionservice_listpendingrequests"
     },
@@ -8349,7 +8369,7 @@
       "source_file": "server/src/features/corrections/correction.service.ts",
       "source_location": "L50",
       "_origin": "ast",
-      "community": 40,
+      "community": 35,
       "norm_label": ".reviewrequest()",
       "id": "corrections_correction_service_correctionservice_reviewrequest"
     },
@@ -8469,7 +8489,7 @@
       "source_file": "server/src/features/employees/employees.dto.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 21,
+      "community": 53,
       "norm_label": "createemployeeinput",
       "id": "employees_employees_dto_createemployeeinput"
     },
@@ -8509,7 +8529,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 21,
+      "community": 53,
       "norm_label": "employees.service.ts",
       "id": "employees_employees_service"
     },
@@ -8519,7 +8539,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 21,
+      "community": 108,
       "norm_label": "employeeservice",
       "id": "employees_employees_service_employeeservice"
     },
@@ -8529,7 +8549,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 21,
+      "community": 108,
       "norm_label": ".normalizesegment()",
       "id": "employees_employees_service_employeeservice_normalizesegment"
     },
@@ -8539,7 +8559,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 21,
+      "community": 108,
       "norm_label": ".generateemployeecode()",
       "id": "employees_employees_service_employeeservice_generateemployeecode"
     },
@@ -8549,7 +8569,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 21,
+      "community": 108,
       "norm_label": ".suggestemployeecode()",
       "id": "employees_employees_service_employeeservice_suggestemployeecode"
     },
@@ -8559,7 +8579,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 21,
+      "community": 108,
       "norm_label": ".createemployee()",
       "id": "employees_employees_service_employeeservice_createemployee"
     },
@@ -8569,7 +8589,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L105",
       "_origin": "ast",
-      "community": 21,
+      "community": 108,
       "norm_label": ".getallemployees()",
       "id": "employees_employees_service_employeeservice_getallemployees"
     },
@@ -8579,7 +8599,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L113",
       "_origin": "ast",
-      "community": 21,
+      "community": 108,
       "norm_label": ".getemployeebyid()",
       "id": "employees_employees_service_employeeservice_getemployeebyid"
     },
@@ -8589,7 +8609,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L120",
       "_origin": "ast",
-      "community": 21,
+      "community": 108,
       "norm_label": ".toggleemployeestatus()",
       "id": "employees_employees_service_employeeservice_toggleemployeestatus"
     },
@@ -8599,7 +8619,7 @@
       "source_file": "server/src/features/employees/employees.service.ts",
       "source_location": "L145",
       "_origin": "ast",
-      "community": 21,
+      "community": 108,
       "norm_label": ".deactivateemployee()",
       "id": "employees_employees_service_employeeservice_deactivateemployee"
     },
@@ -8669,7 +8689,7 @@
       "source_file": "server/src/features/leaves/leaves.dto.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 55,
+      "community": 28,
       "norm_label": "leaves.dto.ts",
       "id": "leaves_leaves_dto"
     },
@@ -8679,7 +8699,7 @@
       "source_file": "server/src/features/leaves/leaves.dto.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 55,
+      "community": 28,
       "norm_label": "leavetypeschema",
       "id": "leaves_leaves_dto_leavetypeschema"
     },
@@ -8689,7 +8709,7 @@
       "source_file": "server/src/features/leaves/leaves.dto.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 55,
+      "community": 28,
       "norm_label": "createleaverequestschema",
       "id": "leaves_leaves_dto_createleaverequestschema"
     },
@@ -8699,7 +8719,7 @@
       "source_file": "server/src/features/leaves/leaves.dto.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 55,
+      "community": 28,
       "norm_label": "reviewleaverequestschema",
       "id": "leaves_leaves_dto_reviewleaverequestschema"
     },
@@ -8709,7 +8729,7 @@
       "source_file": "server/src/features/leaves/leaves.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 55,
+      "community": 28,
       "norm_label": "leaves.routes.ts",
       "id": "leaves_leaves_routes"
     },
@@ -8719,7 +8739,7 @@
       "source_file": "server/src/features/leaves/leaves.routes.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 55,
+      "community": 28,
       "norm_label": "router",
       "id": "leaves_leaves_routes_router"
     },
@@ -9239,7 +9259,7 @@
       "source_file": "server/src/lib/errors.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 44,
+      "community": 53,
       "norm_label": "createerror",
       "id": "lib_errors_createerror"
     },
@@ -9279,7 +9299,7 @@
       "source_file": "server/src/lib/prisma.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 37,
+      "community": 73,
       "norm_label": "prisma.ts",
       "id": "lib_prisma"
     },
@@ -9289,7 +9309,7 @@
       "source_file": "server/src/lib/prisma.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 37,
+      "community": 73,
       "norm_label": "globalforprisma",
       "id": "lib_prisma_globalforprisma"
     },
@@ -9379,7 +9399,7 @@
       "source_file": "server/src/middleware/rateLimiter.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 38,
+      "community": 12,
       "norm_label": "ratelimiter.ts",
       "id": "middleware_ratelimiter"
     },
@@ -9389,7 +9409,7 @@
       "source_file": "server/src/middleware/rateLimiter.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 38,
+      "community": 12,
       "norm_label": "authratelimiter",
       "id": "middleware_ratelimiter_authratelimiter"
     },
@@ -9399,7 +9419,7 @@
       "source_file": "server/src/middleware/rateLimiter.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 38,
+      "community": 12,
       "norm_label": "attendanceratelimiter",
       "id": "middleware_ratelimiter_attendanceratelimiter"
     },
@@ -9469,7 +9489,7 @@
       "source_file": "server/src/middleware/validate.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 55,
+      "community": 28,
       "norm_label": "validate.ts",
       "id": "middleware_validate"
     },
@@ -9479,7 +9499,7 @@
       "source_file": "server/src/middleware/validate.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 55,
+      "community": 28,
       "norm_label": "validate()",
       "id": "middleware_validate_validate"
     },
@@ -9579,7 +9599,7 @@
       "source_file": "server/src/services/notificationService.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 37,
+      "community": 35,
       "norm_label": "notificationservice.ts",
       "id": "services_notificationservice"
     },
@@ -9589,7 +9609,7 @@
       "source_file": "server/src/services/notificationService.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 37,
+      "community": 35,
       "norm_label": "pushpayload",
       "id": "services_notificationservice_pushpayload"
     },
@@ -9599,7 +9619,7 @@
       "source_file": "server/src/services/notificationService.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 37,
+      "community": 35,
       "norm_label": "sendpush()",
       "id": "services_notificationservice_sendpush"
     },
@@ -9609,7 +9629,7 @@
       "source_file": "server/src/services/notificationService.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 37,
+      "community": 35,
       "norm_label": "notificationservice",
       "id": "services_notificationservice_notificationservice"
     },
@@ -9639,7 +9659,7 @@
       "source_file": "server/src/services/push.service.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 108,
+      "community": 3,
       "norm_label": "pushservice",
       "id": "services_push_service_pushservice"
     },
@@ -9649,7 +9669,7 @@
       "source_file": "server/src/services/push.service.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 108,
+      "community": 3,
       "norm_label": ".sendnotification()",
       "id": "services_push_service_pushservice_sendnotification"
     },
@@ -9659,7 +9679,7 @@
       "source_file": "server/src/services/push.service.ts",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 108,
+      "community": 3,
       "norm_label": ".sendmultiplenotifications()",
       "id": "services_push_service_pushservice_sendmultiplenotifications"
     },
@@ -11586,6 +11606,144 @@
   ],
   "links": [
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_c"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L73",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_createemployeescreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L52",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_f"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L310",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_s"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_styledinput"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "employees_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "employees_api_employeeapi"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "hooks_useshifts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "hooks_useshifts_useshifts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "shifts_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "shifts_api_shiftprofile"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "shifts_api_shiftsapi"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "admin_create_employee_createemployeescreen",
+      "target": "hooks_useshifts_useshifts"
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -11661,21 +11819,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L416",
+      "source_location": "L391",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "auth_login",
-      "target": "auth_login_styles"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_login_width_height"
+      "target": "auth_login_s",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -11744,6 +11892,28 @@
       "target": "types_index_logininput"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "auth_login",
+      "target": "ui_safekeyboardavoidingview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "auth_login",
+      "target": "ui_safekeyboardavoidingview_safekeyboardavoidingview",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -11755,130 +11925,226 @@
       "target": "auth_store_useauthstore"
     },
     {
-      "relation": "contains",
+      "relation": "imports_from",
+      "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L79",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L9",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "dashboard_page_avatar_colors"
+      "source": "auth_register",
+      "target": "auth_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_register",
+      "target": "auth_api_authapi"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L82",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L16",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "dashboard_page_avatarcolor"
+      "source": "auth_register",
+      "target": "auth_register_c"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L94",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L61",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "dashboard_page_dashboardoverview"
+      "source": "auth_register",
+      "target": "auth_register_floatinput"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L86",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L49",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "dashboard_page_pulseitem"
+      "source": "auth_register",
+      "target": "auth_register_inputprops"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L172",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_register",
+      "target": "auth_register_registerscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L456",
+      "weight": 1.0,
+      "source": "auth_register",
+      "target": "auth_register_s",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L143",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_register",
+      "target": "auth_register_stepindicator"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_register",
+      "target": "auth_register_steps"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_register",
+      "target": "auth_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_register",
+      "target": "auth_store_useauthstore"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/register.tsx",
       "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "dashboard_page_statcard"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L52",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "dashboard_page_statusbadge"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "layout_dashboardlayout"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "lib_api"
+      "source": "auth_register",
+      "target": "lib_securestorage"
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L6",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "lib_api_api"
+      "source": "auth_register",
+      "target": "lib_securestorage_securestorage"
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L5",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "store_authstore"
+      "source": "auth_register",
+      "target": "ui_safekeyboardavoidingview",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L5",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "auth_register",
+      "target": "ui_safekeyboardavoidingview_safekeyboardavoidingview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L13",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "dashboard_page",
-      "target": "store_authstore_useauthstore"
+      "source": "auth_register",
+      "target": "ui_timezoneselector"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_register",
+      "target": "ui_timezoneselector_timezoneselector"
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "web/src/app/dashboard/page.tsx",
-      "source_location": "L95",
+      "source_file": "mobile/app/(auth)/register.tsx",
+      "source_location": "L175",
       "weight": 1.0,
-      "source": "dashboard_page_dashboardoverview",
-      "target": "store_authstore_useauthstore"
+      "source": "auth_register_registerscreen",
+      "target": "auth_store_useauthstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "app_layout",
+      "target": "app_layout_queryclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_layout",
+      "target": "app_layout_rootlayout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "app_layout",
+      "target": "auth_store_useauthstore",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12294,6 +12560,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "mobile/package.json",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "mobile_package_dependencies",
+      "target": "mobile_package_dependencies_react_native_keyboard_controller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/package.json",
       "source_location": "L42",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -12439,6 +12715,528 @@
       "confidence_score": 1.0,
       "source": "mobile_package_devdependencies",
       "target": "mobile_package_devdependencies_typescript"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/components/ui/SafeKeyboardAvoidingView.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "ui_safekeyboardavoidingview",
+      "target": "ui_safekeyboardavoidingview_safekeyboardavoidingview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "attendance_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "attendance_api_attendanceapi"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "components_checkinbutton_attendancestatus"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "components_checkinbutton_c"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L51",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "components_checkinbutton_cfg"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L155",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "components_checkinbutton_checkinbutton"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "components_checkinbutton_checkinbuttonprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L84",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "components_checkinbutton_ripplering"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L278",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "components_checkinbutton_s"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L138",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "components_checkinbutton_statpill"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L130",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "components_checkinbutton_usepressshrink"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "lib_locationservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_checkinbutton",
+      "target": "lib_locationservice_fetchfreshlocation"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "components_checkinbutton"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "components_checkinbutton_checkinbutton"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/attendance.controller.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "controllers_attendance_controller",
+      "target": "services_attendance_service"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service",
+      "target": "dtos_attendance_dto"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service",
+      "target": "dtos_attendance_dto_updateshiftsettingsinput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service",
+      "target": "lib_errors_createerror"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service",
+      "target": "lib_socket_emittocompany"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service",
+      "target": "services_attendance_service_attendanceservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service",
+      "target": "services_deltaengine_calculatedelta"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service",
+      "target": "services_deltaengine_resolveconfig"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service",
+      "target": "services_notificationservice_notificationservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/attendance.controller.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "controllers_attendance_controller",
+      "target": "services_attendance_service_attendanceservice"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L446",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_adminupdaterecord"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L102",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_checkin"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L167",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_checkout"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L378",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_endbreak"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L78",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_getcompanyprofile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_getcompanyshiftsettings"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L434",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_gethistory"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L278",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_gettoday"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L323",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_startbreak"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L95",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_updatecompanyprofile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice",
+      "target": "services_attendance_service_attendanceservice_updatecompanyshiftsettings"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/attendance.service.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_attendance_service_attendanceservice_updatecompanyshiftsettings",
+      "target": "dtos_attendance_dto_updateshiftsettingsinput"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L79",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "dashboard_page_avatar_colors"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L82",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "dashboard_page_avatarcolor"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L94",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "dashboard_page_dashboardoverview"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L86",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "dashboard_page_pulseitem"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "dashboard_page_statcard"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L52",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "dashboard_page_statusbadge"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "layout_dashboardlayout"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "lib_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "lib_api_api"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "store_authstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dashboard_page",
+      "target": "store_authstore_useauthstore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/app/dashboard/page.tsx",
+      "source_location": "L95",
+      "weight": 1.0,
+      "source": "dashboard_page_dashboardoverview",
+      "target": "store_authstore_useauthstore"
     },
     {
       "relation": "contains",
@@ -13060,17 +13858,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L17",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "lib_locationservice"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "mobile/app/(employee)/index.tsx",
       "source_location": "L15",
       "weight": 1.0,
@@ -13149,17 +13936,6 @@
       "confidence_score": 1.0,
       "source": "lib_locationservice_fetchfreshlocation",
       "target": "lib_locationservice_ensurepermissions"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L17",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "lib_locationservice_fetchfreshlocation"
     },
     {
       "relation": "contains",
@@ -14059,28 +14835,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "server/src/controllers/attendance.controller.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "controllers_attendance_controller",
-      "target": "services_attendance_service"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/controllers/attendance.controller.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "controllers_attendance_controller",
-      "target": "services_attendance_service_attendanceservice"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "server/src/routes/attendance.routes.ts",
       "source_location": "L2",
       "weight": 1.0,
@@ -14967,17 +15721,6 @@
       "target": "dtos_attendance_dto"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service",
-      "target": "dtos_attendance_dto"
-    },
-    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -15020,28 +15763,6 @@
       "confidence_score": 1.0,
       "source": "routes_attendance_routes",
       "target": "dtos_attendance_dto_adminupdaterecordschema"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service",
-      "target": "dtos_attendance_dto_updateshiftsettingsinput"
-    },
-    {
-      "relation": "references",
-      "context": "parameter_type",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice_updatecompanyshiftsettings",
-      "target": "dtos_attendance_dto_updateshiftsettingsinput"
     },
     {
       "relation": "contains",
@@ -16015,181 +16736,6 @@
       "confidence_score": 1.0,
       "source": "services_analytics_service_analyticsservice",
       "target": "services_analytics_service_analyticsservice_getpersonalstats"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service",
-      "target": "lib_errors_createerror"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service",
-      "target": "lib_socket_emittocompany"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service",
-      "target": "services_attendance_service_attendanceservice"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service",
-      "target": "services_deltaengine_calculatedelta"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service",
-      "target": "services_deltaengine_resolveconfig"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service",
-      "target": "services_notificationservice_notificationservice"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L446",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_adminupdaterecord"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L102",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_checkin"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L167",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_checkout"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L378",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_endbreak"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L78",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_getcompanyprofile"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_getcompanyshiftsettings"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L434",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_gethistory"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L278",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_gettoday"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L323",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_startbreak"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L95",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_updatecompanyprofile"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/services/attendance.service.ts",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "services_attendance_service_attendanceservice",
-      "target": "services_attendance_service_attendanceservice_updatecompanyshiftsettings"
     },
     {
       "relation": "imports",
@@ -18101,144 +18647,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_c"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L73",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_createemployeescreen"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L52",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_f"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L310",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_s"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_styledinput"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "employees_api"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "employees_api_employeeapi"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "hooks_useshifts"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "hooks_useshifts_useshifts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "shifts_api"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "shifts_api_shiftprofile"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "shifts_api_shiftsapi"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L76",
-      "weight": 1.0,
-      "source": "admin_create_employee_createemployeescreen",
-      "target": "hooks_useshifts_useshifts"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "mobile/app/(admin)/daily-logs.tsx",
       "source_location": "L44",
       "weight": 1.0,
@@ -19002,175 +19410,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_api"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_api_authapi"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_register_c"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L61",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_register_floatinput"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L49",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_register_inputprops"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L172",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_register_registerscreen"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L143",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_register_stepindicator"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L31",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_register_steps"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L440",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_register_styles"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_store"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "auth_store_useauthstore"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "lib_securestorage"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "lib_securestorage_securestorage"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "ui_timezoneselector"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_register",
-      "target": "ui_timezoneselector_timezoneselector"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "mobile/app/(auth)/register.tsx",
-      "source_location": "L175",
-      "weight": 1.0,
-      "source": "auth_register_registerscreen",
-      "target": "auth_store_useauthstore"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "mobile/app/(employee)/_layout.tsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -19373,28 +19612,6 @@
       "confidence_score": 1.0,
       "source": "employee_index",
       "target": "components_breakbutton_breakbutton"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "components_checkinbutton"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "components_checkinbutton_checkinbutton"
     },
     {
       "relation": "contains",
@@ -19866,48 +20083,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_layout_tsx_app_layout",
-      "target": "app_layout_queryclient"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_layout_tsx_app_layout",
-      "target": "auth_store"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_layout_tsx_app_layout",
-      "target": "auth_store_useauthstore"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_layout_tsx_app_layout",
-      "target": "mobile_app_layout_tsx_app_layout_rootlayout"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "mobile/app/index.tsx",
       "source_location": "L4",
       "weight": 1.0,
@@ -20338,17 +20513,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "attendance_api"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "mobile/src/hooks/useAdminReports.ts",
       "source_location": "L2",
       "weight": 1.0,
@@ -20387,17 +20551,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "components_breakbutton",
-      "target": "attendance_api_attendanceapi"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
       "target": "attendance_api_attendanceapi"
     },
     {
@@ -20615,96 +20768,6 @@
       "confidence_score": 1.0,
       "source": "components_breakbutton_idlebreak",
       "target": "components_breakbutton_usemountanim"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L20",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "components_checkinbutton_attendancestatus"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "components_checkinbutton_c"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L51",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "components_checkinbutton_cfg"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L155",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "components_checkinbutton_checkinbutton"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L22",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "components_checkinbutton_checkinbuttonprops"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L84",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "components_checkinbutton_ripplering"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L278",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "components_checkinbutton_s"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L138",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "components_checkinbutton_statpill"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/features/attendance/components/CheckInButton.tsx",
-      "source_location": "L130",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_checkinbutton",
-      "target": "components_checkinbutton_usepressshrink"
     },
     {
       "relation": "contains",
@@ -27933,5 +27996,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0d9ab463c078700e0146073575eddb91936e7111"
+  "built_at_commit": "eb9747e582eaebaa3389ca78b36e7fd9b45ff4d4"
 }
