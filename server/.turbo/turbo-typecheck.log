@@ -1,6 +1,0 @@
-
-> api@1.0.0 typecheck C:\Users\BILAL\Desktop\Hr-portal\apps\api
-> tsc --noEmit
-
-src/index.ts(3,7): error TS2742: The inferred type of 'app' cannot be named without a reference to '.pnpm/@types+express-serve-static-core@4.19.8/node_modules/@types/express-serve-static-core'. This is likely not portable. A type annotation is necessary.
- ELIFECYCLE  Command failed with exit code 2.

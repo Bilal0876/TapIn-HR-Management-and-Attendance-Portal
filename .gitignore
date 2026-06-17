@@ -61,4 +61,4 @@ graphify-out/*.html
 **/*/service-account-key.json
 
 # Nested separate repos
-Hr-Portal-BE/
+Hr-Portal-Web-FE/

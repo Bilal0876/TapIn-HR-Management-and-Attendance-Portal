@@ -61,8 +61,15 @@ async function registerForPushNotificationsAsync(): Promise<string | null> {
       });
     }
 
-    const token = (await Notifications.getExpoPushTokenAsync()).data;
+    const projectId = (Constants as any).expoConfig?.extra?.eas?.projectId;
+    if (!projectId) {
+      console.error('[Push] projectId missing from app config — push token cannot be registered.');
+      return null;
+    }
+
+    const token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
     return token;
+
   } catch (e) {
     console.log('Push notifications not available:', e);
     return null;
