@@ -17,6 +17,15 @@
       "expo-font",
       "./plugins/withNinjaLongPaths",
       [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#5B6EF5",
+          "defaultChannel": "default",
+          "sounds": []
+        }
+      ],
+      [
         "expo-location",
         {
           "locationWhenInUsePermission": "Allow Office Attendance to record your location when you check in or out for HR audit purposes."
@@ -38,6 +47,7 @@
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
         "NOTIFICATIONS",
+        "android.permission.POST_NOTIFICATIONS",
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION"
       ]

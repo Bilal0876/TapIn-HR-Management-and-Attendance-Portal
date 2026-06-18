@@ -13,6 +13,7 @@ import { LoginInput } from '@/types';
 import { authApi } from '@/features/auth/api';
 import { useAuthStore } from '@/features/auth/store';
 import { secureStorage } from '@/lib/secureStorage';
+import { syncPushTokenToServer } from '@/lib/notificationService';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -180,6 +181,7 @@ export default function LoginScreen() {
       const res = await authApi.login(data);
       await secureStorage.setTokens(res.accessToken, res.refreshToken);
       setAuth(res.employee, res.accessToken, res.refreshToken);
+      syncPushTokenToServer().catch(() => {});
       if (res.employee.mustChangePassword) {
         router.replace('/(auth)/change-password');
       } else {

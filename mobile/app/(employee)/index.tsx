@@ -13,8 +13,6 @@ import { useTodayAttendance } from '@/features/attendance/hooks';
 import { format, parseISO, addMinutes } from 'date-fns';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ensurePermissions } from '@/lib/locationService';
-import { registerForPushNotificationsAsync } from '@/lib/notificationService';
-import { authApi } from '@/features/auth/api';
 import { TAB_BAR_HEIGHT } from '@/components/CustomTabBar';
 
 // ── Animated wrapper that fades+scales when `status` changes ──────────────────
@@ -51,21 +49,6 @@ export default function EmployeeHome() {
   const { data: record, isLoading, refetch } = useTodayAttendance();
 
   useEffect(() => { ensurePermissions(); }, []);
-
-  useEffect(() => {
-    const setupNotifications = async () => {
-      const token = await registerForPushNotificationsAsync();
-      if (token) {
-        try {
-          await authApi.updatePushToken(token);
-          console.log('[Push] Token synced to server');
-        } catch (err) {
-          console.error('[Push] Failed to sync token:', err);
-        }
-      }
-    };
-    setupNotifications();
-  }, []);
 
   if (isLoading) {
     return (

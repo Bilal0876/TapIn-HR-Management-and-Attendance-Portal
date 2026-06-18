@@ -1,4 +1,5 @@
 import '../uniwind.css';
+import '@/lib/notificationService';
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { Slot, useRouter, useSegments } from 'expo-router';
