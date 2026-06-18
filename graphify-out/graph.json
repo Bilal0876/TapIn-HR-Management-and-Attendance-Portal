@@ -4,14 +4,504 @@
   "graph": {},
   "nodes": [
     {
+      "label": "app.json",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "mobile_app",
+      "community": 8,
+      "norm_label": "app.json"
+    },
+    {
+      "label": "expo",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "mobile_app_expo",
+      "community": 8,
+      "norm_label": "expo"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "mobile_app_expo_name",
+      "community": 8,
+      "norm_label": "name"
+    },
+    {
+      "label": "slug",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "mobile_app_expo_slug",
+      "community": 8,
+      "norm_label": "slug"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "mobile_app_expo_version",
+      "community": 8,
+      "norm_label": "version"
+    },
+    {
+      "label": "orientation",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "mobile_app_expo_orientation",
+      "community": 8,
+      "norm_label": "orientation"
+    },
+    {
+      "label": "icon",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "mobile_app_expo_icon",
+      "community": 8,
+      "norm_label": "icon"
+    },
+    {
+      "label": "userInterfaceStyle",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "mobile_app_expo_userinterfacestyle",
+      "community": 8,
+      "norm_label": "userinterfacestyle"
+    },
+    {
+      "label": "splash",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "mobile_app_expo_splash",
+      "community": 8,
+      "norm_label": "splash"
+    },
+    {
+      "label": "image",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "mobile_app_splash_image",
+      "community": 8,
+      "norm_label": "image"
+    },
+    {
+      "label": "resizeMode",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "mobile_app_splash_resizemode",
+      "community": 8,
+      "norm_label": "resizemode"
+    },
+    {
+      "label": "backgroundColor",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "mobile_app_splash_backgroundcolor",
+      "community": 8,
+      "norm_label": "backgroundcolor"
+    },
+    {
+      "label": "scheme",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "mobile_app_expo_scheme",
+      "community": 8,
+      "norm_label": "scheme"
+    },
+    {
+      "label": "plugins",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "mobile_app_expo_plugins",
+      "community": 8,
+      "norm_label": "plugins"
+    },
+    {
+      "label": "ios",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "mobile_app_expo_ios",
+      "community": 8,
+      "norm_label": "ios"
+    },
+    {
+      "label": "supportsTablet",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "mobile_app_ios_supportstablet",
+      "community": 8,
+      "norm_label": "supportstablet"
+    },
+    {
+      "label": "bundleIdentifier",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "mobile_app_ios_bundleidentifier",
+      "community": 8,
+      "norm_label": "bundleidentifier"
+    },
+    {
+      "label": "android",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "mobile_app_expo_android",
+      "community": 8,
+      "norm_label": "android"
+    },
+    {
+      "label": "package",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "mobile_app_android_package",
+      "community": 8,
+      "norm_label": "package"
+    },
+    {
+      "label": "googleServicesFile",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "mobile_app_android_googleservicesfile",
+      "community": 8,
+      "norm_label": "googleservicesfile"
+    },
+    {
+      "label": "adaptiveIcon",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "mobile_app_android_adaptiveicon",
+      "community": 8,
+      "norm_label": "adaptiveicon"
+    },
+    {
+      "label": "foregroundImage",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "mobile_app_adaptiveicon_foregroundimage",
+      "community": 8,
+      "norm_label": "foregroundimage"
+    },
+    {
+      "label": "backgroundColor",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "mobile_app_adaptiveicon_backgroundcolor",
+      "community": 8,
+      "norm_label": "backgroundcolor"
+    },
+    {
+      "label": "permissions",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "mobile_app_android_permissions",
+      "community": 8,
+      "norm_label": "permissions"
+    },
+    {
+      "label": "web",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "mobile_app_expo_web",
+      "community": 8,
+      "norm_label": "web"
+    },
+    {
+      "label": "favicon",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L56",
+      "_origin": "ast",
+      "id": "mobile_app_web_favicon",
+      "community": 8,
+      "norm_label": "favicon"
+    },
+    {
+      "label": "extra",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L58",
+      "_origin": "ast",
+      "id": "mobile_app_expo_extra",
+      "community": 8,
+      "norm_label": "extra"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "mobile_app_extra_router",
+      "community": 8,
+      "norm_label": "router"
+    },
+    {
+      "label": "eas",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "mobile_app_extra_eas",
+      "community": 8,
+      "norm_label": "eas"
+    },
+    {
+      "label": "projectId",
+      "file_type": "code",
+      "source_file": "mobile/app.json",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "mobile_app_eas_projectid",
+      "community": 8,
+      "norm_label": "projectid"
+    },
+    {
+      "label": "login.tsx",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "auth_login",
+      "community": 30,
+      "norm_label": "login.tsx"
+    },
+    {
+      "label": "C",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "auth_login_c",
+      "community": 30,
+      "norm_label": "c"
+    },
+    {
+      "label": "LiveClock()",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "auth_login_liveclock",
+      "community": 30,
+      "norm_label": "liveclock()"
+    },
+    {
+      "label": "InputProps",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "auth_login_inputprops",
+      "community": 30,
+      "norm_label": "inputprops"
+    },
+    {
+      "label": "FloatInput()",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "auth_login_floatinput",
+      "community": 30,
+      "norm_label": "floatinput()"
+    },
+    {
+      "label": "LoginScreen()",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L159",
+      "_origin": "ast",
+      "id": "auth_login_loginscreen",
+      "community": 30,
+      "norm_label": "loginscreen()"
+    },
+    {
+      "label": "s",
+      "file_type": "code",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L393",
+      "_origin": "ast",
+      "id": "auth_login_s",
+      "community": 30,
+      "norm_label": "s"
+    },
+    {
+      "label": "index.tsx",
+      "file_type": "code",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "employee_index",
+      "community": 70,
+      "norm_label": "index.tsx"
+    },
+    {
+      "label": "AnimatedStatusView()",
+      "file_type": "code",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "employee_index_animatedstatusview",
+      "community": 70,
+      "norm_label": "animatedstatusview()"
+    },
+    {
+      "label": "EmployeeHome()",
+      "file_type": "code",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "employee_index_employeehome",
+      "community": 70,
+      "norm_label": "employeehome()"
+    },
+    {
+      "label": "_layout.tsx",
+      "file_type": "code",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_layout",
+      "community": 36,
+      "norm_label": "_layout.tsx"
+    },
+    {
+      "label": "queryClient",
+      "file_type": "code",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "app_layout_queryclient",
+      "community": 36,
+      "norm_label": "queryclient"
+    },
+    {
+      "label": "RootLayout()",
+      "file_type": "code",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "app_layout_rootlayout",
+      "community": 36,
+      "norm_label": "rootlayout()"
+    },
+    {
+      "label": "usePushNotifications.ts",
+      "file_type": "code",
+      "source_file": "mobile/src/hooks/usePushNotifications.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "hooks_usepushnotifications",
+      "community": 19,
+      "norm_label": "usepushnotifications.ts"
+    },
+    {
+      "label": "usePushNotifications()",
+      "file_type": "code",
+      "source_file": "mobile/src/hooks/usePushNotifications.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "hooks_usepushnotifications_usepushnotifications",
+      "community": 19,
+      "norm_label": "usepushnotifications()"
+    },
+    {
+      "label": "notificationService.ts",
+      "file_type": "code",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "lib_notificationservice",
+      "community": 30,
+      "norm_label": "notificationservice.ts"
+    },
+    {
+      "label": "ensureAndroidChannel()",
+      "file_type": "code",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "lib_notificationservice_ensureandroidchannel",
+      "community": 30,
+      "norm_label": "ensureandroidchannel()"
+    },
+    {
+      "label": "registerForPushNotificationsAsync()",
+      "file_type": "code",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "lib_notificationservice_registerforpushnotificationsasync",
+      "community": 30,
+      "norm_label": "registerforpushnotificationsasync()"
+    },
+    {
+      "label": "syncPushTokenToServer()",
+      "file_type": "code",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L80",
+      "_origin": "ast",
+      "id": "lib_notificationservice_syncpushtokentoserver",
+      "community": 30,
+      "norm_label": "syncpushtokentoserver()"
+    },
+    {
       "label": "create-employee.tsx",
       "file_type": "code",
       "source_file": "mobile/app/(admin)/create-employee.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "admin_create_employee",
       "community": 11,
-      "norm_label": "create-employee.tsx"
+      "norm_label": "create-employee.tsx",
+      "id": "admin_create_employee"
     },
     {
       "label": "C",
@@ -19,9 +509,9 @@
       "source_file": "mobile/app/(admin)/create-employee.tsx",
       "source_location": "L16",
       "_origin": "ast",
-      "id": "admin_create_employee_c",
       "community": 11,
-      "norm_label": "c"
+      "norm_label": "c",
+      "id": "admin_create_employee_c"
     },
     {
       "label": "StyledInput()",
@@ -29,9 +519,9 @@
       "source_file": "mobile/app/(admin)/create-employee.tsx",
       "source_location": "L29",
       "_origin": "ast",
-      "id": "admin_create_employee_styledinput",
       "community": 11,
-      "norm_label": "styledinput()"
+      "norm_label": "styledinput()",
+      "id": "admin_create_employee_styledinput"
     },
     {
       "label": "f",
@@ -39,9 +529,9 @@
       "source_file": "mobile/app/(admin)/create-employee.tsx",
       "source_location": "L52",
       "_origin": "ast",
-      "id": "admin_create_employee_f",
       "community": 11,
-      "norm_label": "f"
+      "norm_label": "f",
+      "id": "admin_create_employee_f"
     },
     {
       "label": "CreateEmployeeScreen()",
@@ -49,9 +539,9 @@
       "source_file": "mobile/app/(admin)/create-employee.tsx",
       "source_location": "L74",
       "_origin": "ast",
-      "id": "admin_create_employee_createemployeescreen",
       "community": 11,
-      "norm_label": "createemployeescreen()"
+      "norm_label": "createemployeescreen()",
+      "id": "admin_create_employee_createemployeescreen"
     },
     {
       "label": "s",
@@ -59,9 +549,9 @@
       "source_file": "mobile/app/(admin)/create-employee.tsx",
       "source_location": "L343",
       "_origin": "ast",
-      "id": "admin_create_employee_s",
       "community": 11,
-      "norm_label": "s"
+      "norm_label": "s",
+      "id": "admin_create_employee_s"
     },
     {
       "label": "employees.tsx",
@@ -69,9 +559,9 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "admin_employees",
       "community": 40,
-      "norm_label": "employees.tsx"
+      "norm_label": "employees.tsx",
+      "id": "admin_employees"
     },
     {
       "label": "C",
@@ -79,9 +569,9 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "admin_employees_c",
       "community": 40,
-      "norm_label": "c"
+      "norm_label": "c",
+      "id": "admin_employees_c"
     },
     {
       "label": "AVATAR_PALETTE",
@@ -89,9 +579,9 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L24",
       "_origin": "ast",
-      "id": "admin_employees_avatar_palette",
       "community": 40,
-      "norm_label": "avatar_palette"
+      "norm_label": "avatar_palette",
+      "id": "admin_employees_avatar_palette"
     },
     {
       "label": "avatarColors()",
@@ -99,9 +589,9 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L33",
       "_origin": "ast",
-      "id": "admin_employees_avatarcolors",
       "community": 40,
-      "norm_label": "avatarcolors()"
+      "norm_label": "avatarcolors()",
+      "id": "admin_employees_avatarcolors"
     },
     {
       "label": "EmployeeCard()",
@@ -109,9 +599,9 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L38",
       "_origin": "ast",
-      "id": "admin_employees_employeecard",
       "community": 40,
-      "norm_label": "employeecard()"
+      "norm_label": "employeecard()",
+      "id": "admin_employees_employeecard"
     },
     {
       "label": "card",
@@ -119,9 +609,9 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L80",
       "_origin": "ast",
-      "id": "admin_employees_card",
       "community": 40,
-      "norm_label": "card"
+      "norm_label": "card",
+      "id": "admin_employees_card"
     },
     {
       "label": "EmployeesScreen()",
@@ -129,9 +619,9 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L125",
       "_origin": "ast",
-      "id": "admin_employees_employeesscreen",
       "community": 40,
-      "norm_label": "employeesscreen()"
+      "norm_label": "employeesscreen()",
+      "id": "admin_employees_employeesscreen"
     },
     {
       "label": "s",
@@ -139,9 +629,9 @@
       "source_file": "mobile/app/(admin)/employees.tsx",
       "source_location": "L235",
       "_origin": "ast",
-      "id": "admin_employees_s",
       "community": 40,
-      "norm_label": "s"
+      "norm_label": "s",
+      "id": "admin_employees_s"
     },
     {
       "label": "page.tsx",
@@ -149,9 +639,9 @@
       "source_file": "web/src/app/login/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "login_page",
       "community": 25,
-      "norm_label": "page.tsx"
+      "norm_label": "page.tsx",
+      "id": "login_page"
     },
     {
       "label": "LoginPage()",
@@ -159,9 +649,9 @@
       "source_file": "web/src/app/login/page.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "login_page_loginpage",
       "community": 25,
-      "norm_label": "loginpage()"
+      "norm_label": "loginpage()",
+      "id": "login_page_loginpage"
     },
     {
       "label": "page.tsx",
@@ -232,306 +722,6 @@
       "community": 58,
       "norm_label": "employeespage()",
       "id": "employees_page_employeespage"
-    },
-    {
-      "label": "app.json",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "app.json",
-      "id": "mobile_app"
-    },
-    {
-      "label": "expo",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L2",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "expo",
-      "id": "mobile_app_expo"
-    },
-    {
-      "label": "name",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L3",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "name",
-      "id": "mobile_app_expo_name"
-    },
-    {
-      "label": "slug",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L4",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "slug",
-      "id": "mobile_app_expo_slug"
-    },
-    {
-      "label": "version",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L5",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "version",
-      "id": "mobile_app_expo_version"
-    },
-    {
-      "label": "orientation",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L6",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "orientation",
-      "id": "mobile_app_expo_orientation"
-    },
-    {
-      "label": "icon",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L7",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "icon",
-      "id": "mobile_app_expo_icon"
-    },
-    {
-      "label": "userInterfaceStyle",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L8",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "userinterfacestyle",
-      "id": "mobile_app_expo_userinterfacestyle"
-    },
-    {
-      "label": "splash",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L9",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "splash",
-      "id": "mobile_app_expo_splash"
-    },
-    {
-      "label": "image",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L10",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "image",
-      "id": "mobile_app_splash_image"
-    },
-    {
-      "label": "resizeMode",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L11",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "resizemode",
-      "id": "mobile_app_splash_resizemode"
-    },
-    {
-      "label": "backgroundColor",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L12",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "backgroundcolor",
-      "id": "mobile_app_splash_backgroundcolor"
-    },
-    {
-      "label": "scheme",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L14",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "scheme",
-      "id": "mobile_app_expo_scheme"
-    },
-    {
-      "label": "plugins",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L15",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "plugins",
-      "id": "mobile_app_expo_plugins"
-    },
-    {
-      "label": "ios",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L26",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "ios",
-      "id": "mobile_app_expo_ios"
-    },
-    {
-      "label": "supportsTablet",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L27",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "supportstablet",
-      "id": "mobile_app_ios_supportstablet"
-    },
-    {
-      "label": "bundleIdentifier",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L28",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "bundleidentifier",
-      "id": "mobile_app_ios_bundleidentifier"
-    },
-    {
-      "label": "android",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L30",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "android",
-      "id": "mobile_app_expo_android"
-    },
-    {
-      "label": "package",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L31",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "package",
-      "id": "mobile_app_android_package"
-    },
-    {
-      "label": "googleServicesFile",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L32",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "googleservicesfile",
-      "id": "mobile_app_android_googleservicesfile"
-    },
-    {
-      "label": "adaptiveIcon",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L33",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "adaptiveicon",
-      "id": "mobile_app_android_adaptiveicon"
-    },
-    {
-      "label": "foregroundImage",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L34",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "foregroundimage",
-      "id": "mobile_app_adaptiveicon_foregroundimage"
-    },
-    {
-      "label": "backgroundColor",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L35",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "backgroundcolor",
-      "id": "mobile_app_adaptiveicon_backgroundcolor"
-    },
-    {
-      "label": "permissions",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L37",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "permissions",
-      "id": "mobile_app_android_permissions"
-    },
-    {
-      "label": "web",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L45",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "web",
-      "id": "mobile_app_expo_web"
-    },
-    {
-      "label": "favicon",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L46",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "favicon",
-      "id": "mobile_app_web_favicon"
-    },
-    {
-      "label": "extra",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L48",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "extra",
-      "id": "mobile_app_expo_extra"
-    },
-    {
-      "label": "router",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L49",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "router",
-      "id": "mobile_app_extra_router"
-    },
-    {
-      "label": "eas",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L50",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "eas",
-      "id": "mobile_app_extra_eas"
-    },
-    {
-      "label": "projectId",
-      "file_type": "code",
-      "source_file": "mobile/app.json",
-      "source_location": "L51",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "projectid",
-      "id": "mobile_app_eas_projectid"
     },
     {
       "label": "_layout.tsx",
@@ -649,7 +839,7 @@
       "source_file": "mobile/app/(admin)/index.tsx",
       "source_location": "L156",
       "_origin": "ast",
-      "community": 42,
+      "community": 23,
       "norm_label": "adminhome()",
       "id": "admin_index_adminhome"
     },
@@ -662,36 +852,6 @@
       "community": 23,
       "norm_label": "s",
       "id": "admin_index_s"
-    },
-    {
-      "label": "index.tsx",
-      "file_type": "code",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 70,
-      "norm_label": "index.tsx",
-      "id": "employee_index"
-    },
-    {
-      "label": "AnimatedStatusView()",
-      "file_type": "code",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L20",
-      "_origin": "ast",
-      "community": 70,
-      "norm_label": "animatedstatusview()",
-      "id": "employee_index_animatedstatusview"
-    },
-    {
-      "label": "EmployeeHome()",
-      "file_type": "code",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L49",
-      "_origin": "ast",
-      "community": 70,
-      "norm_label": "employeehome()",
-      "id": "employee_index_employeehome"
     },
     {
       "label": "CustomTabBar.tsx",
@@ -774,76 +934,6 @@
       "id": "components_customtabbar_styles"
     },
     {
-      "label": "login.tsx",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 30,
-      "norm_label": "login.tsx",
-      "id": "auth_login"
-    },
-    {
-      "label": "C",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L19",
-      "_origin": "ast",
-      "community": 30,
-      "norm_label": "c",
-      "id": "auth_login_c"
-    },
-    {
-      "label": "LiveClock()",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L32",
-      "_origin": "ast",
-      "community": 30,
-      "norm_label": "liveclock()",
-      "id": "auth_login_liveclock"
-    },
-    {
-      "label": "InputProps",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L61",
-      "_origin": "ast",
-      "community": 30,
-      "norm_label": "inputprops",
-      "id": "auth_login_inputprops"
-    },
-    {
-      "label": "FloatInput()",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L73",
-      "_origin": "ast",
-      "community": 30,
-      "norm_label": "floatinput()",
-      "id": "auth_login_floatinput"
-    },
-    {
-      "label": "LoginScreen()",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L158",
-      "_origin": "ast",
-      "community": 30,
-      "norm_label": "loginscreen()",
-      "id": "auth_login_loginscreen"
-    },
-    {
-      "label": "s",
-      "file_type": "code",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L391",
-      "_origin": "ast",
-      "community": 30,
-      "norm_label": "s",
-      "id": "auth_login_s"
-    },
-    {
       "label": "register.tsx",
       "file_type": "code",
       "source_file": "mobile/app/(auth)/register.tsx",
@@ -922,36 +1012,6 @@
       "community": 52,
       "norm_label": "s",
       "id": "auth_register_s"
-    },
-    {
-      "label": "_layout.tsx",
-      "file_type": "code",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 36,
-      "norm_label": "_layout.tsx",
-      "id": "app_layout"
-    },
-    {
-      "label": "queryClient",
-      "file_type": "code",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L9",
-      "_origin": "ast",
-      "community": 36,
-      "norm_label": "queryclient",
-      "id": "app_layout_queryclient"
-    },
-    {
-      "label": "RootLayout()",
-      "file_type": "code",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L11",
-      "_origin": "ast",
-      "community": 36,
-      "norm_label": "rootlayout()",
-      "id": "app_layout_rootlayout"
     },
     {
       "label": "package.json",
@@ -3529,7 +3589,7 @@
       "source_file": "server/src/routes/attendance.routes.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 63,
+      "community": 105,
       "norm_label": "router",
       "id": "routes_attendance_routes_router"
     },
@@ -6129,7 +6189,7 @@
       "source_file": "mobile/app/(employee)/profile.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 36,
       "norm_label": "profile.tsx",
       "id": "employee_profile"
     },
@@ -6139,7 +6199,7 @@
       "source_file": "mobile/app/(employee)/profile.tsx",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 29,
+      "community": 36,
       "norm_label": "{ width: screen_w }",
       "id": "employee_profile_width_screen_w"
     },
@@ -6149,7 +6209,7 @@
       "source_file": "mobile/app/(employee)/profile.tsx",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 29,
+      "community": 36,
       "norm_label": "profilerow()",
       "id": "employee_profile_profilerow"
     },
@@ -6159,7 +6219,7 @@
       "source_file": "mobile/app/(employee)/profile.tsx",
       "source_location": "L27",
       "_origin": "ast",
-      "community": 29,
+      "community": 36,
       "norm_label": "profilescreen()",
       "id": "employee_profile_profilescreen"
     },
@@ -6199,7 +6259,7 @@
       "source_file": "mobile/app/(employee)/summary.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 67,
+      "community": 108,
       "norm_label": "summary.tsx",
       "id": "employee_summary"
     },
@@ -6209,7 +6269,7 @@
       "source_file": "mobile/app/(employee)/summary.tsx",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 67,
+      "community": 108,
       "norm_label": "{ width: screen_w }",
       "id": "employee_summary_width_screen_w"
     },
@@ -6219,7 +6279,7 @@
       "source_file": "mobile/app/(employee)/summary.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 67,
+      "community": 108,
       "norm_label": "c",
       "id": "employee_summary_c"
     },
@@ -6229,7 +6289,7 @@
       "source_file": "mobile/app/(employee)/summary.tsx",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 67,
+      "community": 108,
       "norm_label": "achievementcard()",
       "id": "employee_summary_achievementcard"
     },
@@ -6239,7 +6299,7 @@
       "source_file": "mobile/app/(employee)/summary.tsx",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 67,
+      "community": 108,
       "norm_label": "employeesummaryscreen()",
       "id": "employee_summary_employeesummaryscreen"
     },
@@ -6249,7 +6309,7 @@
       "source_file": "mobile/app/(employee)/summary.tsx",
       "source_location": "L117",
       "_origin": "ast",
-      "community": 67,
+      "community": 108,
       "norm_label": "s",
       "id": "employee_summary_s"
     },
@@ -6809,7 +6869,7 @@
       "source_file": "mobile/src/features/attendance/hooks.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 29,
+      "community": 36,
       "norm_label": "usepersonalstats()",
       "id": "attendance_hooks_usepersonalstats"
     },
@@ -6939,7 +6999,7 @@
       "source_file": "mobile/src/features/employees/api.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 106,
+      "community": 40,
       "norm_label": "api.ts",
       "id": "employees_api"
     },
@@ -6949,7 +7009,7 @@
       "source_file": "mobile/src/features/employees/api.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 106,
+      "community": 40,
       "norm_label": "employeeapi",
       "id": "employees_api_employeeapi"
     },
@@ -7139,7 +7199,7 @@
       "source_file": "mobile/src/hooks/useAdminDashboard.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 42,
+      "community": 106,
       "norm_label": "useadmindashboard.ts",
       "id": "hooks_useadmindashboard"
     },
@@ -7149,7 +7209,7 @@
       "source_file": "mobile/src/hooks/useAdminDashboard.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 42,
+      "community": 106,
       "norm_label": "adminstats",
       "id": "hooks_useadmindashboard_adminstats"
     },
@@ -7159,7 +7219,7 @@
       "source_file": "mobile/src/hooks/useAdminDashboard.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 42,
+      "community": 106,
       "norm_label": "pulseactivity",
       "id": "hooks_useadmindashboard_pulseactivity"
     },
@@ -7169,7 +7229,7 @@
       "source_file": "mobile/src/hooks/useAdminDashboard.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 42,
+      "community": 23,
       "norm_label": "useadmindashboard()",
       "id": "hooks_useadmindashboard_useadmindashboard"
     },
@@ -7219,7 +7279,7 @@
       "source_file": "mobile/src/hooks/useEmployees.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 106,
+      "community": 40,
       "norm_label": "useemployees.ts",
       "id": "hooks_useemployees"
     },
@@ -7232,36 +7292,6 @@
       "community": 40,
       "norm_label": "useemployees()",
       "id": "hooks_useemployees_useemployees"
-    },
-    {
-      "label": "usePushNotifications.ts",
-      "file_type": "code",
-      "source_file": "mobile/src/hooks/usePushNotifications.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 19,
-      "norm_label": "usepushnotifications.ts",
-      "id": "hooks_usepushnotifications"
-    },
-    {
-      "label": "usePushNotifications()",
-      "file_type": "code",
-      "source_file": "mobile/src/hooks/usePushNotifications.ts",
-      "source_location": "L10",
-      "_origin": "ast",
-      "community": 19,
-      "norm_label": "usepushnotifications()",
-      "id": "hooks_usepushnotifications_usepushnotifications"
-    },
-    {
-      "label": "registerForPushNotificationsAsync()",
-      "file_type": "code",
-      "source_file": "mobile/src/hooks/usePushNotifications.ts",
-      "source_location": "L28",
-      "_origin": "ast",
-      "community": 19,
-      "norm_label": "registerforpushnotificationsasync()",
-      "id": "hooks_usepushnotifications_registerforpushnotificationsasync"
     },
     {
       "label": "useShifts.ts",
@@ -7314,32 +7344,12 @@
       "id": "hooks_usesocket_usesocket"
     },
     {
-      "label": "notificationService.ts",
-      "file_type": "code",
-      "source_file": "mobile/src/lib/notificationService.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 70,
-      "norm_label": "notificationservice.ts",
-      "id": "lib_notificationservice"
-    },
-    {
-      "label": "registerForPushNotificationsAsync()",
-      "file_type": "code",
-      "source_file": "mobile/src/lib/notificationService.ts",
-      "source_location": "L17",
-      "_origin": "ast",
-      "community": 70,
-      "norm_label": "registerforpushnotificationsasync()",
-      "id": "lib_notificationservice_registerforpushnotificationsasync"
-    },
-    {
       "label": "secureStorage.ts",
       "file_type": "code",
       "source_file": "mobile/src/lib/secureStorage.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 36,
       "norm_label": "securestorage.ts",
       "id": "lib_securestorage"
     },
@@ -7349,7 +7359,7 @@
       "source_file": "mobile/src/lib/secureStorage.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 29,
+      "community": 36,
       "norm_label": "securestorage",
       "id": "lib_securestorage_securestorage"
     },
@@ -7539,7 +7549,7 @@
       "source_file": "server/src/features/attendance/analytics.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 27,
+      "community": 53,
       "norm_label": "analytics.service.ts",
       "id": "attendance_analytics_service"
     },
@@ -7549,7 +7559,7 @@
       "source_file": "server/src/features/attendance/analytics.service.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 27,
+      "community": 73,
       "norm_label": "analyticsservice",
       "id": "attendance_analytics_service_analyticsservice"
     },
@@ -7559,7 +7569,7 @@
       "source_file": "server/src/features/attendance/analytics.service.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 27,
+      "community": 73,
       "norm_label": ".getcompanystats()",
       "id": "attendance_analytics_service_analyticsservice_getcompanystats"
     },
@@ -7569,7 +7579,7 @@
       "source_file": "server/src/features/attendance/analytics.service.ts",
       "source_location": "L82",
       "_origin": "ast",
-      "community": 27,
+      "community": 73,
       "norm_label": ".getcompanytrend()",
       "id": "attendance_analytics_service_analyticsservice_getcompanytrend"
     },
@@ -7579,7 +7589,7 @@
       "source_file": "server/src/features/attendance/analytics.service.ts",
       "source_location": "L181",
       "_origin": "ast",
-      "community": 27,
+      "community": 73,
       "norm_label": ".getpersonalstats()",
       "id": "attendance_analytics_service_analyticsservice_getpersonalstats"
     },
@@ -7589,7 +7599,7 @@
       "source_file": "server/src/features/attendance/analytics.service.ts",
       "source_location": "L229",
       "_origin": "ast",
-      "community": 27,
+      "community": 73,
       "norm_label": ".getdailylogs()",
       "id": "attendance_analytics_service_analyticsservice_getdailylogs"
     },
@@ -7599,7 +7609,7 @@
       "source_file": "server/src/features/attendance/analytics.service.ts",
       "source_location": "L310",
       "_origin": "ast",
-      "community": 27,
+      "community": 73,
       "norm_label": ".getcompanypulse()",
       "id": "attendance_analytics_service_analyticsservice_getcompanypulse"
     },
@@ -7609,7 +7619,7 @@
       "source_file": "server/src/features/attendance/attendance.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 27,
+      "community": 53,
       "norm_label": "attendance.controller.ts",
       "id": "attendance_attendance_controller"
     },
@@ -7849,7 +7859,7 @@
       "source_file": "server/src/features/attendance/attendance.dto.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 27,
+      "community": 38,
       "norm_label": "updateshiftsettingsinput",
       "id": "attendance_attendance_dto_updateshiftsettingsinput"
     },
@@ -7889,7 +7899,7 @@
       "source_file": "server/src/features/attendance/attendance.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 27,
+      "community": 53,
       "norm_label": "attendance.service.ts",
       "id": "attendance_attendance_service"
     },
@@ -7919,7 +7929,7 @@
       "source_file": "server/src/features/attendance/attendance.service.ts",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 27,
+      "community": 38,
       "norm_label": ".updatecompanyshiftsettings()",
       "id": "attendance_attendance_service_attendanceservice_updatecompanyshiftsettings"
     },
@@ -8649,7 +8659,7 @@
       "source_file": "server/src/features/employees/employees.routes.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 21,
+      "community": 105,
       "norm_label": "router",
       "id": "employees_employees_routes_router"
     },
@@ -8819,7 +8829,7 @@
       "source_file": "server/src/features/leaves/leaves.dto.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 105,
+      "community": 28,
       "norm_label": "leaves.dto.ts",
       "id": "leaves_leaves_dto"
     },
@@ -8829,7 +8839,7 @@
       "source_file": "server/src/features/leaves/leaves.dto.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 105,
+      "community": 28,
       "norm_label": "leavetypeschema",
       "id": "leaves_leaves_dto_leavetypeschema"
     },
@@ -8839,7 +8849,7 @@
       "source_file": "server/src/features/leaves/leaves.dto.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 105,
+      "community": 28,
       "norm_label": "createleaverequestschema",
       "id": "leaves_leaves_dto_createleaverequestschema"
     },
@@ -8849,7 +8859,7 @@
       "source_file": "server/src/features/leaves/leaves.dto.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 105,
+      "community": 28,
       "norm_label": "reviewleaverequestschema",
       "id": "leaves_leaves_dto_reviewleaverequestschema"
     },
@@ -8859,7 +8869,7 @@
       "source_file": "server/src/features/leaves/leaves.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 105,
+      "community": 28,
       "norm_label": "leaves.routes.ts",
       "id": "leaves_leaves_routes"
     },
@@ -8869,7 +8879,7 @@
       "source_file": "server/src/features/leaves/leaves.routes.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 105,
+      "community": 28,
       "norm_label": "router",
       "id": "leaves_leaves_routes_router"
     },
@@ -8999,7 +9009,7 @@
       "source_file": "server/src/features/reports/reports.dto.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 105,
+      "community": 29,
       "norm_label": "reports.dto.ts",
       "id": "reports_reports_dto"
     },
@@ -9009,7 +9019,7 @@
       "source_file": "server/src/features/reports/reports.dto.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 105,
+      "community": 29,
       "norm_label": "downloadreportschema",
       "id": "reports_reports_dto_downloadreportschema"
     },
@@ -9019,7 +9029,7 @@
       "source_file": "server/src/features/reports/reports.dto.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 105,
+      "community": 29,
       "norm_label": "downloadreportinput",
       "id": "reports_reports_dto_downloadreportinput"
     },
@@ -9029,7 +9039,7 @@
       "source_file": "server/src/features/reports/reports.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 105,
+      "community": 29,
       "norm_label": "reports.routes.ts",
       "id": "reports_reports_routes"
     },
@@ -9039,7 +9049,7 @@
       "source_file": "server/src/features/reports/reports.routes.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 105,
+      "community": 29,
       "norm_label": "router",
       "id": "reports_reports_routes_router"
     },
@@ -9369,7 +9379,7 @@
       "source_file": "server/src/lib/errors.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 53,
+      "community": 3,
       "norm_label": "apperror",
       "id": "lib_errors_apperror"
     },
@@ -9379,7 +9389,7 @@
       "source_file": "server/src/lib/errors.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 53,
+      "community": 3,
       "norm_label": ".constructor()",
       "id": "lib_errors_apperror_constructor"
     },
@@ -9429,7 +9439,7 @@
       "source_file": "server/src/lib/prisma.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 27,
+      "community": 53,
       "norm_label": "prisma.ts",
       "id": "lib_prisma"
     },
@@ -9439,7 +9449,7 @@
       "source_file": "server/src/lib/prisma.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 27,
+      "community": 53,
       "norm_label": "globalforprisma",
       "id": "lib_prisma_globalforprisma"
     },
@@ -9499,7 +9509,7 @@
       "source_file": "server/src/middleware/authenticate.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 105,
+      "community": 53,
       "norm_label": "authenticate()",
       "id": "middleware_authenticate_authenticate"
     },
@@ -9509,7 +9519,7 @@
       "source_file": "server/src/middleware/errorHandler.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 53,
+      "community": 3,
       "norm_label": "errorhandler.ts",
       "id": "middleware_errorhandler"
     },
@@ -9519,7 +9529,7 @@
       "source_file": "server/src/middleware/errorHandler.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 53,
+      "community": 3,
       "norm_label": "errorhandler()",
       "id": "middleware_errorhandler_errorhandler"
     },
@@ -9529,7 +9539,7 @@
       "source_file": "server/src/middleware/rateLimiter.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 38,
+      "community": 12,
       "norm_label": "ratelimiter.ts",
       "id": "middleware_ratelimiter"
     },
@@ -9539,7 +9549,7 @@
       "source_file": "server/src/middleware/rateLimiter.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 38,
+      "community": 12,
       "norm_label": "authratelimiter",
       "id": "middleware_ratelimiter_authratelimiter"
     },
@@ -9549,7 +9559,7 @@
       "source_file": "server/src/middleware/rateLimiter.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 38,
+      "community": 12,
       "norm_label": "attendanceratelimiter",
       "id": "middleware_ratelimiter_attendanceratelimiter"
     },
@@ -9579,7 +9589,7 @@
       "source_file": "server/src/middleware/requirePasswordChanged.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 53,
+      "community": 29,
       "norm_label": "requirepasswordchanged.ts",
       "id": "middleware_requirepasswordchanged"
     },
@@ -9589,7 +9599,7 @@
       "source_file": "server/src/middleware/requirePasswordChanged.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 105,
+      "community": 29,
       "norm_label": "requirepasswordchanged()",
       "id": "middleware_requirepasswordchanged_requirepasswordchanged"
     },
@@ -9619,7 +9629,7 @@
       "source_file": "server/src/middleware/validate.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 105,
+      "community": 28,
       "norm_label": "validate.ts",
       "id": "middleware_validate"
     },
@@ -9629,7 +9639,7 @@
       "source_file": "server/src/middleware/validate.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 105,
+      "community": 28,
       "norm_label": "validate()",
       "id": "middleware_validate_validate"
     },
@@ -9729,7 +9739,7 @@
       "source_file": "server/src/services/notificationService.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 27,
+      "community": 53,
       "norm_label": "notificationservice.ts",
       "id": "services_notificationservice"
     },
@@ -9739,7 +9749,7 @@
       "source_file": "server/src/services/notificationService.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 27,
+      "community": 53,
       "norm_label": "pushpayload",
       "id": "services_notificationservice_pushpayload"
     },
@@ -9749,7 +9759,7 @@
       "source_file": "server/src/services/notificationService.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 27,
+      "community": 53,
       "norm_label": "sendpush()",
       "id": "services_notificationservice_sendpush"
     },
@@ -9849,7 +9859,7 @@
       "source_file": "server/src/services/tokenService.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 44,
+      "community": 53,
       "norm_label": "verifyaccesstoken()",
       "id": "services_tokenservice_verifyaccesstoken"
     },
@@ -11648,6 +11658,953 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app",
+      "target": "mobile_app_expo"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_android"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L43",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_extra"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_icon"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_ios"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_name"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_orientation"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_plugins"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_scheme"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_slug"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_splash"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_userinterfacestyle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_version"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo",
+      "target": "mobile_app_expo_web"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_splash",
+      "target": "mobile_app_splash_backgroundcolor"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_splash",
+      "target": "mobile_app_splash_image"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_splash",
+      "target": "mobile_app_splash_resizemode"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_ios",
+      "target": "mobile_app_ios_bundleidentifier"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_ios",
+      "target": "mobile_app_ios_supportstablet"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_android",
+      "target": "mobile_app_android_adaptiveicon"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_android",
+      "target": "mobile_app_android_googleservicesfile"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_android",
+      "target": "mobile_app_android_package"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_android",
+      "target": "mobile_app_android_permissions"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_android_adaptiveicon",
+      "target": "mobile_app_adaptiveicon_backgroundcolor"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_android_adaptiveicon",
+      "target": "mobile_app_adaptiveicon_foregroundimage"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_web",
+      "target": "mobile_app_web_favicon"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_extra",
+      "target": "mobile_app_extra_eas"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L44",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_expo_extra",
+      "target": "mobile_app_extra_router"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app.json",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "mobile_app_extra_eas",
+      "target": "mobile_app_eas_projectid"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_api_authapi"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_login_c"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L86",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_login_floatinput"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L74",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_login_inputprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_login_liveclock"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L196",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_login_loginscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L391",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_login_s"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "auth_store_useauthstore"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "auth_login",
+      "target": "lib_notificationservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "auth_login",
+      "target": "lib_notificationservice_syncpushtokentoserver",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "lib_securestorage"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "lib_securestorage_securestorage"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "types_index"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "types_index_logininput"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "ui_safekeyboardavoidingview"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "auth_login",
+      "target": "ui_safekeyboardavoidingview_safekeyboardavoidingview"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "mobile/app/(auth)/login.tsx",
+      "source_location": "L198",
+      "weight": 1.0,
+      "source": "auth_login_loginscreen",
+      "target": "auth_store_useauthstore"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "attendance_hooks"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "attendance_hooks_usetodayattendance"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "auth_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "auth_api_authapi"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "auth_store"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "auth_store_useauthstore"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "components_breakbutton"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "components_breakbutton_breakbutton"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "components_checkinbutton"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "components_checkinbutton_checkinbutton"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "employee_index_animatedstatusview"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L49",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "employee_index_employeehome"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "lib_locationservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "lib_locationservice_ensurepermissions"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "lib_notificationservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "lib_notificationservice_registerforpushnotificationsasync"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "ui_skeleton"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_index",
+      "target": "ui_skeleton_skeleton"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "employee_index_employeehome",
+      "target": "attendance_hooks_usetodayattendance"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "mobile/app/(employee)/index.tsx",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "employee_index_employeehome",
+      "target": "auth_store_useauthstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout",
+      "target": "app_layout_queryclient"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout",
+      "target": "app_layout_rootlayout"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout",
+      "target": "auth_store_useauthstore"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/_layout.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "app_layout",
+      "target": "lib_notificationservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/_layout.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_layout",
+      "target": "hooks_usepushnotifications"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/_layout.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_layout",
+      "target": "hooks_usepushnotifications"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/hooks/usePushNotifications.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "hooks_usepushnotifications",
+      "target": "auth_store_useauthstore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/hooks/usePushNotifications.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "hooks_usepushnotifications",
+      "target": "hooks_usepushnotifications_usepushnotifications"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/hooks/usePushNotifications.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "hooks_usepushnotifications",
+      "target": "lib_axios"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/hooks/usePushNotifications.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "hooks_usepushnotifications",
+      "target": "lib_axios_apiclient"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/hooks/usePushNotifications.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "hooks_usepushnotifications",
+      "target": "lib_notificationservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/hooks/usePushNotifications.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "hooks_usepushnotifications",
+      "target": "lib_notificationservice_syncpushtokentoserver",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/_layout.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_layout",
+      "target": "hooks_usepushnotifications_usepushnotifications"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "mobile/app/(admin)/_layout.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "admin_layout_adminlayout",
+      "target": "hooks_usepushnotifications_usepushnotifications"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(employee)/_layout.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "employee_layout",
+      "target": "hooks_usepushnotifications_usepushnotifications"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "mobile/app/(employee)/_layout.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "employee_layout_employeelayout",
+      "target": "hooks_usepushnotifications_usepushnotifications"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "lib_notificationservice",
+      "target": "auth_api_authapi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "lib_notificationservice",
+      "target": "lib_notificationservice_ensureandroidchannel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_notificationservice",
+      "target": "lib_notificationservice_registerforpushnotificationsasync"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "lib_notificationservice",
+      "target": "lib_notificationservice_syncpushtokentoserver",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "lib_notificationservice_registerforpushnotificationsasync",
+      "target": "lib_notificationservice_ensureandroidchannel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/src/lib/notificationService.ts",
+      "source_location": "L81",
+      "weight": 1.0,
+      "source": "lib_notificationservice_syncpushtokentoserver",
+      "target": "lib_notificationservice_registerforpushnotificationsasync",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "mobile/app/(admin)/create-employee.tsx",
       "source_location": "L16",
       "weight": 1.0,
@@ -12091,296 +13048,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app",
-      "target": "mobile_app_expo"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L25",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_android"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L43",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_extra"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_icon"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L21",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_ios"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_name"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_orientation"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_plugins"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_scheme"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_slug"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_splash"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_userinterfacestyle"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_version"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo",
-      "target": "mobile_app_expo_web"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_splash",
-      "target": "mobile_app_splash_backgroundcolor"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_splash",
-      "target": "mobile_app_splash_image"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_splash",
-      "target": "mobile_app_splash_resizemode"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_ios",
-      "target": "mobile_app_ios_bundleidentifier"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L22",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_ios",
-      "target": "mobile_app_ios_supportstablet"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L28",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_android",
-      "target": "mobile_app_android_adaptiveicon"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_android",
-      "target": "mobile_app_android_googleservicesfile"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L26",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_android",
-      "target": "mobile_app_android_package"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_android",
-      "target": "mobile_app_android_permissions"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L30",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_android_adaptiveicon",
-      "target": "mobile_app_adaptiveicon_backgroundcolor"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_android_adaptiveicon",
-      "target": "mobile_app_adaptiveicon_foregroundimage"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L39",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_web",
-      "target": "mobile_app_web_favicon"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L45",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_extra",
-      "target": "mobile_app_extra_eas"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L44",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_expo_extra",
-      "target": "mobile_app_extra_router"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app.json",
-      "source_location": "L46",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "mobile_app_extra_eas",
-      "target": "mobile_app_eas_projectid"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "mobile/app/(admin)/_layout.tsx",
       "source_location": "L7",
       "weight": 1.0,
@@ -12420,39 +13087,6 @@
       "confidence_score": 1.0,
       "source": "admin_layout",
       "target": "components_customtabbar_customtabbar"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/_layout.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_layout",
-      "target": "hooks_usepushnotifications"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/_layout.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_layout",
-      "target": "hooks_usepushnotifications_usepushnotifications"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "mobile/app/(admin)/_layout.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "source": "admin_layout_adminlayout",
-      "target": "hooks_usepushnotifications_usepushnotifications"
     },
     {
       "relation": "contains",
@@ -12610,224 +13244,6 @@
       "target": "hooks_useadmindashboard_useadmindashboard"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "attendance_hooks"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "attendance_hooks_usetodayattendance"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L17",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "auth_api"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L17",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "auth_api_authapi"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "auth_store"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "auth_store_useauthstore"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "components_breakbutton"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "components_breakbutton_breakbutton"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "components_checkinbutton"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "components_checkinbutton_checkinbutton"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L20",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "employee_index_animatedstatusview"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L49",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "employee_index_employeehome"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "lib_locationservice"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "lib_locationservice_ensurepermissions"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "lib_notificationservice"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "lib_notificationservice_registerforpushnotificationsasync"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "ui_skeleton"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_index",
-      "target": "ui_skeleton_skeleton"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L51",
-      "weight": 1.0,
-      "source": "employee_index_employeehome",
-      "target": "attendance_hooks_usetodayattendance"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "mobile/app/(employee)/index.tsx",
-      "source_location": "L50",
-      "weight": 1.0,
-      "source": "employee_index_employeehome",
-      "target": "auth_store_useauthstore"
-    },
-    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -12940,187 +13356,6 @@
       "confidence_score": 1.0,
       "source": "employee_layout",
       "target": "components_customtabbar_customtabbar"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_api"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_api_authapi"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L18",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_login_c"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L86",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_login_floatinput"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L74",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_login_inputprops"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L35",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_login_liveclock"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L196",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_login_loginscreen"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L391",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_login_s"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_store"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "auth_store_useauthstore"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "lib_securestorage"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "lib_securestorage_securestorage"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "types_index"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "types_index_logininput"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "ui_safekeyboardavoidingview"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "auth_login",
-      "target": "ui_safekeyboardavoidingview_safekeyboardavoidingview"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "mobile/app/(auth)/login.tsx",
-      "source_location": "L198",
-      "weight": 1.0,
-      "source": "auth_login_loginscreen",
-      "target": "auth_store_useauthstore"
     },
     {
       "relation": "imports_from",
@@ -13311,37 +13546,6 @@
       "source_location": "L175",
       "weight": 1.0,
       "source": "auth_register_registerscreen",
-      "target": "auth_store_useauthstore"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "app_layout",
-      "target": "app_layout_queryclient"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "app_layout",
-      "target": "app_layout_rootlayout"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/_layout.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "app_layout",
       "target": "auth_store_useauthstore"
     },
     {
@@ -14473,17 +14677,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "mobile/src/hooks/usePushNotifications.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "hooks_usepushnotifications",
-      "target": "lib_axios"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "mobile/src/hooks/useSocket.ts",
       "source_location": "L3",
       "weight": 1.0,
@@ -14661,17 +14854,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "hooks_useadmindashboard",
-      "target": "lib_axios_apiclient"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/hooks/usePushNotifications.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "hooks_usepushnotifications",
       "target": "lib_axios_apiclient"
     },
     {
@@ -19990,39 +20172,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/_layout.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_layout",
-      "target": "hooks_usepushnotifications"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(employee)/_layout.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "employee_layout",
-      "target": "hooks_usepushnotifications_usepushnotifications"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "mobile/app/(employee)/_layout.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "source": "employee_layout_employeelayout",
-      "target": "hooks_usepushnotifications_usepushnotifications"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "mobile/app/(employee)/history.tsx",
       "source_location": "L4",
       "weight": 1.0,
@@ -21780,26 +21929,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "mobile/src/hooks/usePushNotifications.ts",
-      "source_location": "L28",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "hooks_usepushnotifications",
-      "target": "hooks_usepushnotifications_registerforpushnotificationsasync"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/hooks/usePushNotifications.ts",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "hooks_usepushnotifications",
-      "target": "hooks_usepushnotifications_usepushnotifications"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "mobile/src/hooks/useShifts.ts",
       "source_location": "L5",
       "weight": 1.0,
@@ -21826,16 +21955,6 @@
       "confidence_score": 1.0,
       "source": "hooks_usesocket",
       "target": "hooks_usesocket_usesocket"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/src/lib/notificationService.ts",
-      "source_location": "L17",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "lib_notificationservice",
-      "target": "lib_notificationservice_registerforpushnotificationsasync"
     },
     {
       "relation": "contains",
@@ -28098,5 +28217,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "98d20a093f58350606b6deeed9ba9bf95d777c5d"
+  "built_at_commit": "a32c781ae9db1852e758bb63f3f59ecf884d21fb"
 }

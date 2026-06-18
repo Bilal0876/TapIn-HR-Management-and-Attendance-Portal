@@ -1,16 +1,16 @@
 # Graph Report - Hr-portal  (2026-06-18)
 
 ## Corpus Check
-- 238 files · ~311,748 words
+- 238 files · ~308,841 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1164 nodes · 1583 edges · 108 communities (91 shown, 17 thin omitted)
+- 1165 nodes · 1593 edges · 110 communities (91 shown, 19 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 3 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `98d20a09`
+- Built from commit: `a32c781a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -88,6 +88,7 @@
 - [[_COMMUNITY_Community 70|Community 70]]
 - [[_COMMUNITY_Community 71|Community 71]]
 - [[_COMMUNITY_Community 72|Community 72]]
+- [[_COMMUNITY_Community 73|Community 73]]
 - [[_COMMUNITY_Community 92|Community 92]]
 - [[_COMMUNITY_Community 93|Community 93]]
 - [[_COMMUNITY_Community 94|Community 94]]
@@ -96,10 +97,11 @@
 - [[_COMMUNITY_Community 105|Community 105]]
 - [[_COMMUNITY_Community 106|Community 106]]
 - [[_COMMUNITY_Community 107|Community 107]]
+- [[_COMMUNITY_Community 108|Community 108]]
 - [[_COMMUNITY_Community 110|Community 110]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `useAuthStore` - 23 edges
+1. `useAuthStore` - 24 edges
 2. `AttendanceController` - 18 edges
 3. `AttendanceController` - 18 edges
 4. `authenticate()` - 16 edges
@@ -111,10 +113,10 @@
 10. `createError` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `EmployeesPage()` --calls--> `useAuthStore`  [EXTRACTED]
-  web/src/app/dashboard/employees/page.tsx → web/src/store/authStore.ts
 - `LoginScreen()` --calls--> `useAuthStore`  [EXTRACTED]
   mobile/app/(auth)/login.tsx → mobile/src/features/auth/store.ts
+- `EmployeesPage()` --calls--> `useAuthStore`  [EXTRACTED]
+  web/src/app/dashboard/employees/page.tsx → web/src/store/authStore.ts
 - `RegisterScreen()` --calls--> `useAuthStore`  [EXTRACTED]
   mobile/app/(auth)/register.tsx → mobile/src/features/auth/store.ts
 - `DashboardOverview()` --calls--> `useAuthStore`  [EXTRACTED]
@@ -125,7 +127,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (108 total, 17 thin omitted)
+## Communities (110 total, 19 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.05
@@ -140,8 +142,8 @@ Cohesion: 0.07
 Nodes (29): dependencies, axios, clsx, date-fns, framer-motion, lucide-react, next, react (+21 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.12
-Nodes (15): EnvSchema, parsed, startMidnightSweep(), checkinReminder, checkoutReminder, shiftReminders, logFormat, logger (+7 more)
+Cohesion: 0.10
+Nodes (17): EnvSchema, parsed, startMidnightSweep(), checkinReminder, checkoutReminder, shiftReminders, AppError, logFormat (+9 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.09
@@ -176,8 +178,8 @@ Cohesion: 0.16
 Nodes (11): C, CreateEmployeeScreen(), f, s, C, s, ShiftColor, ShiftSettingsScreen() (+3 more)
 
 ### Community 12 - "Community 12"
-Cohesion: 0.27
-Nodes (9): ChangePasswordInput, ChangePasswordSchema, LoginInput, LoginSchema, PushTokenInput, PushTokenSchema, RefreshInput, RefreshSchema (+1 more)
+Cohesion: 0.21
+Nodes (11): ChangePasswordInput, ChangePasswordSchema, LoginInput, LoginSchema, PushTokenInput, PushTokenSchema, RefreshInput, RefreshSchema (+3 more)
 
 ### Community 13 - "Community 13"
 Cohesion: 0.25
@@ -200,7 +202,7 @@ Cohesion: 0.12
 Nodes (15): compilerOptions, esModuleInterop, forceConsistentCasingInFileNames, isolatedModules, lib, module, moduleResolution, outDir (+7 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.21
+Cohesion: 0.23
 Nodes (8): AdminLayout(), AnimatedSvgBar(), buildPath(), C, CustomTabBar(), styles, EmployeeLayout(), usePushNotifications()
 
 ### Community 20 - "Community 20"
@@ -208,16 +210,16 @@ Cohesion: 0.17
 Nodes (12): ActiveBreak, ActiveBreakCard(), BreakButtonProps, C, CARD_W, formatTime(), IdleBreak(), pd (+4 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.12
-Nodes (7): EmployeesController, CreateEmployeeInput, CreateEmployeeSchema, UpdateEmployeeInput, UpdateEmployeeSchema, router, EmployeeService
+Cohesion: 0.13
+Nodes (6): EmployeesController, CreateEmployeeInput, CreateEmployeeSchema, UpdateEmployeeInput, UpdateEmployeeSchema, EmployeeService
 
 ### Community 22 - "Community 22"
 Cohesion: 0.18
 Nodes (4): ShiftProfileController, CreateShiftProfileInput, UpdateShiftProfileInput, ShiftProfileService
 
 ### Community 23 - "Community 23"
-Cohesion: 0.15
-Nodes (9): ab, C, pr, s, sc, { width: SCREEN_W }, s, Skeleton() (+1 more)
+Cohesion: 0.14
+Nodes (11): ab, AdminHome(), C, pr, s, sc, { width: SCREEN_W }, useAdminDashboard() (+3 more)
 
 ### Community 24 - "Community 24"
 Cohesion: 0.10
@@ -227,21 +229,17 @@ Nodes (13): AuthController, ChangePasswordInput, ChangePasswordSchema, LoginInpu
 Cohesion: 0.24
 Nodes (8): ForceChangePassword(), LoginPage(), RegisterPage(), formatMinutes(), SettingsPage(), AuthState, useAuthStore, User
 
-### Community 27 - "Community 27"
-Cohesion: 0.10
-Nodes (6): AnalyticsService, UpdateShiftSettingsInput, AttendanceService, globalForPrisma, emitToCompany(), PushPayload
-
 ### Community 28 - "Community 28"
-Cohesion: 0.38
-Nodes (5): RequestCorrectionInput, RequestCorrectionSchema, ReviewCorrectionInput, ReviewCorrectionSchema, router
+Cohesion: 0.19
+Nodes (10): RequestCorrectionInput, RequestCorrectionSchema, ReviewCorrectionInput, ReviewCorrectionSchema, router, CreateLeaveRequestSchema, LeaveTypeSchema, ReviewLeaveRequestSchema (+2 more)
 
 ### Community 29 - "Community 29"
 Cohesion: 0.38
-Nodes (4): usePersonalStats(), ProfileScreen(), { width: SCREEN_W }, secureStorage
+Nodes (4): requirePasswordChanged(), DownloadReportInput, DownloadReportSchema, router
 
 ### Community 30 - "Community 30"
-Cohesion: 0.24
-Nodes (7): authApi, C, InputProps, LoginScreen(), s, ChangePasswordInput, LoginInput
+Cohesion: 0.20
+Nodes (10): authApi, C, InputProps, LoginScreen(), s, ensureAndroidChannel(), registerForPushNotificationsAsync(), syncPushTokenToServer() (+2 more)
 
 ### Community 31 - "Community 31"
 Cohesion: 0.12
@@ -260,32 +258,32 @@ Cohesion: 0.09
 Nodes (5): CorrectionController, CorrectionController, CorrectionService, CorrectionService, NotificationService
 
 ### Community 36 - "Community 36"
-Cohesion: 0.18
-Nodes (9): AdminProfileScreen(), C, s, Index(), queryClient, AuthState, secureStorage, useAuthStore (+1 more)
+Cohesion: 0.14
+Nodes (13): AdminProfileScreen(), C, s, Index(), queryClient, usePersonalStats(), AuthState, secureStorage (+5 more)
 
 ### Community 38 - "Community 38"
-Cohesion: 0.27
-Nodes (8): AdminUpdateRecordSchema, CheckinSchema, CheckoutSchema, UpdateCompanyProfileInput, UpdateCompanyProfileSchema, UpdateShiftSettingsSchema, attendanceRateLimiter, authRateLimiter
+Cohesion: 0.29
+Nodes (7): AdminUpdateRecordSchema, CheckinSchema, CheckoutSchema, UpdateCompanyProfileInput, UpdateCompanyProfileSchema, UpdateShiftSettingsInput, UpdateShiftSettingsSchema
 
 ### Community 39 - "Community 39"
 Cohesion: 0.19
 Nodes (7): UpdateShiftSettingsInput, BreakSessionInput, calculateDelta(), CompanyConfig, DeltaResult, resolveConfig(), baseConfig
 
 ### Community 40 - "Community 40"
-Cohesion: 0.28
-Nodes (8): AVATAR_PALETTE, avatarColors(), C, card, EmployeeCard(), EmployeesScreen(), s, useEmployees()
+Cohesion: 0.23
+Nodes (9): AVATAR_PALETTE, avatarColors(), C, card, EmployeeCard(), EmployeesScreen(), s, employeeApi (+1 more)
 
 ### Community 42 - "Community 42"
-Cohesion: 0.15
-Nodes (14): AdminHome(), AdminReportsScreen(), C, s, AdminStats, PulseActivity, useAdminDashboard(), useAdminReports() (+6 more)
+Cohesion: 0.20
+Nodes (10): AdminReportsScreen(), C, s, useAdminReports(), SOCKET_URL, useSocket(), s, StatCard() (+2 more)
 
 ### Community 43 - "Community 43"
 Cohesion: 0.20
 Nodes (5): MainActivity, Bundle, ReactActivity, ReactActivityDelegate, String
 
 ### Community 44 - "Community 44"
-Cohesion: 0.25
-Nodes (6): RegisterCompanyInput, AuthService, issueAccessToken(), issueRefreshToken(), verifyAccessToken(), verifyRefreshToken()
+Cohesion: 0.27
+Nodes (5): RegisterCompanyInput, AuthService, issueAccessToken(), issueRefreshToken(), verifyRefreshToken()
 
 ### Community 45 - "Community 45"
 Cohesion: 0.15
@@ -312,8 +310,8 @@ Cohesion: 0.22
 Nodes (6): C, InputProps, RegisterScreen(), s, STEPS, SafeKeyboardAvoidingView()
 
 ### Community 53 - "Community 53"
-Cohesion: 0.26
-Nodes (5): AppError, createError, errorHandler(), requireSuperAdmin(), router
+Cohesion: 0.21
+Nodes (7): createError, globalForPrisma, authenticate(), requireSuperAdmin(), PushPayload, verifyAccessToken(), router
 
 ### Community 54 - "Community 54"
 Cohesion: 0.29
@@ -340,8 +338,8 @@ Cohesion: 0.29
 Nodes (7): scripts, build, dev, lint, start, test, typecheck
 
 ### Community 63 - "Community 63"
-Cohesion: 0.33
-Nodes (7): AdminUpdateRecordSchema, CheckinSchema, CheckoutSchema, UpdateCompanyProfileInput, UpdateCompanyProfileSchema, UpdateShiftSettingsSchema, router
+Cohesion: 0.39
+Nodes (6): AdminUpdateRecordSchema, CheckinSchema, CheckoutSchema, UpdateCompanyProfileInput, UpdateCompanyProfileSchema, UpdateShiftSettingsSchema
 
 ### Community 65 - "Community 65"
 Cohesion: 0.40
@@ -352,8 +350,8 @@ Cohesion: 0.24
 Nodes (6): C, s, correctionApi, firstParam(), RequestCorrectionScreen(), s
 
 ### Community 67 - "Community 67"
-Cohesion: 0.19
-Nodes (7): attendanceApi, fmtTime(), STATUS_CONFIG, TimeBlock(), C, s, { width: SCREEN_W }
+Cohesion: 0.36
+Nodes (4): attendanceApi, fmtTime(), STATUS_CONFIG, TimeBlock()
 
 ### Community 68 - "Community 68"
 Cohesion: 0.50
@@ -364,8 +362,8 @@ Cohesion: 0.28
 Nodes (6): CACHE_DIR, { cacheDirectory, documentDirectory }, DOC_DIR, download(), ensureReportsDir(), reportsApi
 
 ### Community 70 - "Community 70"
-Cohesion: 0.18
-Nodes (5): useTodayAttendance(), BreakButton(), CheckInButton(), EmployeeHome(), registerForPushNotificationsAsync()
+Cohesion: 0.20
+Nodes (4): useTodayAttendance(), BreakButton(), CheckInButton(), EmployeeHome()
 
 ### Community 72 - "Community 72"
 Cohesion: 0.50
@@ -376,32 +374,36 @@ Cohesion: 0.33
 Nodes (6): devDependencies, @babel/core, babel-plugin-module-resolver, @types/react, @types/react-dom, typescript
 
 ### Community 105 - "Community 105"
-Cohesion: 0.10
-Nodes (25): router, router, RequestCorrectionInput, RequestCorrectionSchema, ReviewCorrectionInput, ReviewCorrectionSchema, CreateLeaveRequestSchema, LeaveTypeSchema (+17 more)
+Cohesion: 0.12
+Nodes (17): router, router, RequestCorrectionInput, RequestCorrectionSchema, ReviewCorrectionInput, ReviewCorrectionSchema, CreateLeaveRequestSchema, LeaveTypeSchema (+9 more)
 
 ### Community 106 - "Community 106"
-Cohesion: 0.32
-Nodes (3): employeeApi, apiClient, refreshQueue
+Cohesion: 0.29
+Nodes (4): AdminStats, PulseActivity, apiClient, refreshQueue
 
 ### Community 107 - "Community 107"
 Cohesion: 0.40
 Nodes (4): main, name, private, version
 
+### Community 108 - "Community 108"
+Cohesion: 0.33
+Nodes (3): C, s, { width: SCREEN_W }
+
 ## Knowledge Gaps
-- **439 isolated node(s):** `C`, `f`, `s`, `C`, `AVATAR_PALETTE` (+434 more)
+- **439 isolated node(s):** `name`, `slug`, `version`, `orientation`, `icon` (+434 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `createError` connect `Community 53` to `Community 34`, `Community 39`, `Community 44`, `Community 21`, `Community 22`, `Community 24`, `Community 27`, `Community 31`?**
+- **Why does `createError` connect `Community 53` to `Community 34`, `Community 39`, `Community 44`, `Community 21`, `Community 22`, `Community 24`, `Community 29`, `Community 31`?**
   _High betweenness centrality (0.017) - this node is a cross-community bridge._
-- **Why does `authenticate()` connect `Community 105` to `Community 34`, `Community 38`, `Community 12`, `Community 44`, `Community 31`, `Community 21`, `Community 53`, `Community 24`, `Community 28`, `Community 63`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `AttendanceController` connect `Community 15` to `Community 27`, `Community 38`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **What connects `C`, `f`, `s` to the rest of the system?**
+- **Why does `AttendanceController` connect `Community 15` to `Community 53`, `Community 38`?**
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **Why does `authenticate()` connect `Community 53` to `Community 34`, `Community 38`, `Community 105`, `Community 12`, `Community 31`, `Community 21`, `Community 24`, `Community 28`, `Community 29`, `Community 63`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **What connects `name`, `slug`, `version` to the rest of the system?**
   _439 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
