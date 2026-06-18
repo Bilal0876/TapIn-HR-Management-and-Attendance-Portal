@@ -4,14 +4,174 @@
   "graph": {},
   "nodes": [
     {
+      "label": "create-employee.tsx",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "admin_create_employee",
+      "community": 11,
+      "norm_label": "create-employee.tsx"
+    },
+    {
+      "label": "C",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "admin_create_employee_c",
+      "community": 11,
+      "norm_label": "c"
+    },
+    {
+      "label": "StyledInput()",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "admin_create_employee_styledinput",
+      "community": 11,
+      "norm_label": "styledinput()"
+    },
+    {
+      "label": "f",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L52",
+      "_origin": "ast",
+      "id": "admin_create_employee_f",
+      "community": 11,
+      "norm_label": "f"
+    },
+    {
+      "label": "CreateEmployeeScreen()",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "admin_create_employee_createemployeescreen",
+      "community": 11,
+      "norm_label": "createemployeescreen()"
+    },
+    {
+      "label": "s",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L343",
+      "_origin": "ast",
+      "id": "admin_create_employee_s",
+      "community": 11,
+      "norm_label": "s"
+    },
+    {
+      "label": "employees.tsx",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "admin_employees",
+      "community": 40,
+      "norm_label": "employees.tsx"
+    },
+    {
+      "label": "C",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "admin_employees_c",
+      "community": 40,
+      "norm_label": "c"
+    },
+    {
+      "label": "AVATAR_PALETTE",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "admin_employees_avatar_palette",
+      "community": 40,
+      "norm_label": "avatar_palette"
+    },
+    {
+      "label": "avatarColors()",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "admin_employees_avatarcolors",
+      "community": 40,
+      "norm_label": "avatarcolors()"
+    },
+    {
+      "label": "EmployeeCard()",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "admin_employees_employeecard",
+      "community": 40,
+      "norm_label": "employeecard()"
+    },
+    {
+      "label": "card",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L80",
+      "_origin": "ast",
+      "id": "admin_employees_card",
+      "community": 40,
+      "norm_label": "card"
+    },
+    {
+      "label": "EmployeesScreen()",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L125",
+      "_origin": "ast",
+      "id": "admin_employees_employeesscreen",
+      "community": 40,
+      "norm_label": "employeesscreen()"
+    },
+    {
+      "label": "s",
+      "file_type": "code",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L235",
+      "_origin": "ast",
+      "id": "admin_employees_s",
+      "community": 40,
+      "norm_label": "s"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "web/src/app/login/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "login_page",
+      "community": 25,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "LoginPage()",
+      "file_type": "code",
+      "source_file": "web/src/app/login/page.tsx",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "login_page_loginpage",
+      "community": 25,
+      "norm_label": "loginpage()"
+    },
+    {
       "label": "page.tsx",
       "file_type": "code",
       "source_file": "web/src/app/dashboard/employees/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "employees_page",
       "community": 58,
-      "norm_label": "page.tsx"
+      "norm_label": "page.tsx",
+      "id": "employees_page"
     },
     {
       "label": "Employee",
@@ -19,9 +179,9 @@
       "source_file": "web/src/app/dashboard/employees/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "employees_page_employee",
       "community": 58,
-      "norm_label": "employee"
+      "norm_label": "employee",
+      "id": "employees_page_employee"
     },
     {
       "label": "AVATAR_COLORS",
@@ -29,9 +189,9 @@
       "source_file": "web/src/app/dashboard/employees/page.tsx",
       "source_location": "L23",
       "_origin": "ast",
-      "id": "employees_page_avatar_colors",
       "community": 58,
-      "norm_label": "avatar_colors"
+      "norm_label": "avatar_colors",
+      "id": "employees_page_avatar_colors"
     },
     {
       "label": "avatarColor()",
@@ -39,9 +199,9 @@
       "source_file": "web/src/app/dashboard/employees/page.tsx",
       "source_location": "L31",
       "_origin": "ast",
-      "id": "employees_page_avatarcolor",
       "community": 58,
-      "norm_label": "avatarcolor()"
+      "norm_label": "avatarcolor()",
+      "id": "employees_page_avatarcolor"
     },
     {
       "label": "RoleBadge()",
@@ -49,9 +209,9 @@
       "source_file": "web/src/app/dashboard/employees/page.tsx",
       "source_location": "L36",
       "_origin": "ast",
-      "id": "employees_page_rolebadge",
       "community": 58,
-      "norm_label": "rolebadge()"
+      "norm_label": "rolebadge()",
+      "id": "employees_page_rolebadge"
     },
     {
       "label": "Field()",
@@ -59,9 +219,9 @@
       "source_file": "web/src/app/dashboard/employees/page.tsx",
       "source_location": "L57",
       "_origin": "ast",
-      "id": "employees_page_field",
       "community": 58,
-      "norm_label": "field()"
+      "norm_label": "field()",
+      "id": "employees_page_field"
     },
     {
       "label": "EmployeesPage()",
@@ -69,9 +229,9 @@
       "source_file": "web/src/app/dashboard/employees/page.tsx",
       "source_location": "L71",
       "_origin": "ast",
-      "id": "employees_page_employeespage",
       "community": 58,
-      "norm_label": "employeespage()"
+      "norm_label": "employeespage()",
+      "id": "employees_page_employeespage"
     },
     {
       "label": "app.json",
@@ -612,66 +772,6 @@
       "community": 19,
       "norm_label": "styles",
       "id": "components_customtabbar_styles"
-    },
-    {
-      "label": "create-employee.tsx",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "create-employee.tsx",
-      "id": "admin_create_employee"
-    },
-    {
-      "label": "C",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L16",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "c",
-      "id": "admin_create_employee_c"
-    },
-    {
-      "label": "StyledInput()",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L29",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "styledinput()",
-      "id": "admin_create_employee_styledinput"
-    },
-    {
-      "label": "f",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L52",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "f",
-      "id": "admin_create_employee_f"
-    },
-    {
-      "label": "CreateEmployeeScreen()",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L73",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "createemployeescreen()",
-      "id": "admin_create_employee_createemployeescreen"
-    },
-    {
-      "label": "s",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L315",
-      "_origin": "ast",
-      "community": 11,
-      "norm_label": "s",
-      "id": "admin_create_employee_s"
     },
     {
       "label": "login.tsx",
@@ -5684,86 +5784,6 @@
       "id": "admin_daily_logs_s"
     },
     {
-      "label": "employees.tsx",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "employees.tsx",
-      "id": "admin_employees"
-    },
-    {
-      "label": "C",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L11",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "c",
-      "id": "admin_employees_c"
-    },
-    {
-      "label": "AVATAR_PALETTE",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L24",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "avatar_palette",
-      "id": "admin_employees_avatar_palette"
-    },
-    {
-      "label": "avatarColors()",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L33",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "avatarcolors()",
-      "id": "admin_employees_avatarcolors"
-    },
-    {
-      "label": "EmployeeCard()",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L38",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "employeecard()",
-      "id": "admin_employees_employeecard"
-    },
-    {
-      "label": "card",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L79",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "card",
-      "id": "admin_employees_card"
-    },
-    {
-      "label": "EmployeesScreen()",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L124",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "employeesscreen()",
-      "id": "admin_employees_employeesscreen"
-    },
-    {
-      "label": "s",
-      "file_type": "code",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L234",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "s",
-      "id": "admin_employees_s"
-    },
-    {
       "label": "leave-approvals.tsx",
       "file_type": "code",
       "source_file": "mobile/app/(admin)/leave-approvals.tsx",
@@ -10696,26 +10716,6 @@
     {
       "label": "page.tsx",
       "file_type": "code",
-      "source_file": "web/src/app/login/page.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 25,
-      "norm_label": "page.tsx",
-      "id": "login_page"
-    },
-    {
-      "label": "LoginPage()",
-      "file_type": "code",
-      "source_file": "web/src/app/login/page.tsx",
-      "source_location": "L10",
-      "_origin": "ast",
-      "community": 25,
-      "norm_label": "loginpage()",
-      "id": "login_page_loginpage"
-    },
-    {
-      "label": "page.tsx",
-      "file_type": "code",
       "source_file": "web/src/app/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
@@ -11645,6 +11645,323 @@
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_c"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L73",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_createemployeescreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L52",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_f"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L310",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_s"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "admin_create_employee_styledinput"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "employees_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "employees_api_employeeapi"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "hooks_useshifts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "hooks_useshifts_useshifts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "shifts_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "shifts_api_shiftprofile"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_create_employee",
+      "target": "shifts_api_shiftsapi"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "mobile/app/(admin)/create-employee.tsx",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "admin_create_employee_createemployeescreen",
+      "target": "hooks_useshifts_useshifts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees",
+      "target": "admin_employees_avatar_palette"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees",
+      "target": "admin_employees_avatarcolors"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees",
+      "target": "admin_employees_c"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L79",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees",
+      "target": "admin_employees_card"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees",
+      "target": "admin_employees_employeecard"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L124",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees",
+      "target": "admin_employees_employeesscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L234",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees",
+      "target": "admin_employees_s"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees",
+      "target": "hooks_useemployees"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees",
+      "target": "hooks_useemployees_useemployees"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_employees_employeecard",
+      "target": "admin_employees_avatarcolors"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "mobile/app/(admin)/employees.tsx",
+      "source_location": "L129",
+      "weight": 1.0,
+      "source": "admin_employees_employeesscreen",
+      "target": "hooks_useemployees_useemployees"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/login/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "login_page",
+      "target": "lib_api"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/login/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "login_page",
+      "target": "lib_api_api"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/login/page.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "login_page",
+      "target": "login_page_loginpage"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/login/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "login_page",
+      "target": "store_authstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "web/src/app/login/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "login_page",
+      "target": "store_authstore_useauthstore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/app/login/page.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "login_page_loginpage",
+      "target": "store_authstore_useauthstore"
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -12623,144 +12940,6 @@
       "confidence_score": 1.0,
       "source": "employee_layout",
       "target": "components_customtabbar_customtabbar"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_c"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L73",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_createemployeescreen"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L52",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_f"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L310",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_s"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "admin_create_employee_styledinput"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "employees_api"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "employees_api_employeeapi"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "hooks_useshifts"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "hooks_useshifts_useshifts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "shifts_api"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "shifts_api_shiftprofile"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_create_employee",
-      "target": "shifts_api_shiftsapi"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "mobile/app/(admin)/create-employee.tsx",
-      "source_location": "L76",
-      "weight": 1.0,
-      "source": "admin_create_employee_createemployeescreen",
-      "target": "hooks_useshifts_useshifts"
     },
     {
       "relation": "imports_from",
@@ -19396,120 +19575,6 @@
       "weight": 1.0,
       "source": "admin_daily_logs_dailylogsscreen",
       "target": "hooks_usedailylogs_usedailylogs"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees",
-      "target": "admin_employees_avatar_palette"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L33",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees",
-      "target": "admin_employees_avatarcolors"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees",
-      "target": "admin_employees_c"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L79",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees",
-      "target": "admin_employees_card"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees",
-      "target": "admin_employees_employeecard"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L124",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees",
-      "target": "admin_employees_employeesscreen"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L234",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees",
-      "target": "admin_employees_s"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees",
-      "target": "hooks_useemployees"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees",
-      "target": "hooks_useemployees_useemployees"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L39",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "admin_employees_employeecard",
-      "target": "admin_employees_avatarcolors"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "mobile/app/(admin)/employees.tsx",
-      "source_location": "L129",
-      "weight": 1.0,
-      "source": "admin_employees_employeesscreen",
-      "target": "hooks_useemployees_useemployees"
     },
     {
       "relation": "contains",
@@ -27057,71 +27122,6 @@
       "target": "web_src_app_layout_tsx_app_layout_rootlayout"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "web/src/app/login/page.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "login_page",
-      "target": "lib_api"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "web/src/app/login/page.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "login_page",
-      "target": "lib_api_api"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "web/src/app/login/page.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "login_page",
-      "target": "login_page_loginpage"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "web/src/app/login/page.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "login_page",
-      "target": "store_authstore"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "web/src/app/login/page.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "login_page",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/app/login/page.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "source": "login_page_loginpage",
-      "target": "store_authstore_useauthstore"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "web/src/app/page.tsx",
@@ -28098,5 +28098,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5319f596555cc0b1c717f7b3ea893741a5427d0b"
+  "built_at_commit": "98d20a093f58350606b6deeed9ba9bf95d777c5d"
 }

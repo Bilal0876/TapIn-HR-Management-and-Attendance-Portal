@@ -1,7 +1,7 @@
-# Graph Report - Hr-portal  (2026-06-17)
+# Graph Report - Hr-portal  (2026-06-18)
 
 ## Corpus Check
-- 271 files · ~312,197 words
+- 238 files · ~311,748 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5319f596`
+- Built from commit: `98d20a09`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -388,7 +388,7 @@ Cohesion: 0.40
 Nodes (4): main, name, private, version
 
 ## Knowledge Gaps
-- **439 isolated node(s):** `Employee`, `AVATAR_COLORS`, `name`, `slug`, `version` (+434 more)
+- **439 isolated node(s):** `C`, `f`, `s`, `C`, `AVATAR_PALETTE` (+434 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -398,10 +398,10 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `createError` connect `Community 53` to `Community 34`, `Community 39`, `Community 44`, `Community 21`, `Community 22`, `Community 24`, `Community 27`, `Community 31`?**
   _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `authenticate()` connect `Community 105` to `Community 34`, `Community 38`, `Community 12`, `Community 44`, `Community 31`, `Community 21`, `Community 53`, `Community 24`, `Community 28`, `Community 63`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `validate()` connect `Community 105` to `Community 38`, `Community 12`, `Community 31`, `Community 21`, `Community 24`, `Community 28`, `Community 63`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `AttendanceController` connect `Community 15` to `Community 27`, `Community 38`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **What connects `Employee`, `AVATAR_COLORS`, `name` to the rest of the system?**
+- **What connects `C`, `f`, `s` to the rest of the system?**
   _439 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
