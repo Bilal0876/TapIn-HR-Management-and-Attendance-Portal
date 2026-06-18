@@ -35,14 +35,6 @@ async function registerForPushNotificationsAsync(): Promise<string | null> {
       return null;
     }
 
-    Notifications.setNotificationHandler({
-      handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: false,
-      } as any),
-    });
-
     const { status: existingStatus } = (await Notifications.getPermissionsAsync()) as any;
     let finalStatus = existingStatus;
 
