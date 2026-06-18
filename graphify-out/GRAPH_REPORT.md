@@ -1,7 +1,7 @@
-# Graph Report - Hr-portal  (2026-06-16)
+# Graph Report - Hr-portal  (2026-06-17)
 
 ## Corpus Check
-- 271 files · ~312,262 words
+- 271 files · ~312,197 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d515c7ef`
+- Built from commit: `5319f596`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -111,6 +111,8 @@
 10. `createError` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `EmployeesPage()` --calls--> `useAuthStore`  [EXTRACTED]
+  web/src/app/dashboard/employees/page.tsx → web/src/store/authStore.ts
 - `LoginScreen()` --calls--> `useAuthStore`  [EXTRACTED]
   mobile/app/(auth)/login.tsx → mobile/src/features/auth/store.ts
 - `RegisterScreen()` --calls--> `useAuthStore`  [EXTRACTED]
@@ -119,8 +121,6 @@
   web/src/app/dashboard/page.tsx → web/src/store/authStore.ts
 - `useDailyLogs()` --calls--> `useSocket()`  [INFERRED]
   mobile/src/hooks/useDailyLogs.ts → mobile/src/hooks/useSocket.ts
-- `useEmployees()` --calls--> `useSocket()`  [INFERRED]
-  mobile/src/hooks/useEmployees.ts → mobile/src/hooks/useSocket.ts
 
 ## Import Cycles
 - None detected.
@@ -388,7 +388,7 @@ Cohesion: 0.40
 Nodes (4): main, name, private, version
 
 ## Knowledge Gaps
-- **439 isolated node(s):** `name`, `slug`, `version`, `orientation`, `icon` (+434 more)
+- **439 isolated node(s):** `Employee`, `AVATAR_COLORS`, `name`, `slug`, `version` (+434 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -396,12 +396,12 @@ Nodes (4): main, name, private, version
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `createError` connect `Community 53` to `Community 34`, `Community 39`, `Community 44`, `Community 21`, `Community 22`, `Community 24`, `Community 27`, `Community 31`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `authenticate()` connect `Community 105` to `Community 34`, `Community 38`, `Community 12`, `Community 44`, `Community 31`, `Community 21`, `Community 53`, `Community 24`, `Community 28`, `Community 63`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `useAuthStore` connect `Community 36` to `Community 70`, `Community 40`, `Community 42`, `Community 106`, `Community 19`, `Community 52`, `Community 29`, `Community 30`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **What connects `name`, `slug`, `version` to the rest of the system?**
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+- **Why does `validate()` connect `Community 105` to `Community 38`, `Community 12`, `Community 31`, `Community 21`, `Community 24`, `Community 28`, `Community 63`?**
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **What connects `Employee`, `AVATAR_COLORS`, `name` to the rest of the system?**
   _439 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._

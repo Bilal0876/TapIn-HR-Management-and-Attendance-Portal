@@ -67,6 +67,7 @@ const f = StyleSheet.create({
   icon: { marginRight: 10 },
   input: { flex: 1, fontSize: 14, color: C.navy, fontWeight: '500' },
   error: { color: '#EF4444', fontSize: 11, marginTop: 4, marginLeft: 2, fontWeight: '600' },
+  hint: { color: '#94A3B8', fontSize: 10.5, marginTop: 4, marginLeft: 2, fontStyle: 'italic' },
 });
 
 // ── Main Screen
@@ -114,7 +115,12 @@ export default function CreateEmployeeScreen() {
     } catch (e: any) {
       const msg = e.response?.data?.message || '';
       if (e.response?.status === 409 && msg.toLowerCase().includes('email')) {
-        setError('email', { type: 'manual', message: 'Email already exists' });
+        setError('email', { type: 'manual', message: 'This email is already in use' });
+      } else if (e.response?.status === 409 && msg.toLowerCase().includes('code')) {
+        setError('employeeCode', {
+          type: 'manual',
+          message: 'This ID is already taken in your org. Edit the ID below to continue.',
+        });
       } else {
         setApiError(msg || 'Failed to create employee');
       }
@@ -194,10 +200,32 @@ export default function CreateEmployeeScreen() {
               )}
             />
             <Controller control={control} name="employeeCode"
-              render={({ field: { value } }) => (
-                <StyledInput label="Employee ID (Auto)" icon="finger-print-outline"
-                  value={value} onChangeText={() => { }}
-                  placeholder="Auto-generated" editable={false} />
+              rules={{
+                pattern: {
+                  value: /^[A-Z0-9]{2,5}-[A-Z0-9]{2,5}-\d{3}$/,
+                  message: 'Format must be: DES-DEP-001 (uppercase, 3-digit number)',
+                },
+              }}
+              render={({ field: { onChange, value } }) => (
+                <View style={f.group}>
+                  <Text style={f.label}>Employee ID</Text>
+                  <View style={[f.box, errors.employeeCode && f.boxError]}>
+                    <Ionicons name="finger-print-outline" size={16} color={errors.employeeCode ? '#EF4444' : C.muted} style={f.icon} />
+                    <TextInput
+                      style={f.input}
+                      value={value}
+                      onChangeText={(text) => onChange(text.toUpperCase())}
+                      placeholder="e.g. ASE-SOF-001"
+                      placeholderTextColor="#B8C4D0"
+                      autoCapitalize="characters"
+                    />
+                  </View>
+                  {errors.employeeCode ? (
+                    <Text style={f.error}>{String(errors.employeeCode.message)}</Text>
+                  ) : (
+                    <Text style={f.hint}>Auto-generated · Format: DES-DEP-001 · You can edit this</Text>
+                  )}
+                </View>
               )}
             />
             <Controller control={control} name="joiningDate"

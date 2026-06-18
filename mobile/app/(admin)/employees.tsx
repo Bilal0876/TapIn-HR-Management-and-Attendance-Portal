@@ -39,6 +39,7 @@ function EmployeeCard({ item, currentEmployee, onDeactivate }: any) {
   const av = avatarColors(item.name);
   const isAdmin = item.role !== 'EMPLOYEE';
   const isSelf = item.id === currentEmployee?.id;
+  const isSuperAdmin = item.role === 'SUPER_ADMIN';
 
   return (
     <View style={card.wrap}>
@@ -67,7 +68,7 @@ function EmployeeCard({ item, currentEmployee, onDeactivate }: any) {
         <Text style={card.email} numberOfLines={1}>{item.email}</Text>
       </View>
 
-      {!isSelf && (
+      {!isSelf && !isSuperAdmin && (
         <TouchableOpacity style={card.delBtn} onPress={() => onDeactivate(item)} activeOpacity={0.7}>
           <Ionicons name="trash-outline" size={16} color="#EF4444" />
         </TouchableOpacity>
