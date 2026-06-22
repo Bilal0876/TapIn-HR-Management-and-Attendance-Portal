@@ -7,9 +7,9 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/favicon.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#5B6EF5"
     },
     "scheme": "attendance-app",
     "plugins": [
@@ -41,7 +41,7 @@
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#5B6EF5"
       },
       "permissions": [
         "ACCESS_FINE_LOCATION",
