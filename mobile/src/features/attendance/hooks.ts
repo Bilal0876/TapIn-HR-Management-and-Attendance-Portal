@@ -25,7 +25,8 @@ export function usePersonalStats() {
 export function useCheckIn() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => attendanceApi.checkin(),
+    mutationFn: ({ lat, lng, accuracy }: { lat: number; lng: number; accuracy: number }) => 
+      attendanceApi.checkin(lat, lng, accuracy),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['attendance'] });
     },
@@ -35,7 +36,8 @@ export function useCheckIn() {
 export function useCheckOut() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => attendanceApi.checkout(),
+    mutationFn: ({ lat, lng, accuracy }: { lat: number; lng: number; accuracy: number }) => 
+      attendanceApi.checkout(lat, lng, accuracy),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['attendance'] });
     },

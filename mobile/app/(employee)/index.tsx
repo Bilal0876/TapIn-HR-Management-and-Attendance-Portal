@@ -66,28 +66,49 @@ export default function EmployeeHome() {
     );
   }
 
-  const activeBreak = record?.breakSessions?.find((b: any) => !b.endTime);
-  const previouslyConsumedSeconds = (record?.breakSessions || [])
-    .filter((b: any) => b.endTime)
-    .reduce((sum: number, b: any) => {
-      const diff = Math.floor(
-        (new Date(b.endTime).getTime() - new Date(b.startTime).getTime()) / 1000
-      );
-      return sum + Math.max(0, diff);
-    }, 0);
+  const processedData = React.useMemo(() => {
+    if (!record) return null;
 
-  const expectedCheckinStr = record?.config?.expectedCheckin || '09:00';
-  const workMinutes = record?.config?.expectedWorkMinutes || 480;
-  const [h, m] = expectedCheckinStr.split(':').map(Number);
-  const checkin12h = format(new Date().setHours(h, m, 0, 0), 'hh:mm a');
-  const shiftStart = new Date();
-  shiftStart.setHours(h, m, 0, 0);
-  const shiftEnd = addMinutes(shiftStart, workMinutes + 60);
-  const checkoutTimeStr = format(shiftEnd, 'hh:mm a');
+    const activeBreak = record.breakSessions?.find((b: any) => !b.endTime);
+    const previouslyConsumedSeconds = (record.breakSessions || [])
+      .filter((b: any) => b.endTime)
+      .reduce((sum: number, b: any) => {
+        const diff = Math.floor(
+          (new Date(b.endTime).getTime() - new Date(b.startTime).getTime()) / 1000
+        );
+        return sum + Math.max(0, diff);
+      }, 0);
 
-  const workingHours = record?.dailySummary?.totalWorkMinutes
-    ? `${Math.floor(record.dailySummary.totalWorkMinutes / 60)}h ${record.dailySummary.totalWorkMinutes % 60}m`
-    : null;
+    const expectedCheckinStr = record.config?.expectedCheckin || '09:00';
+    const workMinutes = record.config?.expectedWorkMinutes || 480;
+    const [h, m] = expectedCheckinStr.split(':').map(Number);
+    
+    // Formatting the check-in window
+    const baseDate = new Date();
+    baseDate.setHours(h, m, 0, 0);
+    const checkin12h = format(baseDate, 'hh:mm a');
+    
+    // Calculate estimated checkout
+    const shiftEnd = addMinutes(baseDate, workMinutes + 60); 
+    const checkoutTimeStr = format(shiftEnd, 'hh:mm a');
+
+    const workingHoursDisplay = record.dailySummary?.totalWorkMinutes
+      ? `${Math.floor(record.dailySummary.totalWorkMinutes / 60)}h ${record.dailySummary.totalWorkMinutes % 60}m`
+      : null;
+
+    return {
+      activeBreak,
+      previouslyConsumedSeconds,
+      checkin12h,
+      checkoutTimeStr,
+      workingHoursDisplay
+    };
+  }, [record]);
+
+  if (!processedData) {
+    // We are still loading or record is null
+    return null;
+  }
 
   return (
     // Changed bg-slate-50 → bg-white so the button canvas blends seamlessly
@@ -107,7 +128,7 @@ export default function EmployeeHome() {
             Hello, {employee?.name?.split(' ')[0]}
           </Text>
           <Text className="text-[13px] text-slate-500 mt-0.5 font-medium">
-            Shift: {checkin12h} — {checkoutTimeStr}
+            Shift: {processedData?.checkin12h} — {processedData?.checkoutTimeStr}
           </Text>
         </View>
 
@@ -121,7 +142,7 @@ export default function EmployeeHome() {
                 status={record?.status || 'IDLE'}
                 checkinTime={record?.checkinTime ? format(parseISO(record.checkinTime), 'hh:mm a') : null}
                 checkoutTime={record?.checkoutTime ? format(parseISO(record.checkoutTime), 'hh:mm a') : null}
-                workingHours={workingHours}
+                workingHours={processedData?.workingHoursDisplay}
                 onRefresh={refetch}
               />
             </AnimatedStatusView>
@@ -139,9 +160,9 @@ export default function EmployeeHome() {
               </View>
 
               <BreakButton
-                activeBreak={activeBreak}
+                activeBreak={processedData.activeBreak}
                 attendanceStatus={record.status}
-                previouslyConsumedSeconds={previouslyConsumedSeconds}
+                previouslyConsumedSeconds={processedData.previouslyConsumedSeconds}
                 onRefresh={refetch}
               />
             </View>
@@ -157,7 +178,7 @@ export default function EmployeeHome() {
               <View className="flex-1">
                 <Text className="text-[15px] font-bold text-indigo-900 mb-1">Shift Reminder</Text>
                 <Text className="text-[13px] text-indigo-700 leading-[18px]" style={{ opacity: 0.8 }}>
-                  Your estimated shift end is {checkoutTimeStr}. Don't forget to check-out to log your hours accurately.
+                  Your estimated shift end is {processedData?.checkoutTimeStr}. Don't forget to check-out to log your hours accurately.
                 </Text>
               </View>
             </LinearGradient>

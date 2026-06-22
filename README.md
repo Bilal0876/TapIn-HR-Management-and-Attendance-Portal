@@ -1,4 +1,4 @@
-# TapIn: HR Portal & Attendance Ecosystem 
+# TapIn: HR Portal & Attendance Portal
 
 TapIn is a high-performance, multi-platform HR and Attendance Management system designed for modern office environments. It combines a robust Node.js backend, a premium React Native mobile experience, and a data-rich Next.js administrative dashboard.
 
@@ -8,75 +8,54 @@ TapIn is a high-performance, multi-platform HR and Attendance Management system 
 
 The project is organized as a unified monorepo consisting of three core modules:
 
-### 1. Backend Server (`/server`)
-- **Engine**: Node.js & Express (TypeScript).
+### 1. Backend Server (`/Hr-Portal-BE`)
+- **Engine**: Node.js & Express (Layered MVC Architecture).
 - **Database**: PostgreSQL with Prisma ORM.
+- **Automation**: 
+  - **Absentee Engine**: Automated "Midnight Sweep" to mark absences while respecting holidays and weekends.
+  - **Holiday & Weekend Hub**: Company-wide configuration for non-working days.
 - **Security**: 
   - `express-rate-limit` for API protection.
+  - Case-Insensitive Email handling (Industry Standard Normalization).
   - Multi-layer Brute Force protection (5-minute account lockout).
-  - Role-based Access Control (RBAC).
-- **Real-time**: Socket.io for live workforce status broadcasting.
+- **Real-time**: Socket.io "Live Pulse" broadcasting for instant workforce visibility.
 
 ### 2.  Mobile App (`/mobile`)
 - **Framework**: Expo / React Native (TypeScript).
-- **Styling**: Uniwind (Tailwind CSS v4) for high-performance, build-time styles.
-- **UX Features**:
-  - `react-native-reanimated` for super-smooth status transitions.
-  - `expo-haptics` for tactile action feedback.
-  - Custom Shimmer Skeletons for seamless data hydration.
-- **Hardware**: NFC/Biometric support ready.
+- **Hardened Features**:
+  - **Precision Geofencing**: High-accuracy GPS enforcement for check-ins with metadata auditing.
+  - **Push Notification Engine**: Integrated `expo-notifications` for shift reminders and admin alerts.
+- **Performance**:
+  - **Memoized Rendering**: Optimized UI logic with `useMemo` for complex time calculations.
+  - `react-native-reanimated` for smooth status transitions.
+- **UX**: Dynamic Shimmer Skeletons for seamless data hydration.
 
-### 3.  Admin Web Portal (`/web`)
+### 3.  Admin Web Portal (`/Hr-Portal-Web-FE`)
 - **Framework**: Next.js 16 (App Router) & Tailwind CSS.
-- **State**: Zustand for reactive authentication and UI state.
-- **Dashboard**: Real-time "Workforce Pulse" monitor for organization control.
+- **Security**: 
+  - **Server-Side Middleware**: Professional-grade route protection using cookie-based session signaling.
+- **Features**:
+  - **Holiday Manager**: Interactive UI for managing organization holidays.
+  - **Analytics Dash**: Real-time workforce metrics and attendance logs.
 
 ---
 
-##  Quick Start
+##  Core Implementations
 
-### Prerequisites
-- Node.js v18+
-- pnpm (v9+)
-- PostgreSQL instance
-
-### Local Development
-
-1. **Install Dependencies**:
-   ```bash
-   pnpm install
-   ```
-
-2. **Database Setup**:
-   ```bash
-   cd server
-   cp .env.example .env # Configure your DATABASE_URL
-   npx prisma migrate dev
-   npx prisma generate
-   ```
-
-3. **Start the Ecosystem**:
-   - **Server**: `cd server && pnpm start` (Port 3000)
-   - **Web**: `cd web && pnpm dev` (Port 3001)
-   - **Mobile**: `cd mobile && npx expo start`
-
----
-
-##  Production Readiness Checklist
-
-- [x] **Rate Limiting**: Enabled on `/auth` and `/attendance` routes.
-- [x] **Brute Force Defense**: 5-attempt limit with automatic cooldown.
-- [x] **Real-time Sync**: Bi-directional mobile/web synchronization via Socket.io.
-- [x] **Performance**: Build-time CSS compilation on mobile (Uniwind).
-- [x] **Security**: Sanitized SQL queries via Prisma and standard JWT flow.
+- [x] **Precision GPS**: Enforced Location accuracy (High) and coordinate auditing.
+- [x] **Push Notifications**: Real-time shift reminders and leave/correction alerts.
+- [x] **Absentee Engine**: Automated attendance cleanup via Daily Cron Jobs.
+- [x] **Security Hardening**: Case-insensitive authentication, Middleware Guards, and Brute Force defense.
+- [x] **Timezone Precision**: Company-specific timezone formatting across all dashboards.
+- [ ] **Multi-Department Scoping**: (Planned) Hierarchy for Department Head management.
 
 ---
 
 ##  Tech Stack & Key Libraries
-- **Shared**: TypeScript, Socket.io, Axios.
-- **Server**: Express, Prisma, Helmet, Morgan, Bcrypt.
-- **Mobile**: Expo Router, Reanimated, Lucide Mobile, Haptics, Uniwind (TW v4).
-- **Web**: Next.js, Lucide React, Framer Motion, Zustand.
+- **Shared**: TypeScript, Socket.io, Axios, Date-fns.
+- **Server**: Express, Prisma, Bcrypt, Node-Cron, Date-fns-tz.
+- **Mobile**: Expo Router, Reanimated, Lucide Mobile, Haptics, React Query.
+- **Web**: Next.js, Lucide React, Framer Motion, Zustand, Cookies-Next.
 
 ---
 
